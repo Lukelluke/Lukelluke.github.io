@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-07T10:29:32.294Z</updated>
+  <updated>2020-06-07T16:06:50.613Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,16 +21,15 @@
     <link href="http://yoursite.com/2020/06/07/XXXXXX/"/>
     <id>http://yoursite.com/2020/06/07/XXXXXX/</id>
     <published>2020-06-07T10:22:14.000Z</published>
-    <updated>2020-06-07T10:29:32.294Z</updated>
+    <updated>2020-06-07T16:06:50.613Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p>]]></content>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure><script>console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");</script><script>console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");</script>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2020/06/07/t2bJ56.png&quot; alt=&quot;t2bJ56.png&quot;&gt;&lt;/p&gt;
-
+        &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
       
     
     </summary>

@@ -3,7 +3,19 @@
   <entry>
     <title>XXXXXX</title>
     <url>/2020/06/07/XXXXXX/</url>
-    <content><![CDATA[<p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");
+			</script>
+
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");
+			</script>
+
 ]]></content>
   </entry>
   <entry>
