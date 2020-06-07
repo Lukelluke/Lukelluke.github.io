@@ -1,39 +1,375 @@
-//- extends includes/layout.pug
 
-doctype html
-html(lang=config.language)
-  head
-    meta(name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1")
-    meta(charset='UTF-8')
-    title= config.title
-    if theme.stylesheets !== undefined && theme.stylesheets.length > 0
-      //- stylesheets list from _config.yml
-      each url in theme.stylesheets
-        link(rel='stylesheet', href=url)
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Lato&display=swap" rel="stylesheet">
-  body
-    div#main-page
-      div#mega-title
-        h1!= config.author
-        p= theme.description
-      div#index-menu
-        each url, label in theme.menu
-          if label!=config.title
-            a(href=url)= label
-      div.main-socialmedia
-        each url,label in config.socialmedia
-          a(class='link-item main-link-item' title=label href=url)
-            i(class='iconfont icon-'+theme.social_icons[label])
-      footer#bottom
-        span © 
-        span= config.author
-        span . Powered By 
-        a(href='http://hexo.io')
-          span HEXO
-        span . Theme 
-        a(href='https://github.com/lixuetaoleo/hexo-theme-leo')= 'leo'
+
+<!DOCTYPE html>
+<html lang="en">
+<!--begin head-->
+
+<head>
+    <meta charset="utf-8">
+<!--begin title-->
+
+<title>
+    
+    Hexo</title>
+<!--end title-->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<!--begin mete-->
+
+<meta name="author" content="John Doe"/>
+
+<!--end mete-->
+<!--begin keywords-->
+<meta name="keywords" content=""/>
+<!--end keywords-->
+<!--begin rss-->
+
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+
+<!--end rss-->
+<!--begin favicon-->
+
+<link rel="icon" href="/favicon.ico">
+
+<!--end favicon-->
+<!--begin style-->
+
+<!-- stylesheets list from config.yml -->
+
+<link rel="stylesheet" href="/css/hannah.css">
+
+
+<!--end style-->
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--end head-->
+<!--begin body-->
+
+<body class="container-fluid">
+
+    <!--begin menu-->
+    <div class="hannah-menu">
+    <i class="fh fh-ravelry fa-2x btn fixed-menu animated bounce" id="btn_menu" aria-hidden="true"></i>
+    <div class="menu-outer container-fluid hide animated" id="div_menu">
+        <div class="row" style="margin-bottom: 5px;">
+            
+            <div class="col-md-offset-2 col-md-3 col-xs-4 text-center left-social">
+                
+                <a target="_blank" href="https://github.com/objectyan" title="GitHub"><i class="fh fh-github"></i></a>
+                
+                <style>
+                    .left-social {
+                        height: 132px;
+                        line-height: 132px;
+                        font-size: 66px;
+                    }
+
+                    .left-social * {
+                        color: #f1ce8e;
+                    }
+
+                    @media (max-width: 767px) {
+                        .left-social {
+                            line-height: 132px;
+                            font-size: 33px;
+                        }
+                    }
+                </style>
+            </div>
+            <!--begin handImg-->
+            <div class="col-md-2 col-xs-4 text-center">
+                
+                <img src="/img/logo.jpg" alt="Head Image" class="img-circle">
+                
+            </div>
+            <!--end handImg-->
+            <div class="col-md-3 col-xs-4 text-center right-social">
+                
+                <style>
+                    .right-social {
+                        height: 132px;
+                        line-height: 132px;
+                        font-size: 66px;
+                    }
+
+                    @media (max-width: 767px) {
+                        .right-social {
+                            line-height: 132px;
+                            font-size: 33px;
+                        }
+                    }
+
+                    .right-social * {
+                        color: #f1ce8e;
+                    }
+                </style>
+            </div>
+        </div>
+        <div class="row">
+            <div class="menu-content col-md-8 col-md-push-2 col-xs-12 ">
+                <dl class="menu-content-item">
+                    <dt class="menu-content-title">
+                        <i class="fh fh-bars" aria-hidden="true"></i> Menu
+                    </dt>
+                    <dd class="menu-content-content">
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/" class="btn btn-block">
+                                
+                                <i class="fh fh-ravelry"></i>
+                                Home
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/categories" class="btn btn-block">
+                                
+                                <i class="fh fh-cubes"></i>
+                                Category
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/tags" class="btn btn-block">
+                                
+                                <i class="fh fh-tags"></i>
+                                Tag
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/archives" class="btn btn-block">
+                                
+                                <i class="fh fh-archive"></i>
+                                Archives
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/about" class="btn btn-block">
+                                
+                                <i class="fh fh-about"></i>
+                                About
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/doc" class="btn btn-block">
+                                
+                                <i class="fh fh-document"></i>
+                                Doc
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/plug" class="btn btn-block">
+                                
+                                <i class="fh fh-plug"></i>
+                                Plug
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/sitemap" class="btn btn-block">
+                                
+                                <i class="fh fh-sitemap"></i>
+                                SiteMap
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4 col-xs-6 col-sm-4 text-center animated tada">
+                            <a href="/atom.xml" class="btn btn-block">
+                                <i class="fh fh-rss" aria-hidden="true"></i> RSS
+                            </a>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="menu-content col-md-8 col-md-offset-2 col-xs-12 ">
+                <dl class="col-md-6 col-xs-6 menu-content-item">
+                    <dt class="menu-content-title">
+                        <i class="fh fh-cubes" aria-hidden="true"></i> Category
+                    </dt>
+                    <dd class="menu-content-content animated zoomIn">
+                        
+                    </dd>
+                </dl>
+                <dl class="col-md-6 col-xs-6 menu-content-item">
+                    <dt class="menu-content-title">
+                        <i class="fh fh-tag" aria-hidden="true"></i> Tags
+                    </dt>
+                    <dd class="menu-content-content animated zoomIn">
+                        
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+    <!--end menu-->
+
+    <div class="row hannah-body">
+        <div class="col-md-8 col-md-push-2 col-xs-12">
+            <!--begin breadcrumb-->
+            <div class="bread-crumb">
+    <ul class="bread-crumb-menu animated rubberBand">
+        <li><a href="/"><i class="fh fh-ravelry" aria-hidden="true"></i> Home</a></li>
         
-    if theme.scripts !== undefined && theme.scripts.length > 0
-      //- scripts list from config.yml
-      each url in theme.scripts
-        script(src=url)
+    </ul>
+    <div class="bread-crumb-search">
+        <div class="search">
+    <i class="fh fh-search icon-search"></i>
+    <input placeholder="Search ..." onkeyup="searchFunc(this,event,'/search.xml')"
+           class="input-search animated fadeInRight"/>
+    <div class="search-result animated fadeInRight">
+        <a class="animated tada col-lg-12 search-result-item result-link" href="/2020/06/07/XXXXXX/">XXXXXX</a><a class="animated tada col-lg-12 search-result-item result-link" href="/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/">第一篇</a><a class="animated tada col-lg-12 search-result-item result-link" href="/2020/06/07/hello-world/">Hello World</a>
+    </div>
+</div>
+    </div>
+</div>
+            <!--end breadcrumb-->
+            <!--begin body-->
+            
+<div class="recent-posts">
+    
+    <div class="recent-post-item animated fadeInLeftBig">
+    <div class="item-head">
+        <h3 class="title">
+            <a href="/2020/06/07/XXXXXX/">
+                XXXXXX
+            </a>
+        </h3>
+        
+        <time datetime="2020-06-07T10:22:14.000Z" class="item">
+            <i class="fh fh-calendar" aria-hidden="true"></i>&nbsp;&nbsp;2020-06-07
+        </time>
+        
+        
+    </div>
+    
+    <div class="item-footer">
+        
+        <a class="look" href="/2020/06/07/XXXXXX/">Look >></a>
+    </div>
+</div>
+    
+    <div class="recent-post-item animated fadeInRightBig">
+    <div class="item-head">
+        <h3 class="title">
+            <a href="/2020/06/07/第一篇/">
+                第一篇
+            </a>
+        </h3>
+        
+        <time datetime="2020-06-07T08:51:26.000Z" class="item">
+            <i class="fh fh-calendar" aria-hidden="true"></i>&nbsp;&nbsp;2020-06-07
+        </time>
+        
+        
+    </div>
+    
+    <div class="item-footer">
+        
+        <a class="look" href="/2020/06/07/第一篇/">Look >></a>
+    </div>
+</div>
+    
+    <div class="recent-post-item animated fadeInLeftBig">
+    <div class="item-head">
+        <h3 class="title">
+            <a href="/2020/06/07/hello-world/">
+                Hello World
+            </a>
+        </h3>
+        
+        <time datetime="2020-06-07T08:42:02.467Z" class="item">
+            <i class="fh fh-calendar" aria-hidden="true"></i>&nbsp;&nbsp;2020-06-07
+        </time>
+        
+        
+    </div>
+    
+    <div class="item-footer">
+        
+        <a class="look" href="/2020/06/07/hello-world/">Look >></a>
+    </div>
+</div>
+    
+</div>
+
+
+<div class="animated bounceInDown paginations">
+    <div class="col-md-8 col-md-push-2 col-xs-12">
+        <nav>
+            
+            <span
+                class="page-content col-md-8 col-md-offset-2 col-xs-offset-4 col-xs-4 text-center">
+                
+                Page 1 of 1
+                
+            </span>
+            
+        </nav>
+        <div>
+            <div class="col-md-6 col-xs-6 text-left">
+                
+            </div>
+            <div class="col-md-6 col-xs-6 text-right">
+                
+            </div>
+        </div>
+    </div>
+</div>
+            <!--end body-->
+            <!--begin comments-->
+            
+
+            <!--end comments-->
+        </div>
+    </div>
+
+    <!--begin footer-->
+    <footer id="footer" class="footer animated fadeInUp hide">
+    <p><i class="copy">&copy;</i> 2020 <a href="http://yoursite.com">John Doe</a> All Right Reserved.</p>
+    <p>Powered by <a href="http://hexo.io" target="_blank" rel="external nofollow noopener">Hexo</a>. Theme by <a href="https://github.com/objectyan/hexo-theme-hannah" target="_blank" rel="external nofollow noopener">hannah</a></p>
+</footer>
+    <!--end footer-->
+
+    
+    <!-- scripts list from theme config.yml -->
+    
+    <script src="/js/hannah.js"></script>
+    
+    
+    <!--begin analytics-->
+    
+<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?8fb2a05be303b36faebf141d7317de43";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+    <!--end analytics-->
+</body>
+<!--end body-->
+<!--begin canvas-nest-->
+<script>
+    var nesturl = "https://unpkg.com/canvas-nest.js/dist/canvas-nest.js";
+    var c = document.getElementsByTagName("body")[0] || document.body || document.documentElement;
+    var b = document.createElement("script");
+    b.setAttribute("type", "text/javascript");
+    b.setAttribute("src", nesturl);
+    b.setAttribute("color",
+        `${ Math.floor(Math.random()*256)},${ Math.floor(Math.random()*256)},${ Math.floor(Math.random()*256)}`);
+    b.setAttribute("opacity", Math.random());
+    b.setAttribute("count", parseInt((Math.random() * 500) || 99));
+    c.appendChild(b)
+</script>
+<!--end canvas-nest-->
+
+</html>
