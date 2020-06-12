@@ -25,18 +25,20 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="firebase.initializeApp({       apiKey: &#39;hsjptyz21&#39;, &#x2F;&#x2F;你的apiKey       projectId: &#39;AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g&#39;  &#x2F;&#x2F;你的projectId    })     var title&#x3D; &#39;&#39;;    var count &#x3D; 0;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="热榜">
+<meta property="og:url" content="http://yoursite.com/%E7%83%AD%E6%A6%9C/index.html">
 <meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="firebase.initializeApp({       apiKey: &#39;hsjptyz21&#39;, &#x2F;&#x2F;你的apiKey       projectId: &#39;AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g&#39;  &#x2F;&#x2F;你的projectId    })     var title&#x3D; &#39;&#39;;    var count &#x3D; 0;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="article:published_time" content="2020-06-12T10:11:15.000Z">
+<meta property="article:modified_time" content="2020-06-12T10:23:05.267Z">
 <meta property="article:author" content="黄圣杰">
 <meta property="article:tag" content="keywords">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E7%83%AD%E6%A6%9C/">
 
 
 <script id="page-configurations">
@@ -49,7 +51,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>热榜 | 黄圣杰
 </title>
   
 
@@ -220,7 +222,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">热榜
 </h1>
 
 <div class="post-meta">
@@ -234,15 +236,43 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              目前共计 1 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8B%E8%AF%95categories/">测试categories</a><span class="category-list-count">1</span></li></ul>
-            </div>
-          </div>
-        
+          <div id="top" style="margin-top:80px;">
+
+</div>
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-database.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-firestore.js"></script>
+
+<script>
+
+  firebase.initializeApp({
+      apiKey: 'hsjptyz21', //你的apiKey
+      projectId: 'AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g'  //你的projectId
+   })
+
+   var title= '';
+   var count = 0;
+   var url = '';
+   const db = firebase.firestore();
+   var collection =  'articles'; //主题配置文件配置的collection //';
+   db.collection(collection).orderBy('count', 'desc').limit(10).get().then((querySnapshot) => {
+       querySnapshot.forEach((doc) => {
+       //  console.log(doc.id, " => ", doc.data());
+           title = doc.id;
+           count = doc.data().count;
+           url = doc.data().url;
+           var content="<h5><p>"+"<font color='#1C1C1C'>"+"【文章热度: "+count+" ℃】"+"</font>" + '&emsp;&emsp;' + "<span'><a href='"+url+"'>"+title+"</a></span>"+"</p></h5>";
+           document.getElementById("top").innerHTML+=content
+       });
+   });
+
+</script>
       </div>
       
       
