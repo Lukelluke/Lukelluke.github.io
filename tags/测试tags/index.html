@@ -297,10 +297,9 @@
   <aside class="sidebar">
     <div class="sidebar-inner">
     
-    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 
+    
     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 
     src="//music.163.com/outchain/player?type=2&id=444267925&auto=2&height=66">
-    </iframe>
     </iframe>
 
       <ul class="sidebar-nav motion-element">
@@ -342,7 +341,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -357,20 +356,6 @@
   </div>
 
 
-  <div class="links-of-blogroll motion-element">
-    <div class="links-of-blogroll-title">
-      <i class="fa fa-fw fa-link"></i>
-      Links
-    </div>
-    <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://google.com/" title="https:&#x2F;&#x2F;google.com&#x2F;" rel="noopener" target="_blank">谷歌</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://baidu.com/" title="http:&#x2F;&#x2F;baidu.com&#x2F;" rel="noopener" target="_blank">百度</a>
-        </li>
-    </ul>
-  </div>
 
       </div>
         <div class="back-to-top motion-element">
@@ -378,7 +363,25 @@
           <span>0%</span>
         </div>
 
+
+          
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width:100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95tags/" rel="tag">测试tags</a><span class="tag-list-count">1</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+    
+    
+
     <aside class="sidebar">
+
+
+
 
     </div>
 
@@ -637,6 +640,26 @@ window.addEventListener('pjax:success', () => {
 
 
 
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
 
 
 
