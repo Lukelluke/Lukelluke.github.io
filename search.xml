@@ -40,7 +40,7 @@
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-EJBQaTTc" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-jgMYloKB" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -51,6 +51,13 @@
 
 <p>插入pdf</p>
 <a id="more"></a>
+
+<p>插入腾讯云pdf测试：</p>
+<div class="pdfobject-container" data-target="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf" data-height="500px"></div>
+
+
+
+
 
 <div class="pdfobject-container" data-target="./vc.pdf" data-height="500px"></div>
 
@@ -84,17 +91,6 @@
 ]]></content>
       <tags>
         <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第一篇</title>
-    <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
-      <categories>
-        <category>测试categories</category>
-      </categories>
-      <tags>
-        <tag>测试tags</tag>
       </tags>
   </entry>
   <entry>
@@ -152,6 +148,17 @@
       </categories>
       <tags>
         <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一篇</title>
+    <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
+      <categories>
+        <category>测试categories</category>
+      </categories>
+      <tags>
+        <tag>测试tags</tag>
       </tags>
   </entry>
 </search>
