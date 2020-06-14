@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-13T15:16:24.585Z</updated>
+  <updated>2020-06-14T12:51:22.966Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,13 +17,41 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
+    <link href="http://yoursite.com/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/"/>
+    <id>http://yoursite.com/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</id>
+    <published>2020-06-14T12:20:58.000Z</published>
+    <updated>2020-06-14T12:51:22.966Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol><li>矢量图（.EPS）格式，不会失真</li><li>参考文章<a href="https://www.zhihu.com/question/58540942" target="_blank" rel="noopener">知乎</a></li><li>需要的工具：<a href="https://www.macwk.com/soft/adobe-acrobat-pro-dc" target="_blank" rel="noopener">Adobe Acrobat Pro DC</a> &amp;&amp; <a href="https://www.macwk.com/article/adobe-zii" target="_blank" rel="noopener">Adobe Zii 激活工具</a></li></ol><hr><a id="more"></a><h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol><li>将画好的 PPT 模板导出成 pdf 文件格式，用 DC 打开</li><li>搜索 DC 功能 <strong>裁剪</strong>，选定图像区域（去掉白边）</li><li>然后打开 DC 侧边栏，选取要到处的图片所在界面，<strong>右击</strong>，<strong>提取页面</strong>，<strong>输入要导出的界面</strong> <em>（这是为了在很庞大的所有ppt页面中，单独拎出需要的页面，方便下一步的导出为 .eps 格式而服务的）</em></li><li>保存这个由新选取的页面们所组成的新 PDF，然后点击：<strong>文件</strong>—&gt;<strong>另存为</strong>—&gt;<strong>内嵌式PostScript</strong> 格式</li><li>Duang！就这样完成了，尽情滴放大她，也不会失真啦！</li><li>Ps.如果是在 LaTex 写作中，插入图片时，可以直接选择使用 PDF 格式哦！就省去了转为 EPS 格式的过程（如果没有 DC 软件的话）</li></ol><hr><p>最后，本博客开始正式运营，相比于之前使用庞杂、臃肿的 WorldPress，我并不需要多么复杂的后台管理功能，能让我安心地在本地快快乐乐写文字输出就ok，还没有了租服务器的额外开销（汇率提升，我的钱包实在扛不住了，太贵了）</p><hr><ul><li>发现的一个小问题就是，插入pdf，在手机端没法查看，所以之后可以尝试用 html 形式专门做成一个界面栏目，像 VC 比赛 demo 界面那样。clone一下大神们的个人主页</li><li>或者再找找看 .md 格式怎么写一个漂亮的简历</li></ul><p>以上</p><p>June / 14 / 2020</p><p>@PT</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;几个概念&quot;&gt;&lt;a href=&quot;#几个概念&quot; class=&quot;headerlink&quot; title=&quot;几个概念&quot;&gt;&lt;/a&gt;几个概念&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;矢量图（.EPS）格式，不会失真&lt;/li&gt;
+&lt;li&gt;参考文章&lt;a href=&quot;https://www.zhihu.com/question/58540942&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;知乎&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;需要的工具：&lt;a href=&quot;https://www.macwk.com/soft/adobe-acrobat-pro-dc&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Adobe Acrobat Pro DC&lt;/a&gt; &amp;amp;&amp;amp; &lt;a href=&quot;https://www.macwk.com/article/adobe-zii&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Adobe Zii 激活工具&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+    
+      <category term="写作" scheme="http://yoursite.com/categories/%E5%86%99%E4%BD%9C/"/>
+    
+    
+      <category term="工具" scheme="http://yoursite.com/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
     <title>test</title>
     <link href="http://yoursite.com/2020/06/07/test/"/>
     <id>http://yoursite.com/2020/06/07/test/</id>
     <published>2020-06-07T10:22:14.000Z</published>
     <updated>2020-06-13T15:16:24.585Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p><p>插入mp3:</p><p>1.aplayer</p><script>console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");</script><p>2.文件直接拖拽，本地存储</p><p> <a href="./30003.wav">30003.wav</a> </p><p>3.aplayer不稳定，还是应该用iframe标签</p><script>console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");</script><hr><p>4.aplayer meeting，产生歌单，用网易云的连接id</p>    <div id="aplayer-xjqhhiUO" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div><hr><p>5.用iframe插入</p><iframe frameborder="yes" border="1" marginwidth="100" marginheight="100" width="600" height="100" src="http://qbjun0qc6.bkt.clouddn.com/30001.wav"></iframe><p>插入pdf</p><a id="more"></a><div class="pdfobject-container" data-target="./vc.pdf" data-height="500px"></div><div class="pdfobject-container" data-target="https://drive.google.com/file/d/0B6qSwdwPxPRdTEliX0dhQ2JfUEU/preview" data-height="500px"></div><p><img src="/2020/06/07/test/1.png" alt="1"></p><iframe frameborder="yes" border="1" marginwidth="1" marginheight="1" width="330" height="100" src="//music.163.com/outchain/player?type=2&id=444267925 & auto=1 & height=60 "></iframe><p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p><p><img src="/2020/06/07/test/stargan/StarGAN-VC2_files/network.png" alt="stargan.png"></p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure><script>console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");</script><script>console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");</script>]]></content>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p><p>插入mp3:</p><p>1.aplayer</p><script>console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");</script><p>2.文件直接拖拽，本地存储</p><p> <a href="./30003.wav">30003.wav</a> </p><p>3.aplayer不稳定，还是应该用iframe标签</p><script>console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");</script><hr><p>4.aplayer meeting，产生歌单，用网易云的连接id</p>    <div id="aplayer-XhQUUWdN" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div><hr><p>5.用iframe插入</p><iframe frameborder="yes" border="1" marginwidth="100" marginheight="100" width="600" height="100" src="http://qbjun0qc6.bkt.clouddn.com/30001.wav"></iframe><p>插入pdf</p><a id="more"></a><div class="pdfobject-container" data-target="./vc.pdf" data-height="500px"></div><div class="pdfobject-container" data-target="https://drive.google.com/file/d/0B6qSwdwPxPRdTEliX0dhQ2JfUEU/preview" data-height="500px"></div><p><img src="/2020/06/07/test/1.png" alt="1"></p><iframe frameborder="yes" border="1" marginwidth="1" marginheight="1" width="330" height="100" src="//music.163.com/outchain/player?type=2&id=444267925 & auto=1 & height=60 "></iframe><p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p><p><img src="/2020/06/07/test/stargan/StarGAN-VC2_files/network.png" alt="stargan.png"></p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure><script>console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");</script><script>console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");</script>]]></content>
     
     <summary type="html">
     
@@ -46,7 +74,7 @@
 &lt;hr&gt;
 &lt;p&gt;4.aplayer meeting，产生歌单，用网易云的连接id&lt;/p&gt;
 
-    &lt;div id=&quot;aplayer-xjqhhiUO&quot; class=&quot;aplayer aplayer-tag-marker meting-tag-marker&quot; data-id=&quot;523845661&quot; data-server=&quot;netease&quot; data-type=&quot;playlist&quot; data-mode=&quot;circulation&quot; data-autoplay=&quot;false&quot; data-mutex=&quot;true&quot; data-listmaxheight=&quot;340px&quot; data-preload=&quot;auto&quot; data-theme=&quot;#FF4081&quot;&gt;&lt;/div&gt;
+    &lt;div id=&quot;aplayer-XhQUUWdN&quot; class=&quot;aplayer aplayer-tag-marker meting-tag-marker&quot; data-id=&quot;523845661&quot; data-server=&quot;netease&quot; data-type=&quot;playlist&quot; data-mode=&quot;circulation&quot; data-autoplay=&quot;false&quot; data-mutex=&quot;true&quot; data-listmaxheight=&quot;340px&quot; data-preload=&quot;auto&quot; data-theme=&quot;#FF4081&quot;&gt;&lt;/div&gt;
 
 
 

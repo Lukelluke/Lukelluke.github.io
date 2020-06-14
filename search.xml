@@ -40,7 +40,7 @@
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-xjqhhiUO" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-XhQUUWdN" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -84,6 +84,43 @@
 ]]></content>
       <tags>
         <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
+    <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
+<li>矢量图（.EPS）格式，不会失真</li>
+<li>参考文章<a href="https://www.zhihu.com/question/58540942" target="_blank" rel="noopener">知乎</a></li>
+<li>需要的工具：<a href="https://www.macwk.com/soft/adobe-acrobat-pro-dc" target="_blank" rel="noopener">Adobe Acrobat Pro DC</a> &amp;&amp; <a href="https://www.macwk.com/article/adobe-zii" target="_blank" rel="noopener">Adobe Zii 激活工具</a></li>
+</ol>
+<hr>
+<a id="more"></a>
+
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
+<li>将画好的 PPT 模板导出成 pdf 文件格式，用 DC 打开</li>
+<li>搜索 DC 功能 <strong>裁剪</strong>，选定图像区域（去掉白边）</li>
+<li>然后打开 DC 侧边栏，选取要到处的图片所在界面，<strong>右击</strong>，<strong>提取页面</strong>，<strong>输入要导出的界面</strong> <em>（这是为了在很庞大的所有ppt页面中，单独拎出需要的页面，方便下一步的导出为 .eps 格式而服务的）</em></li>
+<li>保存这个由新选取的页面们所组成的新 PDF，然后点击：<strong>文件</strong>—&gt;<strong>另存为</strong>—&gt;<strong>内嵌式PostScript</strong> 格式</li>
+<li>Duang！就这样完成了，尽情滴放大她，也不会失真啦！</li>
+<li>Ps.如果是在 LaTex 写作中，插入图片时，可以直接选择使用 PDF 格式哦！就省去了转为 EPS 格式的过程（如果没有 DC 软件的话）</li>
+</ol>
+<hr>
+<p>最后，本博客开始正式运营，相比于之前使用庞杂、臃肿的 WorldPress，我并不需要多么复杂的后台管理功能，能让我安心地在本地快快乐乐写文字输出就ok，还没有了租服务器的额外开销（汇率提升，我的钱包实在扛不住了，太贵了）</p>
+<hr>
+<ul>
+<li>发现的一个小问题就是，插入pdf，在手机端没法查看，所以之后可以尝试用 html 形式专门做成一个界面栏目，像 VC 比赛 demo 界面那样。clone一下大神们的个人主页</li>
+<li>或者再找找看 .md 格式怎么写一个漂亮的简历</li>
+</ul>
+<p>以上</p>
+<p>June / 14 / 2020</p>
+<p>@PT</p>
+]]></content>
+      <categories>
+        <category>写作</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>

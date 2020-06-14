@@ -94,42 +94,50 @@
 
     <main>            
       <div class="container">
-	<div class="row" id="paper">
-	  <div class="col-md-12">
-	    <h2>Paper</h2>
-	    <div class="row align-items-center">
-	      <div class="thumbnailsize" align="center">
-		<a href="https://arxiv.org/pdf/1907.12279.pdf"><img class="thumbnailshadow" src="./StarGAN-VC2_files/paper_thumbnail.png" width="150"></a>
-	      </div>
-	      <div class="col-md-9">
-		<p>
-		  Takuhiro Kaneko, Hirokazu Kameoka, Kou Tanaka, and Nobukatsu Hojo<br>
-		  <strong>StarGAN-VC2: Rethinking Conditional Methods for StarGAN-Based Voice Conversion</strong><br>
-		  <em>Interspeech 2019</em><br>
-		  [<a href="https://arxiv.org/abs/1907.12279">Paper</a>]
-		  [<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/resources/Kaneko_StarGAN-VC2_Interspeech_2019_poster.pdf">Poster</a>]
-		  [<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/resources/StarGAN-VC2.txt">BibTeX</a>]
-		</p>
-		<p>
-		  <strong>NOTE:</strong>
-		  <em>
-		    We have previously proposed <a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">StarGAN-VC</a> (ver1), <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc/index.html">CycleGAN-VC</a>, and <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc2/index.html">CycleGAN-VC2</a>.
-		    They are highly related to this work.
-		    Check them from the corresponding links!
-		  </em>
-		</p>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+<!--	<div class="row" id="paper">-->
+<!--	  <div class="col-md-12">-->
+<!--&lt;!&ndash;	    <h2>Paper</h2>&ndash;&gt;-->
+<!--	    <div class="row align-items-center">-->
+<!--	      <div class="thumbnailsize" align="center">-->
+<!--&lt;!&ndash;		<a href="https://arxiv.org/pdf/1907.12279.pdf"><img class="thumbnailshadow" src="./StarGAN-VC2_files/paper_thumbnail.png" width="150"></a>&ndash;&gt;-->
+<!--	      </div>-->
+<!--	      <div class="col-md-9">-->
+<!--		<p>-->
+<!--		  Takuhiro Kaneko, Hirokazu Kameoka, Kou Tanaka, and Nobukatsu Hojo<br>-->
+<!--		  <strong>StarGAN-VC2: Rethinking Conditional Methods for StarGAN-Based Voice Conversion</strong><br>-->
+<!--		  <em>Interspeech 2019</em><br>-->
+<!--		  [<a href="https://arxiv.org/abs/1907.12279">Paper</a>]-->
+<!--		  [<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/resources/Kaneko_StarGAN-VC2_Interspeech_2019_poster.pdf">Poster</a>]-->
+<!--		  [<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/resources/StarGAN-VC2.txt">BibTeX</a>]-->
+<!--		</p>-->
+<!--		<p>-->
+<!--		  <strong>NOTE:</strong>-->
+<!--		  <em>-->
+<!--		    We have previously proposed <a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">StarGAN-VC</a> (ver1), <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc/index.html">CycleGAN-VC</a>, and <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc2/index.html">CycleGAN-VC2</a>.-->
+<!--		    They are highly related to this work.-->
+<!--		    Check them from the corresponding links!-->
+<!--		  </em>-->
+<!--		</p>-->
+<!--	      </div>-->
+<!--	    </div>-->
+<!--	  </div>-->
+<!--	</div>-->
 
-	<hr>
-	
+<!--	<hr>-->
+
 	<div class="row" id="introduction">
 	  <div class="col-md-12">
-	    <h2>StarGAN-VC2</h2>
+	    <h2>URSpeakingGAN-VC</h2>
 	    <p>
-	      To advance the research on <strong>multi-domain non-parallel VC</strong>, we rethink conditional methods in <a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">StarGAN-VC</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#1">[1]</a> and propose an improved variant called <strong id="pinkstrong">StarGAN-VC2</strong>. Particularly, we rethink conditional methods in two aspects: training objectives and network architectures. For the former, we propose a <strong>source-and-target conditional adversarial loss</strong> that allows all source domain data to be convertible to the target domain data. For the latter, we introduce a <strong> modulation-based conditional method</strong> that can transform the modulation of the acoustic feature in a domain-specific manner.
+	      To advance the research on <strong>multi-domain non-parallel VC</strong>,
+			we rethink conditional methods in
+			<a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">StarGAN-VC</a>
+<!--			<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#1">[1]</a>-->
+			and propose an improved variant called <strong id="pinkstrong">URSpeakingGAN-VC</strong>.
+			Particularly, we rethink conditional methods in two aspects: training objectives and network architectures.
+			For the former, we propose a <strong>source-and-target conditional adversarial loss</strong>
+			that allows all source domain data to be convertible to the target domain data. For the latter,
+			we introduce a <strong> modulation-based conditional method</strong> that can transform the modulation of the acoustic feature in a domain-specific manner.
 	    </p>
 
 	    <figure class="figure">				
@@ -146,20 +154,42 @@
 	  <div class="col-md-12">
 	    <h2>Converted speech samples</h2>	    
 	    <h5>Task and dataset</h5>
+		  <ul>
+			  <li><b>1st task: voice conversion within the same language</b>
+				  <ul>
+					  <li>In training, a sentence set uttered by the source speaker is different from that uttered by the target speaker, but they are still the same language.  Moreover, only a small number of sentences are shared between these two sentence sets.
+					  <li>In conversion, the source speaker's voice is converted as if it is uttered by the target speaker while keeping linguistic contents unchanged.
+					  <li>We will provide voices of 4 source and 4 target speakers (consisting of both female and male speakers) from fixed corpora as training data.  Each speaker utters a sentence set consisting of 70 sentences in <u><b>English</b></u>.  Only 20 sentences are parallel and the other 50 sentences are nonparallel between the source and target speakers.
+					  <li>Using these data sets, voice conversion systems for all speaker-pair combinations (16 speaker-pairs in total) will be developed by each participant.
+				  </ul>
+			  <li><b>2nd task: cross-lingual voice conversion</b>
+				  <ul>
+					  <li>In training, a sentence set uttered by the source speaker is totally different from that uttered by the target speaker as a language of the source speaker is different from that of the target speaker.
+					  <li>In conversion, the source speaker's voice in the source language is converted as if it is uttered by the target speaker while keeping linguistic contents unchanged.
+					  <li>We will also provide voices of other 6 target speakers (consisting of both female and male speakers) from fixed corpora as training data.  The source speakers are the same as in the 1st task.  Each target speaker utters another sentence set consisting of around 70 sentences in a different language; 2 target speakers utter in <u><b>Finnish</b></u>, 2 target speakers utter in <u><b>German</b></u>, and 2 target speakers utter in <u><b>Mandarin</b></u>.
+					  <li> Using these nonparallel data sets, voice conversion systems for all speaker-pair combinations (24 speaker-pairs in total) will be developed by each participant.
+				  </ul>
+		  </ul>
+
+
 	    <ul>
 	      <li>We evaluated our method on the <strong>non-parallel multi-speaker VC</strong> task.</li>
-	      <li>We used <a href="https://datashare.is.ed.ac.uk/handle/10283/3061">the Voice Conversion Challenge 2018 (VCC 2018) dataset</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#2">[2]</a> in which we selected a subset of speakers as covering all inter- and intra-gender conversions: VCC2SF1, VCC2SF2, VCC2SM1, and VCC2SM2.</li>
-	      <li>Each speaker has 81 sentences (<strong>about 5 minutes</strong>) for training. This is <strong>relatively little</strong> for VC.</li>
-	      <li>Our goal is to learn <strong>4 x 3 = 12</strong> different source-and-target mappings <strong>only using a single model</strong>.</li>	      
+			<li>To evaluete our system with <strong>StarGAN-VC</strong> We used <a href="https://datashare.is.ed.ac.uk/handle/10283/3061">the Voice Conversion Challenge 2018 (VCC 2018) dataset</a>.
+<!--			  <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#3">[2]</a> -->
+				<br>In which we selected a subset of speakers as covering all inter- and intra-gender conversions: VCC2SF1, VCC2SF2, VCC2SM1, and VCC2SM2.</li>
+	      <ul>
+			  <li>Each speaker has 81 sentences (<strong>about 5 minutes</strong>) for training. This is <strong>relatively little</strong> for VC.</li>
+		  </ul>
+	      <li>Our goal is to learn <strong>4 x 3 = 12</strong> different source-and-target mappings <strong>only using a single model</strong>.</li>
 	      <li>Note that we did <strong>not use any extra data, module, or time alignment procedures</strong> for training.</li>
 	    </ul>
 
 	    <h5>Results</h5>
 	    We summarize the results in three ways:
 	    <ul>
-	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp1">1. Comparison between StarGAN-VC and StarGAN-VC2</a></li>
-	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp2">2. One-to-multi VC using StarGAN-VC2</a></li>
-	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp3">3. Voice morphing using StarGAN-VC2</a></li>
+			<li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp1">1. 关于VCC2020比赛-<strong>同语种</strong>的部分结果展示</a></li>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp2">2. 关于VCC2020比赛-<strong>跨语种</strong>的部分结果展示</a></li>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp3">3. 和 StarGAN-VC 做基于VCC2018-Data 的性能比较</a></li>
 	    </ul>
 
 	    <p>
@@ -1168,9 +1198,9 @@
     <footer class="footer">
       <div class="container">
 	<p class="text-center"><small>
-	    <strong>StarGAN-VC2:</strong><br>
+	    <strong>URSpeakingGAN-VC:</strong><br>
 	    <strong>Rethinking Conditional Methods for StarGAN-Based Voice Conversion</strong><br>
-	    <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/index.html">Takuhiro Kaneko</a> | kaneko.takuhiro at lab.ntt.co.jp</small></p>
+	    <a href="http://www.bjfuhsj.top">Shengjie Huang</a> at IAI.SIST.BJFU</small></p>
       </div>
     </footer>
     
