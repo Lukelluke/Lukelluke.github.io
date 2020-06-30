@@ -28,31 +28,51 @@
 
 
 
-  <meta name="description" content="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="黄圣杰">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="1.模型  2.模型特点 &amp;&amp; 训练需求 大数据集 + 少数据集（target）、many-to-many（没强调） 不采用“独立模型”的思路（e.g.不根据性别来分组训练），而是先用 多说话人的大量数据集，训练 Speaker Independent (SI) WaveNet model 再用 少量Target Speaker数据进行微调； （和上一篇 三星论文 思路有点像，但">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《EFFECTIVE WAVENET ADAPTATION FOR VOICE CONVERSION WITH LIMITED DATA》">
+<meta property="og:url" content="http://yoursite.com/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/index.html">
 <meta property="og:site_name" content="黄圣杰">
-<meta property="og:description" content="description">
+<meta property="og:description" content="1.模型  2.模型特点 &amp;&amp; 训练需求 大数据集 + 少数据集（target）、many-to-many（没强调） 不采用“独立模型”的思路（e.g.不根据性别来分组训练），而是先用 多说话人的大量数据集，训练 Speaker Independent (SI) WaveNet model 再用 少量Target Speaker数据进行微调； （和上一篇 三星论文 思路有点像，但">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153546.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153718.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627162338.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627175055.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627175051.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627194348.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20200627195116.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627201313.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627204424.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627204710.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627230800.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627212421.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627225534.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627213700.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627213249.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627214950.png">
+<meta property="article:published_time" content="2020-06-27T07:16:54.000Z">
+<meta property="article:modified_time" content="2020-06-30T07:11:51.291Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="VC">
+<meta property="article:tag" content="论文阅读笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153546.png">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>黄圣杰</title>
+  <title>《EFFECTIVE WAVENET ADAPTATION FOR VOICE CONVERSION WITH LIMITED DATA》 | 黄圣杰</title>
   
 
 
@@ -84,8 +104,6 @@
 </noscript>
 
 <link rel="alternate" href="/atom.xml" title="黄圣杰" type="application/atom+xml">
-<link rel="stylesheet" href="/assets/css/APlayer.min.css" class="aplayer-style-marker">
-<script src="/assets/js/APlayer.min.js" class="aplayer-script-marker"></script>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -213,9 +231,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -231,10 +250,9 @@
       <meta itemprop="name" content="黄圣杰">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/" class="post-title-link" itemprop="url">《EFFECTIVE WAVENET ADAPTATION FOR VOICE CONVERSION WITH LIMITED DATA》</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          《EFFECTIVE WAVENET ADAPTATION FOR VOICE CONVERSION WITH LIMITED DATA》
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -273,6 +291,13 @@
               </span>
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
             </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
@@ -298,7 +323,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153546.png" alt="image-20200627153541122"></p>
+        <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153546.png" alt="image-20200627153541122"></p>
 <h1 id="1-模型"><a href="#1-模型" class="headerlink" title="1.模型"></a>1.模型</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153718.png" alt="image-20200627153716639"></p>
 <hr>
 <h1 id="2-模型特点-amp-amp-训练需求"><a href="#2-模型特点-amp-amp-训练需求" class="headerlink" title="2.模型特点 &amp;&amp; 训练需求"></a>2.模型特点 &amp;&amp; 训练需求</h1><ul>
@@ -457,739 +482,35 @@
 <li></li>
 </ul>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/VC/" rel="tag"># VC</a>
+              <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="tag"># 论文阅读笔记</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/" class="post-title-link" itemprop="url">Clion中的EOF</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-21 15:49:20 / 修改时间：16:01:29" itemprop="dateCreated datePublished" datetime="2020-06-21T15:49:20+08:00">2020-06-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>449</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
-<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
-<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
-</li>
-<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
-</li>
-</ul>
-<hr>
-<p>以上，谨此纪念C++修习结束。</p>
-<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
-<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
-<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
-<p>再把合成相关的东西学学吧，没啥学不会的。</p>
-<hr>
-<p>06_21_2020 Sunday</p>
-<p>@PT</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">关于ssh本地查看Tensorboard记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-21 15:49:20" itemprop="dateCreated datePublished" datetime="2020-06-21T15:49:20+08:00">2020-06-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-26 23:57:41" itemprop="dateModified" datetime="2020-06-26T23:57:41+08:00">2020-06-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Tensorflow/" itemprop="url" rel="index"><span itemprop="name">Tensorflow</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>471</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
-<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-cd /home/sdb3/home/hsj/taco1_tf/tacotron
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-source activate py36
-tensorboard --logdir ./logs-tacotron
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-本地浏览器打开 127.0.0.1:16006</code></pre>
-<ul>
-<li>成功实现本地查看 Tensorboard</li>
-<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
-<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
-<li>Distributions</li>
-<li>Histograms</li>
-<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/" class="post-title-link" itemprop="url">散文诗</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-16 23:43:27" itemprop="dateCreated datePublished" datetime="2020-06-16T23:43:27+08:00">2020-06-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-18 13:01:56" itemprop="dateModified" datetime="2020-06-18T13:01:56+08:00">2020-06-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%BD%9C%E5%AE%B6%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">作家计划</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <div id="aplayer-fyUnNCFL" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-fyUnNCFL"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/" class="post-title-link" itemprop="url">hexo一些基础指令备忘</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-16 23:27:28 / 修改时间：23:42:54" itemprop="dateCreated datePublished" datetime="2020-06-16T23:27:28+08:00">2020-06-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>210</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
-<li><h4 id="在hexo下创建一个新的文章"><a href="#在hexo下创建一个新的文章" class="headerlink" title="在hexo下创建一个新的文章"></a>在hexo下创建一个新的文章</h4></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-创建标签"><a href="#2-创建标签" class="headerlink" title="2. 创建标签"></a>2. 创建标签</h2><ul>
-<li>创建分类页面</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>基本设置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: </span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-创建分类"><a href="#3-创建分类" class="headerlink" title="3.创建分类"></a>3.创建分类</h2><ul>
-<li>创建分类页面</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>基本设置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: </span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
 
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/14/Voice%20Conversion%20with%20transformer%20network-samsung%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/14/Voice%20Conversion%20with%20transformer%20network-samsung%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">《Voice Conversion with transformer network-samsung》论文总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-14 20:20:58" itemprop="dateCreated datePublished" datetime="2020-06-14T20:20:58+08:00">2020-06-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-30 15:11:42" itemprop="dateModified" datetime="2020-06-30T15:11:42+08:00">2020-06-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>![image-20200617224333150](./Voice Conversion with transformer network-samsung论文总结/image-20200617224333150.png)</p>
-<hr>
-<h1 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h1><ol>
-<li>应用场景是： 一对一、平行数据</li>
-<li>不需要文本辅助</li>
-<li>适用的场景，类似于小爱同学，用于在已有的预训练的 <strong>TTS</strong> 语音合成系统，实现音色转换。</li>
-<li>技术上，以 LSTM-RNN 作为 base line 。</li>
-<li>实现上，动用了 <strong>Transformer Architecture &amp;&amp; Context Preservation and Model Adaptation in an Attentional Seq2seq VC.</strong></li>
-<li>闪光点：训练速度快了 2.72 倍（每个 step） &amp;&amp; 流畅度、相似度 比 base line 好一点</li>
-</ol>
-<hr>
-<h1 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h1><ol>
-<li>提到了一篇 2017 年的 <strong>VC 综述文章</strong>，之前没见到过，再过一遍；</li>
-<li>![image-20200617225134062](./Voice Conversion with transformer network-samsung论文总结/image-20200617225134062.png)</li>
-</ol>
-<hr>
-<h1 id="模型："><a href="#模型：" class="headerlink" title="模型："></a>模型：</h1><p>![image-20200617231000814](./Voice Conversion with transformer network-samsung论文总结/image-20200617231000814.png)</p>
-<hr>
-<ol>
-<li>介绍了一些 Attention 和 Transformer 相关背景信息，以及在语音场景的常见应用</li>
-<li>本文 用 Transformer 来进行 基于 sp 特征的 句到句的 音色转换</li>
-</ol>
-<hr>
-<h1 id="三个Loss"><a href="#三个Loss" class="headerlink" title="三个Loss"></a>三个Loss</h1><ol>
-<li>类似Transformer 的Loss</li>
-<li>额外的：在Transformer 上进行的 MultiHead 数目的调整（以此加快训练速度）</li>
-<li>![image-20200621184615655](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184615655.png)</li>
-<li>目标真实 &amp; 转换出来的目标</li>
-<li>![image-20200621184636954](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184636954.png)</li>
-<li>Attention 的损失（Guided attention）：</li>
-<li>![image-20200621184700921](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184700921.png)</li>
-<li>内容保存程度 损失： source 和 恢复预测的 source  &amp;&amp; target 和恢复预测的 target </li>
-</ol>
-<hr>
-<h1 id="学到的："><a href="#学到的：" class="headerlink" title="学到的："></a>学到的：</h1><ul>
-<li><strong>消融实验</strong>：更换单一变量：观察指标是 <strong>固定训练步数，以 正确转换的语句数目 作为衡量指标</strong></li>
-</ul>
-<hr>
-<h1 id="另一篇"><a href="#另一篇" class="headerlink" title="另一篇"></a>另一篇</h1><p><strong>（未看完）</strong></p>
-<p>![image-20200621182450382](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621182450382.png)</p>
-<ul>
-<li>谈到 WaveNet 的自适应改进，对她不够熟悉</li>
-<li></li>
-<li>另外看招聘需求大都是要做<strong>合成</strong>的，<strong>转换</strong>没有需求；</li>
-<li>所以 花点时间 跑了一下 Tacotron（源码后端是用griff-Lim），花时间 再弄懂一下代码</li>
-<li>接下来再弄懂一下 <strong>r9y9</strong> 的 <strong>WaveNET</strong> 代码</li>
-</ul>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/" class="post-title-link" itemprop="url">关于深度学习中模型矢量图的绘制、剪裁、保存 小结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-14 20:20:58 / 修改时间：21:39:53" itemprop="dateCreated datePublished" datetime="2020-06-14T20:20:58+08:00">2020-06-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%86%99%E4%BD%9C/" itemprop="url" rel="index"><span itemprop="name">写作</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>997</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
-<li>矢量图（.EPS）格式，不会失真</li>
-<li>参考文章<a href="https://www.zhihu.com/question/58540942" target="_blank" rel="noopener">知乎</a></li>
-<li>需要的工具：<a href="https://www.macwk.com/soft/adobe-acrobat-pro-dc" target="_blank" rel="noopener">Adobe Acrobat Pro DC</a> &amp;&amp; <a href="https://www.macwk.com/article/adobe-zii" target="_blank" rel="noopener">Adobe Zii 激活工具</a></li>
-</ol>
-<hr>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/" rel="prev" title="Clion中的EOF">
+      <i class="fa fa-chevron-left"></i> Clion中的EOF
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -1246,6 +567,7 @@ tensorboard --logdir ./logs-tacotron
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-模型"><span class="nav-number">1.</span> <span class="nav-text">1.模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-模型特点-amp-amp-训练需求"><span class="nav-number">2.</span> <span class="nav-text">2.模型特点 &amp;&amp; 训练需求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-改进-WaveNet-的思路"><span class="nav-number">3.</span> <span class="nav-text">3.改进 WaveNet 的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-关于PPG-amp-amp-SVD"><span class="nav-number">4.</span> <span class="nav-text">4.关于PPG &amp;&amp; SVD</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-其他"><span class="nav-number">5.</span> <span class="nav-text">5.其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#这类模型：-原本的转换流程："><span class="nav-number">5.1.</span> <span class="nav-text">* 这类模型： 原本的转换流程：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一句话——-gt-PPG特征不是直接合成出语音，而要经过转换；"><span class="nav-number">5.1.1.</span> <span class="nav-text">* 一句话——&gt;PPG特征不是直接合成出语音，而要经过转换；</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文改进的转换流程："><span class="nav-number">5.2.</span> <span class="nav-text">*本文改进的转换流程：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特征转换模型-和-语音生成模型-是分开训练的；"><span class="nav-number">5.2.1.</span> <span class="nav-text">* 特征转换模型 和 语音生成模型 是分开训练的；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#但是训练完之后，在转换步骤里，它利用（PPG）作为-本地条件-直接生成🌟时域语音信号"><span class="nav-number">5.2.2.</span> <span class="nav-text">* 但是训练完之后，在转换步骤里，它利用（PPG）作为 本地条件 直接生成🌟时域语音信号</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在第一步中："><span class="nav-number">5.3.</span> <span class="nav-text">在第一步中：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤二"><span class="nav-number">5.4.</span> <span class="nav-text">步骤二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤三："><span class="nav-number">5.5.</span> <span class="nav-text">步骤三：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以上是整体的优化方案；"><span class="nav-number">5.6.</span> <span class="nav-text">以上是整体的优化方案；</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以下还有一点：对-SI-WaveNet-结构本身再做调整："><span class="nav-number">5.7.</span> <span class="nav-text">以下还有一点：对 SI WaveNet 结构本身再做调整：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-杂项整理"><span class="nav-number">6.</span> <span class="nav-text">6.杂项整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新增一个-主观评价指标"><span class="nav-number">6.1.</span> <span class="nav-text">* 新增一个 主观评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AB-and-XAB-测试：【A-B】中选一个-【不选-A-B】-三个中选一个"><span class="nav-number">6.1.1.</span> <span class="nav-text">AB and XAB 测试：【A&#x2F;B】中选一个 &#x2F; 【不选&#x2F;A&#x2F;B】 三个中选一个</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新增一个-Objective-evaluation-客观评价指标"><span class="nav-number">6.2.</span> <span class="nav-text">* 新增一个 Objective evaluation 客观评价指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#疑问："><span class="nav-number">6.3.</span> <span class="nav-text">疑问：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-其他疑问点："><span class="nav-number">7.</span> <span class="nav-text">7.其他疑问点：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

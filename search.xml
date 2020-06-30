@@ -1,6 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Clion中的EOF</title>
+    <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
+<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
+<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
+</li>
+<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
+</li>
+</ul>
+<hr>
+<p>以上，谨此纪念C++修习结束。</p>
+<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
+<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
+<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
+<p>再把合成相关的东西学学吧，没啥学不会的。</p>
+<hr>
+<p>06_21_2020 Sunday</p>
+<p>@PT</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《Voice Conversion with transformer network-samsung》论文总结</title>
+    <url>/2020/06/14/Voice%20Conversion%20with%20transformer%20network-samsung%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>![image-20200617224333150](./Voice Conversion with transformer network-samsung论文总结/image-20200617224333150.png)</p>
+<hr>
+<h1 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h1><ol>
+<li>应用场景是： 一对一、平行数据</li>
+<li>不需要文本辅助</li>
+<li>适用的场景，类似于小爱同学，用于在已有的预训练的 <strong>TTS</strong> 语音合成系统，实现音色转换。</li>
+<li>技术上，以 LSTM-RNN 作为 base line 。</li>
+<li>实现上，动用了 <strong>Transformer Architecture &amp;&amp; Context Preservation and Model Adaptation in an Attentional Seq2seq VC.</strong></li>
+<li>闪光点：训练速度快了 2.72 倍（每个 step） &amp;&amp; 流畅度、相似度 比 base line 好一点</li>
+</ol>
+<hr>
+<h1 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h1><ol>
+<li>提到了一篇 2017 年的 <strong>VC 综述文章</strong>，之前没见到过，再过一遍；</li>
+<li>![image-20200617225134062](./Voice Conversion with transformer network-samsung论文总结/image-20200617225134062.png)</li>
+</ol>
+<hr>
+<h1 id="模型："><a href="#模型：" class="headerlink" title="模型："></a>模型：</h1><p>![image-20200617231000814](./Voice Conversion with transformer network-samsung论文总结/image-20200617231000814.png)</p>
+<hr>
+<ol>
+<li>介绍了一些 Attention 和 Transformer 相关背景信息，以及在语音场景的常见应用</li>
+<li>本文 用 Transformer 来进行 基于 sp 特征的 句到句的 音色转换</li>
+</ol>
+<hr>
+<h1 id="三个Loss"><a href="#三个Loss" class="headerlink" title="三个Loss"></a>三个Loss</h1><ol>
+<li>类似Transformer 的Loss</li>
+<li>额外的：在Transformer 上进行的 MultiHead 数目的调整（以此加快训练速度）</li>
+<li>![image-20200621184615655](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184615655.png)</li>
+<li>目标真实 &amp; 转换出来的目标</li>
+<li>![image-20200621184636954](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184636954.png)</li>
+<li>Attention 的损失（Guided attention）：</li>
+<li>![image-20200621184700921](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184700921.png)</li>
+<li>内容保存程度 损失： source 和 恢复预测的 source  &amp;&amp; target 和恢复预测的 target </li>
+</ol>
+<hr>
+<h1 id="学到的："><a href="#学到的：" class="headerlink" title="学到的："></a>学到的：</h1><ul>
+<li><strong>消融实验</strong>：更换单一变量：观察指标是 <strong>固定训练步数，以 正确转换的语句数目 作为衡量指标</strong></li>
+</ul>
+<hr>
+<h1 id="另一篇"><a href="#另一篇" class="headerlink" title="另一篇"></a>另一篇</h1><p><strong>（未看完）</strong></p>
+<p>![image-20200621182450382](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621182450382.png)</p>
+<ul>
+<li>谈到 WaveNet 的自适应改进，对她不够熟悉</li>
+<li></li>
+<li>另外看招聘需求大都是要做<strong>合成</strong>的，<strong>转换</strong>没有需求；</li>
+<li>所以 花点时间 跑了一下 Tacotron（源码后端是用griff-Lim），花时间 再弄懂一下代码</li>
+<li>接下来再弄懂一下 <strong>r9y9</strong> 的 <strong>WaveNET</strong> 代码</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+        <category>test</category>
+      </categories>
+      <tags>
+        <tag>VC</tag>
+        <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《EFFECTIVE WAVENET ADAPTATION FOR VOICE CONVERSION WITH LIMITED DATA》</title>
+    <url>/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153546.png" alt="image-20200627153541122"></p>
+<h1 id="1-模型"><a href="#1-模型" class="headerlink" title="1.模型"></a>1.模型</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153718.png" alt="image-20200627153716639"></p>
+<hr>
+<h1 id="2-模型特点-amp-amp-训练需求"><a href="#2-模型特点-amp-amp-训练需求" class="headerlink" title="2.模型特点 &amp;&amp; 训练需求"></a>2.模型特点 &amp;&amp; 训练需求</h1><ul>
+<li>大数据集 + 少数据集（target）、many-to-many（没强调）</li>
+<li>不采用“独立模型”的思路（e.g.不根据性别来分组训练），而是先用 多说话人的大量数据集，训练 <strong>Speaker Independent (SI) WaveNet model</strong></li>
+<li>再用 少量<strong>Target Speaker</strong>数据进行微调；</li>
+<li>（和上一篇 三星论文 思路有点像，但三星侧重转换模型（引入MultiHead Attention），他的 <strong>WaveNet</strong> 就用现成的；</li>
+<li>本文则 侧重后端声码器 <strong>WaveNet</strong> 的优化：<strong>速度</strong> 和 <strong>质量</strong>）</li>
+</ul>
+<hr>
+<h1 id="3-改进-WaveNet-的思路"><a href="#3-改进-WaveNet-的思路" class="headerlink" title="3.改进 WaveNet 的思路"></a>3.改进 WaveNet 的思路</h1><ul>
+<li><strong>phonetic posteriorgram (PPG)</strong> （<strong>音素后验概率</strong>）和 语音波形（时域信号） 直接映射（本来呢？）</li>
+<li><strong>🌟singular value decomposition (SVD)</strong>（<strong>奇异值分解</strong>）：减少 WaveNet 的训练参数量（<strong>重点</strong>）</li>
+<li><strong>between PPGs and the corresponding time-domain speech signals of the same speaker.</strong>：模型的预训练，是在同一个说话人的 <strong>PPG</strong> 特征 和对应的 <strong>时域信号</strong> 之间进行训练；</li>
+<li></li>
+</ul>
+<hr>
+<h1 id="4-关于PPG-amp-amp-SVD"><a href="#4-关于PPG-amp-amp-SVD" class="headerlink" title="4.关于PPG &amp;&amp; SVD"></a>4.关于PPG &amp;&amp; SVD</h1><ul>
+<li><del>PPG 有一个其他人自己写的 python 包，但是没有正规的开源工具包，很多论文都直接说用到了这个特征，却从没交代怎么提取，从哪来的。【<strong>请教老师</strong>】</del></li>
+<li><strong>在Deep VC项目里面的 Train1.py 部分，出来的就是语音的 PPG</strong>，（它是想预先训一个ASR模型）</li>
+<li>或者用Kaldi来求；</li>
+<li>本质都是，训练一个 <strong>phonetic recognition system.</strong>，然后用这个识别网络去识别（过程和识别出MFCC特征很像）；<strong>怎么 VC 领域又给牵扯到 ASR 领域去了，四不像</strong></li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627162338.png" alt="image-20200627162336086"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627175055.png" alt="image-20200627174816852"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627175051.png" alt="image-20200627175049966"></p>
+<hr>
+<h1 id="5-其他"><a href="#5-其他" class="headerlink" title="5.其他"></a>5.其他</h1><h2 id="这类模型：-原本的转换流程："><a href="#这类模型：-原本的转换流程：" class="headerlink" title="* 这类模型： 原本的转换流程："></a>* 这类模型： 原本的转换流程：</h2><h3 id="一句话——-gt-PPG特征不是直接合成出语音，而要经过转换；"><a href="#一句话——-gt-PPG特征不是直接合成出语音，而要经过转换；" class="headerlink" title="* 一句话——&gt;PPG特征不是直接合成出语音，而要经过转换；"></a>* 一句话——&gt;PPG特征不是直接合成出语音，而要经过转换；</h3><ol>
+<li>从 .wav 中提取 <strong>source</strong> 的 PPG 特征（自注：需要额外训练一个声学模型，用来提取PPG）</li>
+<li>用 “提前用大量 多说话人数据集 训练的” <strong>SI</strong> <strong>Conversion</strong> <strong>Model</strong>， 将 PPG 特征转化成 声学特征（<strong>mel ？</strong>）</li>
+<li>再将 前一步骤的声学特征，扔进 <strong>经过（用 Target 语音）适应性调整的 WavaNet 声码器</strong>，以此合成最终转换语音；</li>
+</ol>
+<hr>
+<h2 id="本文改进的转换流程："><a href="#本文改进的转换流程：" class="headerlink" title="*本文改进的转换流程："></a>*本文改进的转换流程：</h2><h3 id="特征转换模型-和-语音生成模型-是分开训练的；"><a href="#特征转换模型-和-语音生成模型-是分开训练的；" class="headerlink" title="* 特征转换模型 和 语音生成模型 是分开训练的；"></a>* 特征转换模型 和 语音生成模型 是分开训练的；</h3><h3 id="但是训练完之后，在转换步骤里，它利用（PPG）作为-本地条件-直接生成🌟时域语音信号"><a href="#但是训练完之后，在转换步骤里，它利用（PPG）作为-本地条件-直接生成🌟时域语音信号" class="headerlink" title="* 但是训练完之后，在转换步骤里，它利用（PPG）作为 本地条件 直接生成🌟时域语音信号"></a>* 但是训练完之后，在转换步骤里，它利用（PPG）作为 本地条件 <strong>直接生成🌟时域语音信号</strong></h3><p>即：输入 source 语音（提取特征后）给WaveNet 模型，然后WaveNet<strong>直接转换出来</strong> Target 语音；</p>
+<ol>
+<li><strong>SI</strong> WaveNet Conversion Model 的训练（用多说话人大数据量训练）(其实就是让WaveNet学会根据给定特征，<strong>重建出语音波形</strong>，模型的输入就是大量独立的语音，从而实现：让模型学会 <strong>与说话人无关的波形重建能力</strong>)</li>
+<li>上述模型的适应性调整 <strong>adaption</strong>（基于target语料）</li>
+<li><strong>run-time conversion</strong></li>
+</ol>
+<p>具体的，结合图片：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627194348.png" alt="image-20200627194342790"></p>
+<h2 id="在第一步中："><a href="#在第一步中：" class="headerlink" title="在第一步中："></a>在第一步中：</h2><p>五个特征【<strong>PPG、Energy、F0、V/UV、BAP</strong>】（BAP 待查）</p>
+<ol>
+<li><p>为了训练说话人无关的 SI WaveNet Conversion Model，先从多说话人的数据集中，读取 <strong>PPG</strong> 特征（另外训练的声学特征提取模型），用来表征 <strong>说话内容</strong></p>
+</li>
+<li><p><strong>Energy</strong> 用的是 <strong>梅尔倒谱</strong> 的<strong>第一维度</strong>用来表征 能量轮廓（这和我们说的 mel-cepstral 用来代表<strong>频谱图的轮廓信息</strong> 相联系）</p>
+<p><img src="/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20200627195116.png" alt="image-20200627195114177"></p>
+</li>
+<li><p><strong>F0</strong> 取 log 对树</p>
+</li>
+<li><p><strong>V/UV</strong> 用来表示 发声/不发声 的一个标志（实现的话，我想可以用 f0 来判断当前帧 有没有人声；只有发声了，f0 才大于 0 ）</p>
+</li>
+<li><p><strong>BAPs</strong> ：还没查，指向一篇 06 年日本的文章，说法是，这个特征对语音波形的 <strong>重建</strong> 很有帮助</p>
+</li>
+</ol>
+<p>这五个特征，concate 到一起，输入 SI WaveNet Conv Model 训练；</p>
+<hr>
+<h2 id="步骤二"><a href="#步骤二" class="headerlink" title="步骤二"></a>步骤二</h2><ul>
+<li>用少量的 Target 内容语音，重复上述过程；</li>
+<li>作用就是在前述的 SI 模型中，添加一点 SD（依赖于当前的 Target Speaker）</li>
+</ul>
+<hr>
+<h2 id="步骤三："><a href="#步骤三：" class="headerlink" title="步骤三："></a>步骤三：</h2><p>具体转换实现时：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627201313.png" alt="image-20200627201311810"></p>
+<ul>
+<li>转换时，输入source语音；</li>
+<li>提取该source语音的五个特征；</li>
+<li>对其中的 $logf0$ 做微调：其中 $\mu$ 表示均值，$\sigma$ 表示方差，$logf0_y$ 表示转换好的Target $ logf0 $</li>
+<li>上述$logf0_y$和其他四个 source 的特征，一起送入第二步微调完的模型，做转换；</li>
+<li>完事了；</li>
+</ul>
+<h2 id="以上是整体的优化方案；"><a href="#以上是整体的优化方案；" class="headerlink" title="以上是整体的优化方案；"></a>以上是整体的优化方案；</h2><h2 id="以下还有一点：对-SI-WaveNet-结构本身再做调整："><a href="#以下还有一点：对-SI-WaveNet-结构本身再做调整：" class="headerlink" title="以下还有一点：对 SI WaveNet 结构本身再做调整："></a>以下还有一点：对 SI WaveNet 结构本身再做调整：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627204424.png" alt="image-20200627204422535"></p>
+<ul>
+<li><p>在 2019 也是这群人，发了一篇关于 WaveNet 内部结构改造：</p>
+<ul>
+<li><strong>data-efﬁcient SD WaveNet vocoder</strong></li>
+</ul>
+</li>
+<li><p>本文则对上面的改造再做优化： <strong>SD</strong> 改造为 <strong>SVD</strong>（singular value decomposition）<strong>奇异值分解</strong></p>
+</li>
+<li><p>以期降低复杂度，减少训练参数</p>
+</li>
+<li><p>具体实现上：</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627204710.png" alt="image-20200627204708474"></p>
+</li>
+<li><p><strong>：</strong>在 每一个 <strong>扩展卷积层</strong> 后面，再加一个 <strong>1 x 1</strong> 的卷积层；</p>
+</li>
+<li><p>说是这样就能显著减少 <strong>模型参数量</strong>；</p>
+</li>
+<li><p>——&gt;训练时间减少，效果还和19年的文章效果差不多；</p>
+</li>
+</ul>
+<p><strong>Ps</strong>.（TF 当中倒是有一个单独的 SVD 工具，但是应该是针对更具体的计算公式的，和这里的 在WaveNet 模型内部优化方法不太一样？不确定？）</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627230800.png" alt="image-20200627230757346"></p>
+<hr>
+<h1 id="6-杂项整理"><a href="#6-杂项整理" class="headerlink" title="6.杂项整理"></a>6.杂项整理</h1><ul>
+<li>数据集：VC的常规数据集两个：CMU-ARCTIC  &amp;&amp;  <strong>CSTR-VCTK</strong>（跑过torch版stargan了：109人，44 h，每人三百条左右语音，都是平行数据；两个大类：16K &amp; 48K；另外还配有文本，还可以用作合成数据）</li>
+<li>本文把 VCTK 全拿来训练 SI WaveNet 了；</li>
+<li>转换步骤，用的 ARCTIC 数据集；</li>
+<li>其他一些实现细节：</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627212421.png" alt="image-20200627212417782"></li>
+<li>其他需要的作为对比的 <strong>Baseline</strong> 模型的构建参数给了挺多；不展开了；<ul>
+<li>• AMA-WORLD:</li>
+<li>• AMA-WaveNet:</li>
+<li>• WaveNet-adp:</li>
+<li>•WaveNet-SVD-adp:【本文提出的】</li>
+</ul>
+</li>
+</ul>
+<h2 id="新增一个-主观评价指标"><a href="#新增一个-主观评价指标" class="headerlink" title="* 新增一个 主观评价指标"></a>* 新增一个 主观评价指标</h2><h3 id="AB-and-XAB-测试：【A-B】中选一个-【不选-A-B】-三个中选一个"><a href="#AB-and-XAB-测试：【A-B】中选一个-【不选-A-B】-三个中选一个" class="headerlink" title="AB and XAB 测试：【A/B】中选一个 / 【不选/A/B】 三个中选一个"></a>AB and XAB 测试：【A/B】中选一个 / 【不选/A/B】 三个中选一个</h3><ul>
+<li>multiple stimuli with hidden reference and anchor (<strong>MUSHRA</strong>)</li>
+<li>“主观评估中间声音质量的方法”</li>
+<li>–：让听众在两者之间选择一个更优秀的结果；置信区间取 95%</li>
+<li></li>
+</ul>
+<h2 id="新增一个-Objective-evaluation-客观评价指标"><a href="#新增一个-Objective-evaluation-客观评价指标" class="headerlink" title="* 新增一个 Objective evaluation 客观评价指标"></a>* 新增一个 Objective evaluation 客观评价指标</h2><ul>
+<li><p><strong>RMSE</strong>（root mean squared error）：均方根误差；【单位（dB）】</p>
+</li>
+<li><p>：evaluate distortion between the target and converted speech.</p>
+</li>
+<li><p>原理和 MCD 差不多；MCD 评测的是经过 DTW 的语音 Mel 谱特征；</p>
+</li>
+<li><p>🌟<a href="https://www.w3cschool.cn/tensorflow_python/tensorflow_python-15ev2z8o.html" target="_blank" rel="noopener"><strong>Tensorflow 有对应的 API</strong></a>：</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627225534.png" alt="image-20200627225531701"></p>
+</li>
+<li><p>RMSE 他在这里处理的对象比较细致：</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627213700.png" alt="image-20200627213656629"></p>
+</li>
+<li><h2 id="疑问："><a href="#疑问：" class="headerlink" title="疑问："></a>疑问：</h2></li>
+</ul>
+<ol>
+<li><strong>frequency bin</strong>：频率槽；这个参数的 <strong>频率间隔</strong> 一般设置多少？</li>
+</ol>
+<ul>
+<li>是按照 <strong>1HZ</strong> 来分隔吗？？？</li>
+<li>【WORLD特征的帧长是 5ms（5ms frame shift）】</li>
+</ul>
+<ol start="2">
+<li>这个 <strong>magnitude</strong> 值，是直接用 <strong>当前频率的 频谱图幅值</strong> 吗？</li>
+</ol>
+<h1 id="7-其他疑问点："><a href="#7-其他疑问点：" class="headerlink" title="7.其他疑问点："></a>7.其他疑问点：</h1><ul>
+<li><ol>
+<li><strong>The speech is encoded by 8 bits µ -law.</strong> ： 8 bits µ -law 是什么规范；</li>
+</ol>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627213249.png" alt="image-20200627213248518"></p>
+</li>
+<li><ol start="2">
+<li><strong>PPG</strong> 的 <strong>具体构建网络</strong> 应该是怎么样的，有统一的代码模型吗。有点凌乱；</li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627214950.png" alt="image-20200627214947808"></p>
+</li>
+<li></li>
+</ul>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+        <category>test</category>
+      </categories>
+      <tags>
+        <tag>VC</tag>
+        <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo一些基础指令备忘</title>
     <url>/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
@@ -55,17 +317,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>第一篇</title>
-    <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
-      <categories>
-        <category>测试categories</category>
-      </categories>
-      <tags>
-        <tag>测试tags</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>test</title>
     <url>/2020/06/07/test/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
@@ -94,7 +345,7 @@
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-OTPrJxrn" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-CpfJKymX" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -151,15 +402,53 @@
       </tags>
   </entry>
   <entry>
+    <title>关于ssh本地查看Tensorboard记录</title>
+    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
+<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+cd /home/sdb3/home/hsj/taco1_tf/tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+source activate py36
+tensorboard --logdir ./logs-tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+本地浏览器打开 127.0.0.1:16006</code></pre>
+<ul>
+<li>成功实现本地查看 Tensorboard</li>
+<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
+<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
+<li>Distributions</li>
+<li>Histograms</li>
+<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
+]]></content>
+      <categories>
+        <category>Tensorflow</category>
+      </categories>
+      <tags>
+        <tag>Tensorboard，Tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-txoYcmkX" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-fyUnNCFL" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-txoYcmkX"),
+            element: document.getElementById("aplayer-fyUnNCFL"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -264,6 +553,17 @@
       </categories>
       <tags>
         <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一篇</title>
+    <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
+      <categories>
+        <category>测试categories</category>
+      </categories>
+      <tags>
+        <tag>测试tags</tag>
       </tags>
   </entry>
 </search>
