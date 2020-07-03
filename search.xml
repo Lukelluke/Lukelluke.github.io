@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
+    <url>/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-最长公共子序列："><a href="#1-最长公共子序列：" class="headerlink" title="1.最长公共子序列："></a>1.最长公共子序列：</h1><h2 id="最长公共子序列-LCS-Longest-Common-Subsequence"><a href="#最长公共子序列-LCS-Longest-Common-Subsequence" class="headerlink" title="最长公共子序列(LCS):Longest Common Subsequence"></a>最长公共子序列(LCS):<code>Longest Common Subsequence</code></h2><ul>
+<li><p>对于两个子序列 S1 和 S2，找出它们最长的公共子序列。</p>
+</li>
+<li><p>定义一个二维数组 dp 用来存储最长公共子序列的长度，其中 dp[i][j] 表示 S1 的前 i 个字符与 S2 的前 j 个字符最长公共子序列的长度。考虑 S1i 与 S2j 值是否相等，分为两种情况：</p>
+</li>
+</ul>
+<ol>
+<li>当 S1i==S2j 时，那么就能在 S1 的前 i-1 个字符与 S2 的前 j-1 个字符最长公共子序列的基础上再加上 S1i 这个值，最长公共子序列长度加 1，即 dp[i][j] = dp[i-1][j-1] + 1。</li>
+<li>当 S1i != S2j 时，此时最长公共子序列为 S1 的前 i-1 个字符和 S2 的前 j 个字符最长公共子序列，或者 S1 的前 i 个字符和 S2 的前 j-1 个字符最长公共子序列，取它们的最大者，即 dp[i][j] = max{ dp[i-1][j], dp[i][j-1] }。</li>
+<li>综上，最长公共子序列的状态转移方程为：</li>
+</ol>
+<p><img src="https://pic.leetcode-cn.com/d8555d9231c57efc399b47af4c358d43df0e45d71bc65a235479d9fb091d4af9-4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg" alt="4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg"></p>
+<ul>
+<li>对于长度为 N 的序列 S1 和长度为 M 的序列 S2，dp[N][M] 就是序列 S1 和序列 S2 的最长公共子序列长度。</li>
+</ul>
+<p>作者：bryank-3<br>链接：<a href="https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/</a><br>来源：力扣（LeetCode）<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h1 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(String text1, String text2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = text1.length(), n2 = text2.length();</span><br><span class="line">    <span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[n1 + <span class="number">1</span>][n2 + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n1; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n2; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (text1.charAt(i - <span class="number">1</span>) == text2.charAt(j - <span class="number">1</span>)) &#123;</span><br><span class="line">              dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              dp[i][j] = Math.max(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n1][n2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-几种解法："><a href="#3-几种解法：" class="headerlink" title="3.几种解法："></a>3.几种解法：</h1><ol>
+<li><h2 id="暴力递归（不用DP-Table）"><a href="#暴力递归（不用DP-Table）" class="headerlink" title="暴力递归（不用DP Table）"></a>暴力递归（不用DP Table）</h2></li>
+</ol>
+<ul>
+<li>是 <strong>从后往前</strong> 比较计数的；</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dp</span><span class="params">(i, j)</span>:</span></span><br><span class="line">        <span class="comment"># 空串的 base case</span></span><br><span class="line">        <span class="keyword">if</span> i == <span class="number">-1</span> <span class="keyword">or</span> j == <span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> str1[i] == str2[j]:</span><br><span class="line">            <span class="comment"># 这边找到一个 lcs 的元素，继续往前找</span></span><br><span class="line">            <span class="keyword">return</span> dp(i - <span class="number">1</span>, j - <span class="number">1</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 谁能让 lcs 最长，就听谁的</span></span><br><span class="line">            <span class="keyword">return</span> max(dp(i<span class="number">-1</span>, j), dp(i, j<span class="number">-1</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># i 和 j 初始化为最后一个索引</span></span><br><span class="line">    <span class="keyword">return</span> dp(len(str1)<span class="number">-1</span>, len(str2)<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-法二，借用DP-Table来记录（也可用备忘录）"><a href="#2-法二，借用DP-Table来记录（也可用备忘录）" class="headerlink" title="2. 法二，借用DP Table来记录（也可用备忘录）"></a>2. 法二，借用DP Table来记录（也可用备忘录）</h2><ul>
+<li>双层遍历：</li>
+<li>判断：当前两个字符一样吗？<ul>
+<li>一样：左斜上角空格数字（dp[i-1][i-1]） 加1;</li>
+<li>不一样：比较 <strong>上</strong> &amp;&amp; <strong>下</strong> 的最大值，取大的那一个来填充当前dp[ i ][ j ]</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    m, n = len(str1), len(str2)</span><br><span class="line">    <span class="comment"># 构建 DP table 和 base case</span></span><br><span class="line">    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(m + <span class="number">1</span>)]</span><br><span class="line">    <span class="comment"># 进行状态转移</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, m + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> str1[i - <span class="number">1</span>] == str2[j - <span class="number">1</span>]:</span><br><span class="line">                <span class="comment"># 找到一个 lcs 中的字符</span></span><br><span class="line">                dp[i][j] = <span class="number">1</span> + dp[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][j] = max(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>])</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> dp[<span class="number">-1</span>][<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-优化：用动态数组（一维数组）来解决："><a href="#3-优化：用动态数组（一维数组）来解决：" class="headerlink" title="3. 优化：用动态数组（一维数组）来解决："></a>3. 优化：用动态数组（一维数组）来解决：</h2><ol>
+<li>在利用二维dp数组记录dp[ i ][ j ]时，需要用到dp[ i-1 ][ j-1 ] (左上方),dp[ i-1 ][ j ] (上边),dp[ i ][ j-1 ] (左边)。</li>
+<li>优化为滚动数组记录dp[ j ] (dp[ i ][ j ]) 时，dp[ j-1 ] ( i-1 ) 已被更新为dp[ j-1 ]（ i ），所以需定义变量last去记录未被更新前的dp[ j-1 ]（ i-1 ）;</li>
+<li>所以计算dp[j]的当前值时，会用到last（dp[ i-1 ][ j-1 ]）、dp[ j ] (dp[ i-1 ][ j ])和dp[ j-1 ] (dp[ i ][ j-1 ]);<br><strong>注意：计算每一行的第一个元素时候，last需要初始化为0。</strong></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(string text1, string text2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=text1.size(),m=text2.size();</span><br><span class="line">				<span class="keyword">int</span> dp[m+<span class="number">1</span>],last=<span class="number">0</span>,temp;</span><br><span class="line">				fill(dp,dp+m+<span class="number">1</span>,<span class="number">0</span>);<span class="comment">//fill(数组名，起始地【包括】，结束地【不包括】，填充值)</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i,last=<span class="number">0</span>)&#123;</span><br><span class="line">						<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;++j)&#123;</span><br><span class="line">            	    temp=dp[j];</span><br><span class="line">		   						<span class="keyword">if</span>(text1[i-<span class="number">1</span>]==text2[j-<span class="number">1</span>])	dp[j]=last+<span class="number">1</span>; </span><br><span class="line">		   						<span class="keyword">else</span>	 dp[j]=max(dp[j],dp[j-<span class="number">1</span>]);</span><br><span class="line">        	  			last=temp;</span><br><span class="line">						&#125;</span><br><span class="line">        &#125;</span><br><span class="line">	<span class="keyword">return</span> dp[m];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<ul>
+<li><strong>画一下流程图你就懂了</strong>，顺着 DP Table，按着上面的代码（一维数组）推一遍：</li>
+<li><ol>
+<li>先用 <strong>temp</strong> 保存当前节点，然后更新当前节点；</li>
+<li>其中更新的时候，有两种情况：<ol>
+<li>不相等：用 <strong>左边</strong> （体现在一维数组的前一个位置）和 <strong>上面</strong>（体现在一维数组的当前位置）进行比较，取更大的值来刷新当前节点（体现在一维数组当前的位置）</li>
+<li>相等：用 <strong>last + 1</strong> ，其中 <strong>last</strong> 表征左上角（是在每一轮结束之后，把之前保存的 <strong>旧的</strong> <strong>当前位置值</strong> 给保存下来；从二位数组角度看来，就是左上角：因为 temp 下一轮已经右移，但是 last 还在上一个位置；）</li>
+</ol>
+</li>
+<li>更新完当前节点位置数据之后，用 <strong>last</strong> 把当前的节点 旧的信息保存下来，last = temp，从二位数组角度看，就像是左上角数据；</li>
+<li>然后循环1，2，3步骤</li>
+</ol>
+</li>
+<li>注意，每一行结束更新之后，要把 <strong>last</strong> 重新归零！相当于 左上角数据从零开始重新移动（默认第零行、第零列 全为零）</li>
+<li><img src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" alt="img"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>1.两数之和</title>
     <url>/2020/06/21/1.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg" alt="img"></p>
@@ -159,104 +261,29 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
   </entry>
   <entry>
     <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
-    <url>/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-最长公共子序列："><a href="#1-最长公共子序列：" class="headerlink" title="1.最长公共子序列："></a>1.最长公共子序列：</h1><h2 id="最长公共子序列-LCS-Longest-Common-Subsequence"><a href="#最长公共子序列-LCS-Longest-Common-Subsequence" class="headerlink" title="最长公共子序列(LCS):Longest Common Subsequence"></a>最长公共子序列(LCS):<code>Longest Common Subsequence</code></h2><ul>
-<li><p>对于两个子序列 S1 和 S2，找出它们最长的公共子序列。</p>
+    <url>/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&amp;&amp;%20001(%E9%80%86)/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
+<h1 id="2-类型：链表-amp-amp-栈"><a href="#2-类型：链表-amp-amp-栈" class="headerlink" title="2.类型：链表 &amp;&amp; 栈"></a>2.类型：链表 &amp;&amp; 栈</h1><p>正序的数字链表，求和时希望从个位开始算（逆序算），所以应该想到利用 <strong>栈</strong>（FILO）</p>
+<h1 id="3-与002区别："><a href="#3-与002区别：" class="headerlink" title="3.与002区别："></a>3.与002区别：</h1><ul>
+<li><p>002采用的是直接逆序存储的数字链表，所以可以直接从数字的尾巴开始求和，另外增加一个 <strong>进位标志符号</strong> 就可以；</p>
 </li>
-<li><p>定义一个二维数组 dp 用来存储最长公共子序列的长度，其中 dp[i][j] 表示 S1 的前 i 个字符与 S2 的前 j 个字符最长公共子序列的长度。考虑 S1i 与 S2j 值是否相等，分为两种情况：</p>
-</li>
-</ul>
-<ol>
-<li>当 S1i==S2j 时，那么就能在 S1 的前 i-1 个字符与 S2 的前 j-1 个字符最长公共子序列的基础上再加上 S1i 这个值，最长公共子序列长度加 1，即 dp[i][j] = dp[i-1][j-1] + 1。</li>
-<li>当 S1i != S2j 时，此时最长公共子序列为 S1 的前 i-1 个字符和 S2 的前 j 个字符最长公共子序列，或者 S1 的前 i 个字符和 S2 的前 j-1 个字符最长公共子序列，取它们的最大者，即 dp[i][j] = max{ dp[i-1][j], dp[i][j-1] }。</li>
-<li>综上，最长公共子序列的状态转移方程为：</li>
-</ol>
-<p><img src="https://pic.leetcode-cn.com/d8555d9231c57efc399b47af4c358d43df0e45d71bc65a235479d9fb091d4af9-4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg" alt="4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg"></p>
-<ul>
-<li>对于长度为 N 的序列 S1 和长度为 M 的序列 S2，dp[N][M] 就是序列 S1 和序列 S2 的最长公共子序列长度。</li>
-</ul>
-<p>作者：bryank-3<br>链接：<a href="https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/</a><br>来源：力扣（LeetCode）<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<h1 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(String text1, String text2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = text1.length(), n2 = text2.length();</span><br><span class="line">    <span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[n1 + <span class="number">1</span>][n2 + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n1; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n2; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (text1.charAt(i - <span class="number">1</span>) == text2.charAt(j - <span class="number">1</span>)) &#123;</span><br><span class="line">              dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              dp[i][j] = Math.max(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n1][n2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="3-几种解法："><a href="#3-几种解法：" class="headerlink" title="3.几种解法："></a>3.几种解法：</h1><ol>
-<li><h2 id="暴力递归（不用DP-Table）"><a href="#暴力递归（不用DP-Table）" class="headerlink" title="暴力递归（不用DP Table）"></a>暴力递归（不用DP Table）</h2></li>
-</ol>
-<ul>
-<li>是 <strong>从后往前</strong> 比较计数的；</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dp</span><span class="params">(i, j)</span>:</span></span><br><span class="line">        <span class="comment"># 空串的 base case</span></span><br><span class="line">        <span class="keyword">if</span> i == <span class="number">-1</span> <span class="keyword">or</span> j == <span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> str1[i] == str2[j]:</span><br><span class="line">            <span class="comment"># 这边找到一个 lcs 的元素，继续往前找</span></span><br><span class="line">            <span class="keyword">return</span> dp(i - <span class="number">1</span>, j - <span class="number">1</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 谁能让 lcs 最长，就听谁的</span></span><br><span class="line">            <span class="keyword">return</span> max(dp(i<span class="number">-1</span>, j), dp(i, j<span class="number">-1</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># i 和 j 初始化为最后一个索引</span></span><br><span class="line">    <span class="keyword">return</span> dp(len(str1)<span class="number">-1</span>, len(str2)<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-法二，借用DP-Table来记录（也可用备忘录）"><a href="#2-法二，借用DP-Table来记录（也可用备忘录）" class="headerlink" title="2. 法二，借用DP Table来记录（也可用备忘录）"></a>2. 法二，借用DP Table来记录（也可用备忘录）</h2><ul>
-<li>双层遍历：</li>
-<li>判断：当前两个字符一样吗？<ul>
-<li>一样：左斜上角空格数字（dp[i-1][i-1]） 加1;</li>
-<li>不一样：比较 <strong>上</strong> &amp;&amp; <strong>下</strong> 的最大值，取大的那一个来填充当前dp[ i ][ j ]</li>
 <li></li>
 </ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    m, n = len(str1), len(str2)</span><br><span class="line">    <span class="comment"># 构建 DP table 和 base case</span></span><br><span class="line">    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(m + <span class="number">1</span>)]</span><br><span class="line">    <span class="comment"># 进行状态转移</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, m + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> str1[i - <span class="number">1</span>] == str2[j - <span class="number">1</span>]:</span><br><span class="line">                <span class="comment"># 找到一个 lcs 中的字符</span></span><br><span class="line">                dp[i][j] = <span class="number">1</span> + dp[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][j] = max(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>])</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> dp[<span class="number">-1</span>][<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-优化：用动态数组（一维数组）来解决："><a href="#3-优化：用动态数组（一维数组）来解决：" class="headerlink" title="3. 优化：用动态数组（一维数组）来解决："></a>3. 优化：用动态数组（一维数组）来解决：</h2><ol>
-<li>在利用二维dp数组记录dp[ i ][ j ]时，需要用到dp[ i-1 ][ j-1 ] (左上方),dp[ i-1 ][ j ] (上边),dp[ i ][ j-1 ] (左边)。</li>
-<li>优化为滚动数组记录dp[ j ] (dp[ i ][ j ]) 时，dp[ j-1 ] ( i-1 ) 已被更新为dp[ j-1 ]（ i ），所以需定义变量last去记录未被更新前的dp[ j-1 ]（ i-1 ）;</li>
-<li>所以计算dp[j]的当前值时，会用到last（dp[ i-1 ][ j-1 ]）、dp[ j ] (dp[ i-1 ][ j ])和dp[ j-1 ] (dp[ i ][ j-1 ]);<br><strong>注意：计算每一行的第一个元素时候，last需要初始化为0。</strong></li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(string text1, string text2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=text1.size(),m=text2.size();</span><br><span class="line">				<span class="keyword">int</span> dp[m+<span class="number">1</span>],last=<span class="number">0</span>,temp;</span><br><span class="line">				fill(dp,dp+m+<span class="number">1</span>,<span class="number">0</span>);<span class="comment">//fill(数组名，起始地【包括】，结束地【不包括】，填充值)</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i,last=<span class="number">0</span>)&#123;</span><br><span class="line">						<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;++j)&#123;</span><br><span class="line">            	    temp=dp[j];</span><br><span class="line">		   						<span class="keyword">if</span>(text1[i-<span class="number">1</span>]==text2[j-<span class="number">1</span>])	dp[j]=last+<span class="number">1</span>; </span><br><span class="line">		   						<span class="keyword">else</span>	 dp[j]=max(dp[j],dp[j-<span class="number">1</span>]);</span><br><span class="line">        	  			last=temp;</span><br><span class="line">						&#125;</span><br><span class="line">        &#125;</span><br><span class="line">	<span class="keyword">return</span> dp[m];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="4-代码-Java"><a href="#4-代码-Java" class="headerlink" title="4.代码 Java"></a>4.代码 Java</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_445</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">         <span class="keyword">int</span> val;</span><br><span class="line">         ListNode next;</span><br><span class="line">         ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment">     * public class ListNode &#123;</span></span><br><span class="line"><span class="comment">     *     int val;</span></span><br><span class="line"><span class="comment">     *     ListNode next;</span></span><br><span class="line"><span class="comment">     *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment">     * &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack1.push(l1.val);</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>( l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack2.push(l2.val);</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;<span class="comment">//进位符号</span></span><br><span class="line">        ListNode head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty() || !stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = carry;</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack1.pop();</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack2.pop();</span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            node.next = head;</span><br><span class="line">            head = node;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
 <hr>
-<ul>
-<li><strong>画一下流程图你就懂了</strong>，顺着 DP Table，按着上面的代码（一维数组）推一遍：</li>
-<li><ol>
-<li>先用 <strong>temp</strong> 保存当前节点，然后更新当前节点；</li>
-<li>其中更新的时候，有两种情况：<ol>
-<li>不相等：用 <strong>左边</strong> （体现在一维数组的前一个位置）和 <strong>上面</strong>（体现在一维数组的当前位置）进行比较，取更大的值来刷新当前节点（体现在一维数组当前的位置）</li>
-<li>相等：用 <strong>last + 1</strong> ，其中 <strong>last</strong> 表征左上角（是在每一轮结束之后，把之前保存的 <strong>旧的</strong> <strong>当前位置值</strong> 给保存下来；从二位数组角度看来，就是左上角：因为 temp 下一轮已经右移，但是 last 还在上一个位置；）</li>
-</ol>
-</li>
-<li>更新完当前节点位置数据之后，用 <strong>last</strong> 把当前的节点 旧的信息保存下来，last = temp，从二位数组角度看，就像是左上角数据；</li>
-<li>然后循环1，2，3步骤</li>
-</ol>
-</li>
-<li>注意，每一行结束更新之后，要把 <strong>last</strong> 重新归零！相当于 左上角数据从零开始重新移动（默认第零行、第零列 全为零）</li>
-<li><img src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" alt="img"></li>
-</ul>
+<h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>-[Java, 算法] -[LeetCode]</category>
       </categories>
       <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
+        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
@@ -308,6 +335,41 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>LeetCode</tag>
         <tag>双指针</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>67. 二进制求和</title>
+    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
+<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
+<ul>
+<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
+<li>Java 的反转函数 reverse() 将字符串反转</li>
+<li>string.reverse（）；</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
+<li>位运算符：</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
+<li>^ : 按位抑或：不进位的加法：</li>
+</ul>
+<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
+<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
+<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
+</ul>
+<p>是个学习的机会；</p>
+<hr>
+<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
@@ -393,68 +455,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </categories>
       <tags>
         <tag>-[LeetCode] -[最长子串系列] -[滑动窗口]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>67. 二进制求和</title>
-    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
-<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
-<ul>
-<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
-<li>Java 的反转函数 reverse() 将字符串反转</li>
-<li>string.reverse（）；</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
-<li>位运算符：</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
-<li>^ : 按位抑或：不进位的加法：</li>
-</ul>
-<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
-<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
-<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
-</ul>
-<p>是个学习的机会；</p>
-<hr>
-<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
-    <url>/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&amp;&amp;%20001(%E9%80%86)/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
-<h1 id="2-类型：链表-amp-amp-栈"><a href="#2-类型：链表-amp-amp-栈" class="headerlink" title="2.类型：链表 &amp;&amp; 栈"></a>2.类型：链表 &amp;&amp; 栈</h1><p>正序的数字链表，求和时希望从个位开始算（逆序算），所以应该想到利用 <strong>栈</strong>（FILO）</p>
-<h1 id="3-与002区别："><a href="#3-与002区别：" class="headerlink" title="3.与002区别："></a>3.与002区别：</h1><ul>
-<li><p>002采用的是直接逆序存储的数字链表，所以可以直接从数字的尾巴开始求和，另外增加一个 <strong>进位标志符号</strong> 就可以；</p>
-</li>
-<li></li>
-</ul>
-<hr>
-<h1 id="4-代码-Java"><a href="#4-代码-Java" class="headerlink" title="4.代码 Java"></a>4.代码 Java</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_445</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">         <span class="keyword">int</span> val;</span><br><span class="line">         ListNode next;</span><br><span class="line">         ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment">     * public class ListNode &#123;</span></span><br><span class="line"><span class="comment">     *     int val;</span></span><br><span class="line"><span class="comment">     *     ListNode next;</span></span><br><span class="line"><span class="comment">     *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment">     * &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack1.push(l1.val);</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>( l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack2.push(l2.val);</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;<span class="comment">//进位符号</span></span><br><span class="line">        ListNode head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty() || !stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = carry;</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack1.pop();</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack2.pop();</span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            node.next = head;</span><br><span class="line">            head = node;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
@@ -567,42 +567,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
   </entry>
   <entry>
-    <title>hexo一些基础指令备忘</title>
-    <url>/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
-<li><h4 id="在hexo下创建一个新的文章"><a href="#在hexo下创建一个新的文章" class="headerlink" title="在hexo下创建一个新的文章"></a>在hexo下创建一个新的文章</h4></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-创建标签"><a href="#2-创建标签" class="headerlink" title="2. 创建标签"></a>2. 创建标签</h2><ul>
-<li>创建分类页面</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>基本设置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: </span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-创建分类"><a href="#3-创建分类" class="headerlink" title="3.创建分类"></a>3.创建分类</h2><ul>
-<li>创建分类页面</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>基本设置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: </span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>test</title>
     <url>/2020/06/07/test/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
@@ -631,7 +595,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-FiJalIml" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-wuadwcMZ" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -685,6 +649,42 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
       <tags>
         <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo一些基础指令备忘</title>
+    <url>/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
+<li><h4 id="在hexo下创建一个新的文章"><a href="#在hexo下创建一个新的文章" class="headerlink" title="在hexo下创建一个新的文章"></a>在hexo下创建一个新的文章</h4></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-创建标签"><a href="#2-创建标签" class="headerlink" title="2. 创建标签"></a>2. 创建标签</h2><ul>
+<li>创建分类页面</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基本设置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: </span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-创建分类"><a href="#3-创建分类" class="headerlink" title="3.创建分类"></a>3.创建分类</h2><ul>
+<li>创建分类页面</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基本设置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: </span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -897,6 +897,65 @@ tensorboard --logdir ./logs-tacotron
       </tags>
   </entry>
   <entry>
+    <title>散文诗</title>
+    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
+        <div id="aplayer-bPXESTvb" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-bPXESTvb"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "父亲写的散文诗",
+              author: "许飞",
+              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
+              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+
+
+<hr>
+<p>不知怎么的，每次听这首歌都会泪目</p>
+<a id="more"></a>
+
+<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
+<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
+<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
+<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
+<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
+<hr>
+<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
+<p>最年少时，希冀能改变一点点世界。</p>
+<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
+<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
+<hr>
+<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
+<p>没必要。</p>
+<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
+<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
+<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
+<p>晚安</p>
+<p>06/17/2020 凌晨</p>
+<p>@PT</p>
+<hr>
+]]></content>
+      <categories>
+        <category>作家计划</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
     <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
@@ -951,65 +1010,6 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>散文诗</title>
-    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-WCbxRaGy" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-WCbxRaGy"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-<a id="more"></a>
-
-<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
-<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
-<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
-<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
-<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
-<hr>
-<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
-<p>最年少时，希冀能改变一点点世界。</p>
-<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
-<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
-<hr>
-<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
-<p>没必要。</p>
-<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
-<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
-<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
-<p>晚安</p>
-<p>06/17/2020 凌晨</p>
-<p>@PT</p>
-<hr>
-]]></content>
-      <categories>
-        <category>作家计划</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
