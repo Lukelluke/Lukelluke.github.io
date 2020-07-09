@@ -158,30 +158,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
     <url>/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-最长公共子序列："><a href="#1-最长公共子序列：" class="headerlink" title="1.最长公共子序列："></a>1.最长公共子序列：</h1><h2 id="最长公共子序列-LCS-Longest-Common-Subsequence"><a href="#最长公共子序列-LCS-Longest-Common-Subsequence" class="headerlink" title="最长公共子序列(LCS):Longest Common Subsequence"></a>最长公共子序列(LCS):<code>Longest Common Subsequence</code></h2><ul>
@@ -257,6 +233,81 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </categories>
       <tags>
         <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>16.最接近的三数之和 &amp;&amp; 数组排序（默认升）</title>
+    <url>/2020/06/24/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&amp;&amp;%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-知识点："><a href="#1-知识点：" class="headerlink" title="1.知识点："></a>1.知识点：</h1><ul>
+<li>双指针</li>
+<li>数组排序（默认升序）；自定义降序</li>
+</ul>
+<h1 id="2-排序代码"><a href="#2-排序代码" class="headerlink" title="2.排序代码"></a>2.排序代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Java 中 实现 数组的排序</span></span><br><span class="line"><span class="comment"> * 默认是 上升序列；</span></span><br><span class="line"><span class="comment"> * 若要 下降，则默认需要 Integer 或者 Float 等 "类"类型，不能使用基础类型；</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 最接近的三数之和<span class="title">_16</span>  </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//注意，要想改变默认的排列顺序，不能使用基本类型（int,double, char）,而要使用它们对应的类</span></span><br><span class="line">        Integer[] arr = &#123;<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        <span class="comment">//定义一个自定义类MyComparator的对象</span></span><br><span class="line">      <span class="comment">//法一：实现降序；需要类型，不能是基础类型</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr,Collections.reverseOrder());</span></span><br><span class="line">      <span class="comment">//法二：实现降序</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr, (a,b) -&gt; (b - a));         </span></span><br><span class="line"></span><br><span class="line">      <span class="comment">//法三：需要自己重写 Comparator</span></span><br><span class="line">        Comparator cmp = <span class="keyword">new</span> MyComparator();      </span><br><span class="line">        Arrays.sort(arr, cmp);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : arr) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//若得到的是 int ，需要先手动转为 Integer 类型！</span></span><br><span class="line">        <span class="keyword">int</span> scores[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">89</span>,<span class="number">4</span>&#125;;</span><br><span class="line">        Integer newScores[] = <span class="keyword">new</span> Integer [<span class="number">5</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;scores.length;i++)&#123;</span><br><span class="line"><span class="comment">//            newScores[i]= new Integer(scores[i]);</span></span><br><span class="line">            newScores[i] = scores[i];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        Arrays.sort(newScores,Collections.reverseOrder());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : newScores) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现Comparator接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="comment">//作用是检查下面的方法名是不是父类中所有的，也起到注释的作用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Integer a, Integer b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &gt; b ? -<span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h2 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h2></li>
+<li><pre><code class="java">Collections.reverseOrder()
+&lt;!--￼<span class="number">1</span>--&gt;
+
+* 道理同上</code></pre>
+</li>
+<li><pre><code class="java">自己重写 Comparator
+&lt;!--￼<span class="number">2</span>--&gt;
+
+才可以实现 用 <span class="keyword">int</span> 类型直接排序（默认是升序列）</code></pre>
+</li>
+<li><p>若要降序，基本都需要 Integer 类型；</p>
+</li>
+<li><p>若是 int 基础类型，那么需要手动 转换一下类型；</p>
+</li>
+</ul>
+<hr>
+<h1 id="3-题目："><a href="#3-题目：" class="headerlink" title="3.题目："></a>3.题目：</h1><h2 id="寻找数组中三个数字之和，要求和最接近于目标数值"><a href="#寻找数组中三个数字之和，要求和最接近于目标数值" class="headerlink" title="寻找数组中三个数字之和，要求和最接近于目标数值"></a>寻找数组中三个数字之和，要求和最接近于目标数值</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183440.png" alt="image-20200624135415119"></p>
+<ul>
+<li><p>法一：暴力：O（$N^3$）</p>
+</li>
+<li><p>```java<br>//法一：暴力 O(n^3)<br> int best = 100000;<br> int diff = 100000;<br> for(int i=0;i&lt;nums.length;i++){</p>
+<pre><code>for(int j = i+1;j&lt;nums.length;j++){
+    for(int k = j+1;k&lt;nums.length;k++){
+        if(Math.abs(nums[i]+nums[j]+nums[k] - target) &lt; diff){
+            diff = Math.abs(nums[i]+nums[j]+nums[k] - target);
+            best = nums[i]+nums[j]+nums[k];
+        }
+    }
+}</code></pre><p> }<br> return best;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">* </span><br><span class="line"></span><br><span class="line">* 法二：双指针：第一个元素从头到尾遍历，二、三元素从表头、尾向中间靠拢。</span><br><span class="line"></span><br><span class="line">  * 好处是：省掉了很多没必要的不可能组合；（有点剪枝的意思了）</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class 最接近的三数之和_16 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public int threeSumClosest(int[] nums, int target)&#123;</span><br><span class="line">        Arrays.sort(nums);&#x2F;&#x2F;升序排列</span><br><span class="line">        int n &#x3D; nums.length;</span><br><span class="line">        int best &#x3D; 10001000;</span><br><span class="line"></span><br><span class="line">        for(int i &#x3D; 0;i &lt; n; i++)&#123;</span><br><span class="line">            &#x2F;&#x2F;若下一个元素和当前元素内容一样，则可以跳过；</span><br><span class="line">            &#x2F;&#x2F;continue，直接跳过当前循环，进入下一次循环；</span><br><span class="line">            if(i&gt;0 &amp;&amp; nums[i] &#x3D;&#x3D; nums[i-1])&#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;使用双指针，枚举 b 和 c；</span><br><span class="line">            int j &#x3D; i+1, k &#x3D; n-1;</span><br><span class="line">            while(j &lt; k)&#123;</span><br><span class="line">                int sum &#x3D; nums[i] + nums[j] + nums[k];</span><br><span class="line">                &#x2F;&#x2F;如果直接等于target，那么直接返回，最接近；</span><br><span class="line">                if(sum &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return target;</span><br><span class="line">                &#125;</span><br><span class="line">                if(Math.abs(sum - target) &lt; Math.abs(best - target))&#123;</span><br><span class="line">                    best &#x3D; sum;</span><br><span class="line">                &#125;</span><br><span class="line">                if(sum &gt; target)&#123;</span><br><span class="line">                    int k0 &#x3D; k - 1;</span><br><span class="line">                    &#x2F;&#x2F;开始移动 c 的指针，直到比原本的 c 值要小；</span><br><span class="line">                    &#x2F;&#x2F; 向左移动到下一个不想等的元素；</span><br><span class="line">                    while(j &lt; k0 &amp;&amp; nums[k0] &#x3D;&#x3D; nums[k])&#123;</span><br><span class="line">                        --k0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    k &#x3D; k0;  &#x2F;&#x2F; 如果发生 k &#x3D; k0 &#x3D;&#x3D; j;那么会退出现在的 while(j &lt; k)</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    &#x2F;&#x2F;如果 sum &lt; target，那么就把 b 指针向左移动；</span><br><span class="line">                    int j0 &#x3D; j+1;</span><br><span class="line">                    while(j0 &lt; k &amp;&amp; nums[j0] &#x3D;&#x3D; nums[j])&#123;</span><br><span class="line">                        ++j0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    j &#x3D; j0;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return best;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+        <tag>双指针</tag>
       </tags>
   </entry>
   <entry>
@@ -342,57 +393,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </categories>
       <tags>
         <tag>-[LeetCode] -[最长子串系列] -[滑动窗口]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>16.最接近的三数之和 &amp;&amp; 数组排序（默认升）</title>
-    <url>/2020/06/24/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&amp;&amp;%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-知识点："><a href="#1-知识点：" class="headerlink" title="1.知识点："></a>1.知识点：</h1><ul>
-<li>双指针</li>
-<li>数组排序（默认升序）；自定义降序</li>
-</ul>
-<h1 id="2-排序代码"><a href="#2-排序代码" class="headerlink" title="2.排序代码"></a>2.排序代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Java 中 实现 数组的排序</span></span><br><span class="line"><span class="comment"> * 默认是 上升序列；</span></span><br><span class="line"><span class="comment"> * 若要 下降，则默认需要 Integer 或者 Float 等 "类"类型，不能使用基础类型；</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 最接近的三数之和<span class="title">_16</span>  </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//注意，要想改变默认的排列顺序，不能使用基本类型（int,double, char）,而要使用它们对应的类</span></span><br><span class="line">        Integer[] arr = &#123;<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        <span class="comment">//定义一个自定义类MyComparator的对象</span></span><br><span class="line">      <span class="comment">//法一：实现降序；需要类型，不能是基础类型</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr,Collections.reverseOrder());</span></span><br><span class="line">      <span class="comment">//法二：实现降序</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr, (a,b) -&gt; (b - a));         </span></span><br><span class="line"></span><br><span class="line">      <span class="comment">//法三：需要自己重写 Comparator</span></span><br><span class="line">        Comparator cmp = <span class="keyword">new</span> MyComparator();      </span><br><span class="line">        Arrays.sort(arr, cmp);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : arr) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//若得到的是 int ，需要先手动转为 Integer 类型！</span></span><br><span class="line">        <span class="keyword">int</span> scores[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">89</span>,<span class="number">4</span>&#125;;</span><br><span class="line">        Integer newScores[] = <span class="keyword">new</span> Integer [<span class="number">5</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;scores.length;i++)&#123;</span><br><span class="line"><span class="comment">//            newScores[i]= new Integer(scores[i]);</span></span><br><span class="line">            newScores[i] = scores[i];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        Arrays.sort(newScores,Collections.reverseOrder());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : newScores) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现Comparator接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="comment">//作用是检查下面的方法名是不是父类中所有的，也起到注释的作用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Integer a, Integer b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &gt; b ? -<span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><h2 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h2></li>
-<li><pre><code class="java">Collections.reverseOrder()
-&lt;!--￼<span class="number">1</span>--&gt;
-
-* 道理同上</code></pre>
-</li>
-<li><pre><code class="java">自己重写 Comparator
-&lt;!--￼<span class="number">2</span>--&gt;
-
-才可以实现 用 <span class="keyword">int</span> 类型直接排序（默认是升序列）</code></pre>
-</li>
-<li><p>若要降序，基本都需要 Integer 类型；</p>
-</li>
-<li><p>若是 int 基础类型，那么需要手动 转换一下类型；</p>
-</li>
-</ul>
-<hr>
-<h1 id="3-题目："><a href="#3-题目：" class="headerlink" title="3.题目："></a>3.题目：</h1><h2 id="寻找数组中三个数字之和，要求和最接近于目标数值"><a href="#寻找数组中三个数字之和，要求和最接近于目标数值" class="headerlink" title="寻找数组中三个数字之和，要求和最接近于目标数值"></a>寻找数组中三个数字之和，要求和最接近于目标数值</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183440.png" alt="image-20200624135415119"></p>
-<ul>
-<li><p>法一：暴力：O（$N^3$）</p>
-</li>
-<li><p>```java<br>//法一：暴力 O(n^3)<br> int best = 100000;<br> int diff = 100000;<br> for(int i=0;i&lt;nums.length;i++){</p>
-<pre><code>for(int j = i+1;j&lt;nums.length;j++){
-    for(int k = j+1;k&lt;nums.length;k++){
-        if(Math.abs(nums[i]+nums[j]+nums[k] - target) &lt; diff){
-            diff = Math.abs(nums[i]+nums[j]+nums[k] - target);
-            best = nums[i]+nums[j]+nums[k];
-        }
-    }
-}</code></pre><p> }<br> return best;</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">* </span><br><span class="line"></span><br><span class="line">* 法二：双指针：第一个元素从头到尾遍历，二、三元素从表头、尾向中间靠拢。</span><br><span class="line"></span><br><span class="line">  * 好处是：省掉了很多没必要的不可能组合；（有点剪枝的意思了）</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class 最接近的三数之和_16 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public int threeSumClosest(int[] nums, int target)&#123;</span><br><span class="line">        Arrays.sort(nums);&#x2F;&#x2F;升序排列</span><br><span class="line">        int n &#x3D; nums.length;</span><br><span class="line">        int best &#x3D; 10001000;</span><br><span class="line"></span><br><span class="line">        for(int i &#x3D; 0;i &lt; n; i++)&#123;</span><br><span class="line">            &#x2F;&#x2F;若下一个元素和当前元素内容一样，则可以跳过；</span><br><span class="line">            &#x2F;&#x2F;continue，直接跳过当前循环，进入下一次循环；</span><br><span class="line">            if(i&gt;0 &amp;&amp; nums[i] &#x3D;&#x3D; nums[i-1])&#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;使用双指针，枚举 b 和 c；</span><br><span class="line">            int j &#x3D; i+1, k &#x3D; n-1;</span><br><span class="line">            while(j &lt; k)&#123;</span><br><span class="line">                int sum &#x3D; nums[i] + nums[j] + nums[k];</span><br><span class="line">                &#x2F;&#x2F;如果直接等于target，那么直接返回，最接近；</span><br><span class="line">                if(sum &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return target;</span><br><span class="line">                &#125;</span><br><span class="line">                if(Math.abs(sum - target) &lt; Math.abs(best - target))&#123;</span><br><span class="line">                    best &#x3D; sum;</span><br><span class="line">                &#125;</span><br><span class="line">                if(sum &gt; target)&#123;</span><br><span class="line">                    int k0 &#x3D; k - 1;</span><br><span class="line">                    &#x2F;&#x2F;开始移动 c 的指针，直到比原本的 c 值要小；</span><br><span class="line">                    &#x2F;&#x2F; 向左移动到下一个不想等的元素；</span><br><span class="line">                    while(j &lt; k0 &amp;&amp; nums[k0] &#x3D;&#x3D; nums[k])&#123;</span><br><span class="line">                        --k0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    k &#x3D; k0;  &#x2F;&#x2F; 如果发生 k &#x3D; k0 &#x3D;&#x3D; j;那么会退出现在的 while(j &lt; k)</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    &#x2F;&#x2F;如果 sum &lt; target，那么就把 b 指针向左移动；</span><br><span class="line">                    int j0 &#x3D; j+1;</span><br><span class="line">                    while(j0 &lt; k &amp;&amp; nums[j0] &#x3D;&#x3D; nums[j])&#123;</span><br><span class="line">                        ++j0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    j &#x3D; j0;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return best;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-        <tag>双指针</tag>
       </tags>
   </entry>
   <entry>
@@ -631,7 +631,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-eOXwemUu" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-mEsnWlBL" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -954,26 +954,15 @@ tensorboard --logdir ./logs-tacotron
       </tags>
   </entry>
   <entry>
-    <title>第一篇</title>
-    <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
-      <categories>
-        <category>测试categories</category>
-      </categories>
-      <tags>
-        <tag>测试tags</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-qgVqgYUn" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-uNUZzgQJ" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-qgVqgYUn"),
+            element: document.getElementById("aplayer-uNUZzgQJ"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -1021,6 +1010,17 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一篇</title>
+    <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
+      <categories>
+        <category>测试categories</category>
+      </categories>
+      <tags>
+        <tag>测试tags</tag>
       </tags>
   </entry>
 </search>

@@ -189,7 +189,7 @@
 	    <ul>
 			<li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp1">1. 关于VCC2020比赛-<strong>同语种</strong>的部分结果展示</a></li>
 	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp2">2. 关于VCC2020比赛-<strong>跨语种</strong>的部分结果展示</a></li>
-	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp3">3. 和 StarGAN-VC 做基于VCC2018-Data 的性能比较</a></li>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp3">3. 和 StarGAN-VC 做基于VCC2018-Data 的性能比较(To Do)</a></li>
 	    </ul>
 
 	    <p>
@@ -552,16 +552,16 @@
 	    <hr>
 
 	    <h4><a name="exp2">2</a>. Comparison between cross languages: English && ( Finnish - German - Mandarin )</h4>
-	    <p class="lead">Male (VCC2020-SEM1) → Female (Finnish-SEM1), Female (German-TFF1), or Female (Mandarin-TGF1)</p>
+	    <p class="lead">Male (VCC2020-SEM1) → Female (Finnish-TFF1), Female (German-TGF1), or Female (Mandarin-TMF1)</p>
 	    <div>
 	      <table class="table">
 		<thead>
 		  <tr>
 		    <th>Real speech</th>
 		    <th>VCC2020-SEM1</th>
-		    <th>Finnish-SEM1</th>
-		    <th>German-TFF1</th>
-		    <th>Mandarin-TGF1</th>
+		    <th>Finnish-TFF1</th>
+		    <th>German-TGF1</th>
+		    <th>Mandarin-TMF1</th>
 		  </tr>
 		</thead>
 		<tbody>
@@ -569,25 +569,25 @@
 		    <th scope="row">Reference</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/1-SEM1-source1.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/1-SEM1-source1.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/2-F10001.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/2-F10001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/2-G10001.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/2-G10001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/2-M10001.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/2-M10001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -599,10 +599,10 @@
 		<thead>
 		  <tr>
 		    <th>Converted speech</th>
-		    <th>VCC2SM1<br><small>(Source)</small></th>
-		    <th>VCC2SM2<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
-		    <th>VCC2SF1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
-		    <th>VCC2SF2<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>VCC2020-SEM1<br><small>(Source)</small></th>
+		    <th>Finnish-TFF1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>German-TGF1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>Mandarin-TMF1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
 		  </tr>
 		</thead>
 		<tbody>
@@ -610,25 +610,25 @@
 		    <th scope="row">Sample 1</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM1_30004.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM2_VCC2SM1_STARGANVC2_30004.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFF1-converted/URSpeaking%3ATFF1_SEM1_E30001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF1_VCC2SM1_STARGANVC2_30004.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGF1/URSpeaking%3ATGF1_SEM1_E30001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF2_VCC2SM1_STARGANVC2_30004.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMF1-SEM1/URSpeaking%3ATMF1_SEM1_E30001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -638,25 +638,25 @@
 		    <th scope="row">Sample 2</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM1_30005.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM2_VCC2SM1_STARGANVC2_30005.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFF1-converted/URSpeaking%3ATFF1_SEM1_E30002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF1_VCC2SM1_STARGANVC2_30005.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGF1/URSpeaking%3ATGF1_SEM1_E30002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF2_VCC2SM1_STARGANVC2_30005.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMF1-SEM1/URSpeaking%3ATMF1_SEM1_E30002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -666,25 +666,25 @@
 		    <th scope="row">Sample 3</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM1_30016.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM2_VCC2SM1_STARGANVC2_30016.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFF1-converted/URSpeaking%3ATFF1_SEM1_E30003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF1_VCC2SM1_STARGANVC2_30016.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGF1/URSpeaking%3ATGF1_SEM1_E30003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF2_VCC2SM1_STARGANVC2_30016.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMF1-SEM1/URSpeaking%3ATMF1_SEM1_E30003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -693,16 +693,16 @@
 	      </table>
 	    </div>
 
-	    <p class="lead">Female (VCC2SF1) → Female (VCC2SF2), Male (VCC2SM1), or Male (VCC2SM2)</p>
+	    <p class="lead">Male (VCC2020-SEM1) → Male (Finnish-TFM1), Male (German-TGM1), or Male (Mandarin-TMM1)</p>
 	    <div>
 	      <table class="table">
 		<thead>
 		  <tr>
 		    <th>Real speech</th>
-		    <th>VCC2SF1</th>
-		    <th>VCC2SF2</th>
-		    <th>VCC2SM1</th>
-		    <th>VCC2SM2</th>
+		    <th>VCC2020-SEM1</th>
+		    <th>Finnish-TFM1</th>
+		    <th>German-TGM1</th>
+		    <th>Mandarin-TMM1</th>
 		  </tr>
 		</thead>
 		<tbody>
@@ -710,25 +710,25 @@
 		    <th scope="row">Reference</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF1_30001.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF2_30001.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TFM1/F10001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM1_30001.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TGM1/G10001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM2_30001.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMM1/M10001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -740,10 +740,10 @@
 		<thead>
 		  <tr>
 		    <th>Converted speech</th>
-		    <th>VCC2SF1<br><small>(Source)</small></th>
-		    <th>VCC2SF2<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
-		    <th>VCC2SM1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
-		    <th>VCC2SM2<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>VCC2020-SEM1<br><small>(Source)</small></th>
+		    <th>Finnish-TFM1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>VGerman-TGM1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>Mandarin-TMM1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
 		  </tr>
 		</thead>
 		<tbody>
@@ -751,25 +751,25 @@
 		    <th scope="row">Sample 1</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF1_30011.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF2_VCC2SF1_STARGANVC2_30011.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFM1/URSpeaking%3ATFM1_SEM1_E30001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM1_VCC2SF1_STARGANVC2_30011.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGM1/URSpeaking%3ATGM1_SEM1_E30001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM2_VCC2SF1_STARGANVC2_30011.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TMM1/URSpeaking%3ATMM1_SEM1_E30001.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -779,25 +779,25 @@
 		    <th scope="row">Sample 2</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFM1/URSpeaking%3ATFM1_SEM1_E30002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM1_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGM1/URSpeaking%3ATGM1_SEM1_E30002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TMM1/URSpeaking%3ATMM1_SEM1_E30002.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -807,25 +807,25 @@
 		    <th scope="row">Sample 3</th>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF1_30013.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SF2_VCC2SF1_STARGANVC2_30013.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFM1/URSpeaking%3ATFM1_SEM1_E30003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM1_VCC2SF1_STARGANVC2_30013.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGM1/URSpeaking%3ATGM1_SEM1_E30003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
 		    <td>
 		      <audio controls="">
-			<source src="audios/VCC2SM2_VCC2SF1_STARGANVC2_30013.wav" type="audio/wav">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TMM1/URSpeaking%3ATMM1_SEM1_E30003.wav" type="audio/wav">
 			Your browser does not support the audio element.
 		      </audio>
 		    </td>
@@ -834,126 +834,126 @@
 	      </table>
 	    </div>	    	  
 
-	    <h4><a name="exp3">3</a>. Voice morphing using StarGAN-VC2</h4>
-	    <p>
-	      We morph voices between two speakers using StarGAN-VC2.<br>
-	      <strong>Our high-quality multi-domain VC framework makes it possible to conduct natural voice morphing</strong>.
-	    </p>
-	    
+	    <h4><a name="exp3">3</a>. Voice comparing between stargan-vc in VCC2018 data.（To Do）</h4>
+<!--	    <p>-->
+<!--	      We morph voices between two speakers using StarGAN-VC2.<br>-->
+<!--	      <strong>Our high-quality multi-domain VC framework makes it possible to conduct natural voice morphing</strong>.-->
+<!--	    </p>-->
+
 	    <div>
 	      <table class="table">
-		<thead>
-		  <tr>
-		    <th></th>
-		    <th>Source</th>
-		    <th>Mixture rate<br>3:1</th>
-		    <th>Mixture rate<br>1:1</th>
-		    <th>Mixture rate<br>1:3</th>
-		    <th>Target</th>
-		  </tr>
-		</thead>
+<!--		<thead>-->
+<!--		  <tr>-->
+<!--		    <th></th>-->
+<!--		    <th>Source</th>-->
+<!--		    <th>Mixture rate<br>3:1</th>-->
+<!--		    <th>Mixture rate<br>1:1</th>-->
+<!--		    <th>Mixture rate<br>1:3</th>-->
+<!--		    <th>Target</th>-->
+<!--		  </tr>-->
+<!--		</thead>-->
 		<tbody>
-		  <tr>
-		    <th scope="row">VCC2SF1<br>→VCC2SF2</th>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>		    
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SF2_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SF2_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SF2_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SF2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		  </tr>
-		  
-		  <tr>
-		    <th scope="row">VCC2SF1<br>→VCC2SM1</th>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM1_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM1_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM1_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM1_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		  </tr>
+<!--		  <tr>-->
+<!--		    <th scope="row">VCC2SF1<br>→VCC2SF2</th>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		  </tr>-->
 
-		  <tr>
-		    <th scope="row">VCC2SF1<br>→VCC2SM2</th>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM2_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM2_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM2_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		    <td>
-		      <audio controls="">
-			<source src="audios/VCC2SM2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">
-			Your browser does not support the audio element.
-		      </audio>
-		    </td>
-		  </tr>
+<!--		  <tr>-->
+<!--		    <th scope="row">VCC2SF1<br>→VCC2SM1</th>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		  </tr>-->
+
+<!--		  <tr>-->
+<!--		    <th scope="row">VCC2SF1<br>→VCC2SM2</th>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		  </tr>-->
 
 		</tbody>
 	      </table>
