@@ -217,6 +217,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+      <meta itemprop="name" content="黄圣杰">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黄圣杰">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/" class="post-title-link" itemprop="url">《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-14 20:20:58 / 修改时间：20:14:57" itemprop="dateCreated datePublished" datetime="2020-07-14T20:20:58+08:00">2020-07-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文阅读笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -248,7 +344,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-30 15:27:03" itemprop="dateModified" datetime="2020-06-30T15:27:03+08:00">2020-06-30</time>
+                <time title="修改时间：2020-07-14 20:15:17" itemprop="dateModified" datetime="2020-07-14T20:15:17+08:00">2020-07-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,164 +393,14 @@
 
       
           <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153546.png" alt="image-20200627153541122"></p>
-<h1 id="1-模型"><a href="#1-模型" class="headerlink" title="1.模型"></a>1.模型</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627153718.png" alt="image-20200627153716639"></p>
-<hr>
-<h1 id="2-模型特点-amp-amp-训练需求"><a href="#2-模型特点-amp-amp-训练需求" class="headerlink" title="2.模型特点 &amp;&amp; 训练需求"></a>2.模型特点 &amp;&amp; 训练需求</h1><ul>
-<li>大数据集 + 少数据集（target）、many-to-many（没强调）</li>
-<li>不采用“独立模型”的思路（e.g.不根据性别来分组训练），而是先用 多说话人的大量数据集，训练 <strong>Speaker Independent (SI) WaveNet model</strong></li>
-<li>再用 少量<strong>Target Speaker</strong>数据进行微调；</li>
-<li>（和上一篇 三星论文 思路有点像，但三星侧重转换模型（引入MultiHead Attention），他的 <strong>WaveNet</strong> 就用现成的；</li>
-<li>本文则 侧重后端声码器 <strong>WaveNet</strong> 的优化：<strong>速度</strong> 和 <strong>质量</strong>）</li>
-</ul>
-<hr>
-<h1 id="3-改进-WaveNet-的思路"><a href="#3-改进-WaveNet-的思路" class="headerlink" title="3.改进 WaveNet 的思路"></a>3.改进 WaveNet 的思路</h1><ul>
-<li><strong>phonetic posteriorgram (PPG)</strong> （<strong>音素后验概率</strong>）和 语音波形（时域信号） 直接映射（本来呢？）</li>
-<li><strong>🌟singular value decomposition (SVD)</strong>（<strong>奇异值分解</strong>）：减少 WaveNet 的训练参数量（<strong>重点</strong>）</li>
-<li><strong>between PPGs and the corresponding time-domain speech signals of the same speaker.</strong>：模型的预训练，是在同一个说话人的 <strong>PPG</strong> 特征 和对应的 <strong>时域信号</strong> 之间进行训练；</li>
-<li></li>
-</ul>
-<hr>
-<h1 id="4-关于PPG-amp-amp-SVD"><a href="#4-关于PPG-amp-amp-SVD" class="headerlink" title="4.关于PPG &amp;&amp; SVD"></a>4.关于PPG &amp;&amp; SVD</h1><ul>
-<li><del>PPG 有一个其他人自己写的 python 包，但是没有正规的开源工具包，很多论文都直接说用到了这个特征，却从没交代怎么提取，从哪来的。【<strong>请教老师</strong>】</del></li>
-<li><strong>在Deep VC项目里面的 Train1.py 部分，出来的就是语音的 PPG</strong>，（它是想预先训一个ASR模型）</li>
-<li>或者用Kaldi来求；</li>
-<li>本质都是，训练一个 <strong>phonetic recognition system.</strong>，然后用这个识别网络去识别（过程和识别出MFCC特征很像）；<strong>怎么 VC 领域又给牵扯到 ASR 领域去了，四不像</strong></li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627162338.png" alt="image-20200627162336086"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627175055.png" alt="image-20200627174816852"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627175051.png" alt="image-20200627175049966"></p>
-<hr>
-<h1 id="5-其他"><a href="#5-其他" class="headerlink" title="5.其他"></a>5.其他</h1><h2 id="这类模型：-原本的转换流程："><a href="#这类模型：-原本的转换流程：" class="headerlink" title="* 这类模型： 原本的转换流程："></a>* 这类模型： 原本的转换流程：</h2><h3 id="一句话——-gt-PPG特征不是直接合成出语音，而要经过转换；"><a href="#一句话——-gt-PPG特征不是直接合成出语音，而要经过转换；" class="headerlink" title="* 一句话——&gt;PPG特征不是直接合成出语音，而要经过转换；"></a>* 一句话——&gt;PPG特征不是直接合成出语音，而要经过转换；</h3><ol>
-<li>从 .wav 中提取 <strong>source</strong> 的 PPG 特征（自注：需要额外训练一个声学模型，用来提取PPG）</li>
-<li>用 “提前用大量 多说话人数据集 训练的” <strong>SI</strong> <strong>Conversion</strong> <strong>Model</strong>， 将 PPG 特征转化成 声学特征（<strong>mel ？</strong>）</li>
-<li>再将 前一步骤的声学特征，扔进 <strong>经过（用 Target 语音）适应性调整的 WavaNet 声码器</strong>，以此合成最终转换语音；</li>
-</ol>
-<hr>
-<h2 id="本文改进的转换流程："><a href="#本文改进的转换流程：" class="headerlink" title="*本文改进的转换流程："></a>*本文改进的转换流程：</h2><h3 id="特征转换模型-和-语音生成模型-是分开训练的；"><a href="#特征转换模型-和-语音生成模型-是分开训练的；" class="headerlink" title="* 特征转换模型 和 语音生成模型 是分开训练的；"></a>* 特征转换模型 和 语音生成模型 是分开训练的；</h3><h3 id="但是训练完之后，在转换步骤里，它利用（PPG）作为-本地条件-直接生成🌟时域语音信号"><a href="#但是训练完之后，在转换步骤里，它利用（PPG）作为-本地条件-直接生成🌟时域语音信号" class="headerlink" title="* 但是训练完之后，在转换步骤里，它利用（PPG）作为 本地条件 直接生成🌟时域语音信号"></a>* 但是训练完之后，在转换步骤里，它利用（PPG）作为 本地条件 <strong>直接生成🌟时域语音信号</strong></h3><p>即：输入 source 语音（提取特征后）给WaveNet 模型，然后WaveNet<strong>直接转换出来</strong> Target 语音；</p>
-<ol>
-<li><strong>SI</strong> WaveNet Conversion Model 的训练（用多说话人大数据量训练）(其实就是让WaveNet学会根据给定特征，<strong>重建出语音波形</strong>，模型的输入就是大量独立的语音，从而实现：让模型学会 <strong>与说话人无关的波形重建能力</strong>)</li>
-<li>上述模型的适应性调整 <strong>adaption</strong>（基于target语料）</li>
-<li><strong>run-time conversion</strong></li>
-</ol>
-<p>具体的，结合图片：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627194348.png" alt="image-20200627194342790"></p>
-<h2 id="在第一步中："><a href="#在第一步中：" class="headerlink" title="在第一步中："></a>在第一步中：</h2><p>五个特征【<strong>PPG、Energy、F0、V/UV、BAP</strong>】（BAP 待查）</p>
-<ol>
-<li><p>为了训练说话人无关的 SI WaveNet Conversion Model，先从多说话人的数据集中，读取 <strong>PPG</strong> 特征（另外训练的声学特征提取模型），用来表征 <strong>说话内容</strong></p>
-</li>
-<li><p><strong>Energy</strong> 用的是 <strong>梅尔倒谱</strong> 的<strong>第一维度</strong>用来表征 能量轮廓（这和我们说的 mel-cepstral 用来代表<strong>频谱图的轮廓信息</strong> 相联系）</p>
-<p><img src="/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20200627195116.png" alt="image-20200627195114177"></p>
-</li>
-<li><p><strong>F0</strong> 取 log 对树</p>
-</li>
-<li><p><strong>V/UV</strong> 用来表示 发声/不发声 的一个标志（实现的话，我想可以用 f0 来判断当前帧 有没有人声；只有发声了，f0 才大于 0 ）</p>
-</li>
-<li><p><strong>BAPs</strong> ：还没查，指向一篇 06 年日本的文章，说法是，这个特征对语音波形的 <strong>重建</strong> 很有帮助</p>
-</li>
-</ol>
-<p>这五个特征，concate 到一起，输入 SI WaveNet Conv Model 训练；</p>
-<hr>
-<h2 id="步骤二"><a href="#步骤二" class="headerlink" title="步骤二"></a>步骤二</h2><ul>
-<li>用少量的 Target 内容语音，重复上述过程；</li>
-<li>作用就是在前述的 SI 模型中，添加一点 SD（依赖于当前的 Target Speaker）</li>
-</ul>
-<hr>
-<h2 id="步骤三："><a href="#步骤三：" class="headerlink" title="步骤三："></a>步骤三：</h2><p>具体转换实现时：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627201313.png" alt="image-20200627201311810"></p>
-<ul>
-<li>转换时，输入source语音；</li>
-<li>提取该source语音的五个特征；</li>
-<li>对其中的 $logf0$ 做微调：其中 $\mu$ 表示均值，$\sigma$ 表示方差，$logf0_y$ 表示转换好的Target $ logf0 $</li>
-<li>上述$logf0_y$和其他四个 source 的特征，一起送入第二步微调完的模型，做转换；</li>
-<li>完事了；</li>
-</ul>
-<h2 id="以上是整体的优化方案；"><a href="#以上是整体的优化方案；" class="headerlink" title="以上是整体的优化方案；"></a>以上是整体的优化方案；</h2><h2 id="以下还有一点：对-SI-WaveNet-结构本身再做调整："><a href="#以下还有一点：对-SI-WaveNet-结构本身再做调整：" class="headerlink" title="以下还有一点：对 SI WaveNet 结构本身再做调整："></a>以下还有一点：对 SI WaveNet 结构本身再做调整：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627204424.png" alt="image-20200627204422535"></p>
-<ul>
-<li><p>在 2019 也是这群人，发了一篇关于 WaveNet 内部结构改造：</p>
-<ul>
-<li><strong>data-efﬁcient SD WaveNet vocoder</strong></li>
-</ul>
-</li>
-<li><p>本文则对上面的改造再做优化： <strong>SD</strong> 改造为 <strong>SVD</strong>（singular value decomposition）<strong>奇异值分解</strong></p>
-</li>
-<li><p>以期降低复杂度，减少训练参数</p>
-</li>
-<li><p>具体实现上：</p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627204710.png" alt="image-20200627204708474"></p>
-</li>
-<li><p><strong>：</strong>在 每一个 <strong>扩展卷积层</strong> 后面，再加一个 <strong>1 x 1</strong> 的卷积层；</p>
-</li>
-<li><p>说是这样就能显著减少 <strong>模型参数量</strong>；</p>
-</li>
-<li><p>——&gt;训练时间减少，效果还和19年的文章效果差不多；</p>
-</li>
-</ul>
-<p><strong>Ps</strong>.（TF 当中倒是有一个单独的 SVD 工具，但是应该是针对更具体的计算公式的，和这里的 在WaveNet 模型内部优化方法不太一样？不确定？）</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627230800.png" alt="image-20200627230757346"></p>
-<hr>
-<h1 id="6-杂项整理"><a href="#6-杂项整理" class="headerlink" title="6.杂项整理"></a>6.杂项整理</h1><ul>
-<li>数据集：VC的常规数据集两个：CMU-ARCTIC  &amp;&amp;  <strong>CSTR-VCTK</strong>（跑过torch版stargan了：109人，44 h，每人三百条左右语音，都是平行数据；两个大类：16K &amp; 48K；另外还配有文本，还可以用作合成数据）</li>
-<li>本文把 VCTK 全拿来训练 SI WaveNet 了；</li>
-<li>转换步骤，用的 ARCTIC 数据集；</li>
-<li>其他一些实现细节：</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627212421.png" alt="image-20200627212417782"></li>
-<li>其他需要的作为对比的 <strong>Baseline</strong> 模型的构建参数给了挺多；不展开了；<ul>
-<li>• AMA-WORLD:</li>
-<li>• AMA-WaveNet:</li>
-<li>• WaveNet-adp:</li>
-<li>•WaveNet-SVD-adp:【本文提出的】</li>
-</ul>
-</li>
-</ul>
-<h2 id="新增一个-主观评价指标"><a href="#新增一个-主观评价指标" class="headerlink" title="* 新增一个 主观评价指标"></a>* 新增一个 主观评价指标</h2><h3 id="AB-and-XAB-测试：【A-B】中选一个-【不选-A-B】-三个中选一个"><a href="#AB-and-XAB-测试：【A-B】中选一个-【不选-A-B】-三个中选一个" class="headerlink" title="AB and XAB 测试：【A/B】中选一个 / 【不选/A/B】 三个中选一个"></a>AB and XAB 测试：【A/B】中选一个 / 【不选/A/B】 三个中选一个</h3><ul>
-<li>multiple stimuli with hidden reference and anchor (<strong>MUSHRA</strong>)</li>
-<li>“主观评估中间声音质量的方法”</li>
-<li>–：让听众在两者之间选择一个更优秀的结果；置信区间取 95%</li>
-<li></li>
-</ul>
-<h2 id="新增一个-Objective-evaluation-客观评价指标"><a href="#新增一个-Objective-evaluation-客观评价指标" class="headerlink" title="* 新增一个 Objective evaluation 客观评价指标"></a>* 新增一个 Objective evaluation 客观评价指标</h2><ul>
-<li><p><strong>RMSE</strong>（root mean squared error）：均方根误差；【单位（dB）】</p>
-</li>
-<li><p>：evaluate distortion between the target and converted speech.</p>
-</li>
-<li><p>原理和 MCD 差不多；MCD 评测的是经过 DTW 的语音 Mel 谱特征；</p>
-</li>
-<li><p>🌟<a href="https://www.w3cschool.cn/tensorflow_python/tensorflow_python-15ev2z8o.html" target="_blank" rel="noopener"><strong>Tensorflow 有对应的 API</strong></a>：</p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627225534.png" alt="image-20200627225531701"></p>
-</li>
-<li><p>RMSE 他在这里处理的对象比较细致：</p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627213700.png" alt="image-20200627213656629"></p>
-</li>
-<li><h2 id="疑问："><a href="#疑问：" class="headerlink" title="疑问："></a>疑问：</h2></li>
-</ul>
-<ol>
-<li><strong>frequency bin</strong>：频率槽；这个参数的 <strong>频率间隔</strong> 一般设置多少？</li>
-</ol>
-<ul>
-<li>是按照 <strong>1HZ</strong> 来分隔吗？？？</li>
-<li>【WORLD特征的帧长是 5ms（5ms frame shift）】</li>
-</ul>
-<ol start="2">
-<li>这个 <strong>magnitude</strong> 值，是直接用 <strong>当前频率的 频谱图幅值</strong> 吗？</li>
-</ol>
-<h1 id="7-其他疑问点："><a href="#7-其他疑问点：" class="headerlink" title="7.其他疑问点："></a>7.其他疑问点：</h1><ul>
-<li><ol>
-<li><strong>The speech is encoded by 8 bits µ -law.</strong> ： 8 bits µ -law 是什么规范；</li>
-</ol>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627213249.png" alt="image-20200627213248518"></p>
-</li>
-<li><ol start="2">
-<li><strong>PPG</strong> 的 <strong>具体构建网络</strong> 应该是怎么样的，有统一的代码模型吗。有点凌乱；</li>
-</ol>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200627214950.png" alt="image-20200627214947808"></p>
-</li>
-<li></li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/06/27/%E3%80%8AEFFECTIVE%20WAVENET%20ADAPTATION%20FOR%20VOICE%20CONVERSION%20WITH%20LIMITED%20DATA%E3%80%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1128,116 +1074,6 @@
 <h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&&%20001(%E9%80%86)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&&%20001(%E9%80%86)/" class="post-title-link" itemprop="url">445.两数相加(顺) II && 002(逆)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-23 17:43:29" itemprop="dateCreated datePublished" datetime="2020-06-23T17:43:29+08:00">2020-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-26 18:35:12" itemprop="dateModified" datetime="2020-06-26T18:35:12+08:00">2020-06-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java-%E7%AE%97%E6%B3%95-LeetCode/" itemprop="url" rel="index"><span itemprop="name">-[Java, 算法] -[LeetCode]</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
-<h1 id="2-类型：链表-amp-amp-栈"><a href="#2-类型：链表-amp-amp-栈" class="headerlink" title="2.类型：链表 &amp;&amp; 栈"></a>2.类型：链表 &amp;&amp; 栈</h1><p>正序的数字链表，求和时希望从个位开始算（逆序算），所以应该想到利用 <strong>栈</strong>（FILO）</p>
-<h1 id="3-与002区别："><a href="#3-与002区别：" class="headerlink" title="3.与002区别："></a>3.与002区别：</h1><ul>
-<li><p>002采用的是直接逆序存储的数字链表，所以可以直接从数字的尾巴开始求和，另外增加一个 <strong>进位标志符号</strong> 就可以；</p>
-</li>
-<li></li>
-</ul>
-<hr>
-<h1 id="4-代码-Java"><a href="#4-代码-Java" class="headerlink" title="4.代码 Java"></a>4.代码 Java</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_445</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">         <span class="keyword">int</span> val;</span><br><span class="line">         ListNode next;</span><br><span class="line">         ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment">     * public class ListNode &#123;</span></span><br><span class="line"><span class="comment">     *     int val;</span></span><br><span class="line"><span class="comment">     *     ListNode next;</span></span><br><span class="line"><span class="comment">     *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment">     * &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack1.push(l1.val);</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>( l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack2.push(l2.val);</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;<span class="comment">//进位符号</span></span><br><span class="line">        ListNode head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty() || !stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = carry;</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack1.pop();</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack2.pop();</span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            node.next = head;</span><br><span class="line">            head = node;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       
