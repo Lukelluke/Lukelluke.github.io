@@ -236,6 +236,30 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
     <url>/2020/07/23/2020-07-23-%E5%85%B3%E4%BA%8E-WORLD-%E4%B8%AD-code_spectral_envelope-%E5%92%8C-MFCC-%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
@@ -352,30 +376,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>16.最接近的三数之和 &amp;&amp; 数组排序（默认升）</title>
     <url>/2020/06/24/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&amp;&amp;%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-知识点："><a href="#1-知识点：" class="headerlink" title="1.知识点："></a>1.知识点：</h1><ul>
@@ -427,6 +427,33 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
+    <url>/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&amp;&amp;%20001(%E9%80%86)/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
+<h1 id="2-类型：链表-amp-amp-栈"><a href="#2-类型：链表-amp-amp-栈" class="headerlink" title="2.类型：链表 &amp;&amp; 栈"></a>2.类型：链表 &amp;&amp; 栈</h1><p>正序的数字链表，求和时希望从个位开始算（逆序算），所以应该想到利用 <strong>栈</strong>（FILO）</p>
+<h1 id="3-与002区别："><a href="#3-与002区别：" class="headerlink" title="3.与002区别："></a>3.与002区别：</h1><ul>
+<li><p>002采用的是直接逆序存储的数字链表，所以可以直接从数字的尾巴开始求和，另外增加一个 <strong>进位标志符号</strong> 就可以；</p>
+</li>
+<li></li>
+</ul>
+<hr>
+<h1 id="4-代码-Java"><a href="#4-代码-Java" class="headerlink" title="4.代码 Java"></a>4.代码 Java</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_445</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">         <span class="keyword">int</span> val;</span><br><span class="line">         ListNode next;</span><br><span class="line">         ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment">     * public class ListNode &#123;</span></span><br><span class="line"><span class="comment">     *     int val;</span></span><br><span class="line"><span class="comment">     *     ListNode next;</span></span><br><span class="line"><span class="comment">     *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment">     * &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack1.push(l1.val);</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>( l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack2.push(l2.val);</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;<span class="comment">//进位符号</span></span><br><span class="line">        ListNode head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty() || !stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = carry;</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack1.pop();</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack2.pop();</span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            node.next = head;</span><br><span class="line">            head = node;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>67. 二进制求和</title>
     <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
@@ -462,49 +489,40 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
-    <url>/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&amp;&amp;%20001(%E9%80%86)/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
-<h1 id="2-类型：链表-amp-amp-栈"><a href="#2-类型：链表-amp-amp-栈" class="headerlink" title="2.类型：链表 &amp;&amp; 栈"></a>2.类型：链表 &amp;&amp; 栈</h1><p>正序的数字链表，求和时希望从个位开始算（逆序算），所以应该想到利用 <strong>栈</strong>（FILO）</p>
-<h1 id="3-与002区别："><a href="#3-与002区别：" class="headerlink" title="3.与002区别："></a>3.与002区别：</h1><ul>
-<li><p>002采用的是直接逆序存储的数字链表，所以可以直接从数字的尾巴开始求和，另外增加一个 <strong>进位标志符号</strong> 就可以；</p>
-</li>
-<li></li>
+    <title>hexo一些基础指令备忘</title>
+    <url>/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
+<li><h4 id="在hexo下创建一个新的文章"><a href="#在hexo下创建一个新的文章" class="headerlink" title="在hexo下创建一个新的文章"></a>在hexo下创建一个新的文章</h4></li>
 </ul>
-<hr>
-<h1 id="4-代码-Java"><a href="#4-代码-Java" class="headerlink" title="4.代码 Java"></a>4.代码 Java</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_445</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">         <span class="keyword">int</span> val;</span><br><span class="line">         ListNode next;</span><br><span class="line">         ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment">     * public class ListNode &#123;</span></span><br><span class="line"><span class="comment">     *     int val;</span></span><br><span class="line"><span class="comment">     *     ListNode next;</span></span><br><span class="line"><span class="comment">     *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment">     * &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack1.push(l1.val);</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>( l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack2.push(l2.val);</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;<span class="comment">//进位符号</span></span><br><span class="line">        ListNode head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty() || !stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = carry;</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack1.pop();</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack2.pop();</span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            node.next = head;</span><br><span class="line">            head = node;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
 
+<h2 id="2-创建标签"><a href="#2-创建标签" class="headerlink" title="2. 创建标签"></a>2. 创建标签</h2><ul>
+<li>创建分类页面</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>基本设置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: </span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
 
-<hr>
-<h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-创建分类"><a href="#3-创建分类" class="headerlink" title="3.创建分类"></a>3.创建分类</h2><ul>
+<li>创建分类页面</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基本设置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: </span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
+        <category>hexo</category>
       </categories>
       <tags>
-        <tag>LeetCode</tag>
+        <tag>hexo</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/06/07/hello-world/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>《Voice Conversion with transformer network-samsung》论文总结</title>
@@ -570,6 +588,54 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>Clion中的EOF</title>
+    <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
+<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
+<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
+</li>
+<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
+</li>
+</ul>
+<hr>
+<p>以上，谨此纪念C++修习结束。</p>
+<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
+<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
+<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
+<p>再把合成相关的东西学学吧，没啥学不会的。</p>
+<hr>
+<p>06_21_2020 Sunday</p>
+<p>@PT</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/06/07/hello-world/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>test</title>
     <url>/2020/06/07/test/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
@@ -598,7 +664,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-fyVGrDxw" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-QgipjUHx" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -652,6 +718,103 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
       <tags>
         <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于ssh本地查看Tensorboard记录</title>
+    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
+<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+cd /home/sdb3/home/hsj/taco1_tf/tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+source activate py36
+tensorboard --logdir ./logs-tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+本地浏览器打开 127.0.0.1:16006</code></pre>
+<ul>
+<li>成功实现本地查看 Tensorboard</li>
+<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
+<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
+<li>Distributions</li>
+<li>Histograms</li>
+<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
+]]></content>
+      <categories>
+        <category>Tensorflow</category>
+      </categories>
+      <tags>
+        <tag>Tensorboard，Tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>散文诗</title>
+    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
+        <div id="aplayer-lxCWlhGT" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-lxCWlhGT"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "父亲写的散文诗",
+              author: "许飞",
+              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
+              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+
+
+<hr>
+<p>不知怎么的，每次听这首歌都会泪目</p>
+<a id="more"></a>
+
+<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
+<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
+<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
+<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
+<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
+<hr>
+<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
+<p>最年少时，希冀能改变一点点世界。</p>
+<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
+<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
+<hr>
+<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
+<p>没必要。</p>
+<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
+<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
+<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
+<p>晚安</p>
+<p>06/17/2020 凌晨</p>
+<p>@PT</p>
+<hr>
+]]></content>
+      <categories>
+        <category>作家计划</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -743,39 +906,60 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>hexo一些基础指令备忘</title>
-    <url>/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
-<li><h4 id="在hexo下创建一个新的文章"><a href="#在hexo下创建一个新的文章" class="headerlink" title="在hexo下创建一个新的文章"></a>在hexo下创建一个新的文章</h4></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
+    <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
+    <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
+<li>矢量图（.EPS）格式，不会失真</li>
+<li>参考文章<a href="https://www.zhihu.com/question/58540942" target="_blank" rel="noopener">知乎</a></li>
+<li>需要的工具：<a href="https://www.macwk.com/soft/adobe-acrobat-pro-dc" target="_blank" rel="noopener">Adobe Acrobat Pro DC</a> &amp;&amp; <a href="https://www.macwk.com/article/adobe-zii" target="_blank" rel="noopener">Adobe Zii 激活工具</a></li>
+</ol>
+<hr>
+<a id="more"></a>
 
-<h2 id="2-创建标签"><a href="#2-创建标签" class="headerlink" title="2. 创建标签"></a>2. 创建标签</h2><ul>
-<li>创建分类页面</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
+<li>将画好的 PPT 模板导出成 pdf 文件格式，用 DC 打开</li>
+<li>搜索 DC 功能 <strong>裁剪</strong>，选定图像区域（去掉白边）</li>
+<li>然后打开 DC 侧边栏，选取要到处的图片所在界面，<strong>右击</strong>，<strong>提取页面</strong>，<strong>输入要导出的界面</strong> <em>（这是为了在很庞大的所有ppt页面中，单独拎出需要的页面，方便下一步的导出为 .eps 格式而服务的）</em></li>
+<li>保存这个由新选取的页面们所组成的新 PDF，然后点击：<strong>文件</strong>—&gt;<strong>另存为</strong>—&gt;<strong>内嵌式PostScript</strong> 格式</li>
+<li>Duang！就这样完成了，尽情滴放大她，也不会失真啦！</li>
+<li>Ps.如果是在 LaTex 写作中，插入图片时，可以直接选择使用 PDF 格式哦！就省去了转为 EPS 格式的过程（如果没有 DC 软件的话）</li>
+</ol>
+<hr>
+<p>最后，本博客开始正式运营，相比于之前使用庞杂、臃肿的 WorldPress，我并不需要多么复杂的后台管理功能，能让我安心地在本地快快乐乐写文字输出就ok，还没有了租服务器的额外开销（汇率提升，我的钱包实在扛不住了，太贵了）</p>
+<hr>
 <ul>
-<li>基本设置</li>
+<li>发现的一个小问题就是，插入pdf，在手机端没法查看，所以之后可以尝试用 html 形式专门做成一个界面栏目，像 VC 比赛 demo 界面那样。clone一下大神们的个人主页</li>
+<li>或者再找找看 .md 格式怎么写一个漂亮的简历</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: </span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-创建分类"><a href="#3-创建分类" class="headerlink" title="3.创建分类"></a>3.创建分类</h2><ul>
-<li>创建分类页面</li>
+<hr>
+<h1 id="找到了！！！"><a href="#找到了！！！" class="headerlink" title="找到了！！！"></a>找到了！！！</h1><ul>
+<li><a href="http://www.pdfdo.com/pdf-to-html.aspx" target="_blank" rel="noopener">pdf 转 html 文件格式</a></li>
+<li>使用方法：导入 pdf 之后，转换，点击下载（千万别直接右键保存，那样不完整！）</li>
+<li>然后本地 WebStorm 打开，在 body 标签体后面加一对 center 标签，就能全体文字 &amp; 图片居中啦！</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
+<hr>
 <ul>
-<li>基本设置</li>
+<li>另一个<a href="https://www.aconvert.com/cn/pdf/" target="_blank" rel="noopener"><strong>大全能格式转换工具网站</strong></a></li>
+<li>有一个致命缺点：转出来的 html 文件在 body 中间加入 center 之后，文字和图片会歪，很不理想，不知什么原因；</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: </span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
-
+<ul>
+<li><del><strong>原因找到了：</strong></del></li>
+<li><del>这个网站没有直接提供下载功能，先点击压缩，然后选择下载压缩文件</del></li>
+<li><del>千万别直接打开htm之后，直接右键保存，注意到直接保存的是 .htm 格式，不是 .html （这个在之前的侧边栏环节也遇到这个问题），查查什么区别。</del></li>
+<li><del>这个网站下载的很慢，还是不如上面那个网站。</del></li>
+<li>这个网站还是垃圾，下载了之后内部语法乱的一笔，只有单一的一个html文件，图片也不知道给👴整哪里去了，center 居中之后又是乱糟糟，别玩了，就用上面那个吧，太漂亮了！</li>
+</ul>
+<p>真的 OK 了，本文结束。</p>
+<p>真的结束了#2</p>
+<p>以上</p>
+<p>June / 14 / 2020</p>
+<p>@PT</p>
 ]]></content>
       <categories>
-        <category>hexo</category>
+        <category>写作</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -952,65 +1136,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>散文诗</title>
-    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-enSPuAVA" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-enSPuAVA"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-<a id="more"></a>
-
-<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
-<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
-<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
-<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
-<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
-<hr>
-<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
-<p>最年少时，希冀能改变一点点世界。</p>
-<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
-<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
-<hr>
-<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
-<p>没必要。</p>
-<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
-<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
-<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
-<p>晚安</p>
-<p>06/17/2020 凌晨</p>
-<p>@PT</p>
-<hr>
-]]></content>
-      <categories>
-        <category>作家计划</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>第一篇</title>
     <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
@@ -1019,131 +1144,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </categories>
       <tags>
         <tag>测试tags</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
-    <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
-<li>矢量图（.EPS）格式，不会失真</li>
-<li>参考文章<a href="https://www.zhihu.com/question/58540942" target="_blank" rel="noopener">知乎</a></li>
-<li>需要的工具：<a href="https://www.macwk.com/soft/adobe-acrobat-pro-dc" target="_blank" rel="noopener">Adobe Acrobat Pro DC</a> &amp;&amp; <a href="https://www.macwk.com/article/adobe-zii" target="_blank" rel="noopener">Adobe Zii 激活工具</a></li>
-</ol>
-<hr>
-<a id="more"></a>
-
-<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
-<li>将画好的 PPT 模板导出成 pdf 文件格式，用 DC 打开</li>
-<li>搜索 DC 功能 <strong>裁剪</strong>，选定图像区域（去掉白边）</li>
-<li>然后打开 DC 侧边栏，选取要到处的图片所在界面，<strong>右击</strong>，<strong>提取页面</strong>，<strong>输入要导出的界面</strong> <em>（这是为了在很庞大的所有ppt页面中，单独拎出需要的页面，方便下一步的导出为 .eps 格式而服务的）</em></li>
-<li>保存这个由新选取的页面们所组成的新 PDF，然后点击：<strong>文件</strong>—&gt;<strong>另存为</strong>—&gt;<strong>内嵌式PostScript</strong> 格式</li>
-<li>Duang！就这样完成了，尽情滴放大她，也不会失真啦！</li>
-<li>Ps.如果是在 LaTex 写作中，插入图片时，可以直接选择使用 PDF 格式哦！就省去了转为 EPS 格式的过程（如果没有 DC 软件的话）</li>
-</ol>
-<hr>
-<p>最后，本博客开始正式运营，相比于之前使用庞杂、臃肿的 WorldPress，我并不需要多么复杂的后台管理功能，能让我安心地在本地快快乐乐写文字输出就ok，还没有了租服务器的额外开销（汇率提升，我的钱包实在扛不住了，太贵了）</p>
-<hr>
-<ul>
-<li>发现的一个小问题就是，插入pdf，在手机端没法查看，所以之后可以尝试用 html 形式专门做成一个界面栏目，像 VC 比赛 demo 界面那样。clone一下大神们的个人主页</li>
-<li>或者再找找看 .md 格式怎么写一个漂亮的简历</li>
-</ul>
-<hr>
-<h1 id="找到了！！！"><a href="#找到了！！！" class="headerlink" title="找到了！！！"></a>找到了！！！</h1><ul>
-<li><a href="http://www.pdfdo.com/pdf-to-html.aspx" target="_blank" rel="noopener">pdf 转 html 文件格式</a></li>
-<li>使用方法：导入 pdf 之后，转换，点击下载（千万别直接右键保存，那样不完整！）</li>
-<li>然后本地 WebStorm 打开，在 body 标签体后面加一对 center 标签，就能全体文字 &amp; 图片居中啦！</li>
-</ul>
-<hr>
-<ul>
-<li>另一个<a href="https://www.aconvert.com/cn/pdf/" target="_blank" rel="noopener"><strong>大全能格式转换工具网站</strong></a></li>
-<li>有一个致命缺点：转出来的 html 文件在 body 中间加入 center 之后，文字和图片会歪，很不理想，不知什么原因；</li>
-</ul>
-<ul>
-<li><del><strong>原因找到了：</strong></del></li>
-<li><del>这个网站没有直接提供下载功能，先点击压缩，然后选择下载压缩文件</del></li>
-<li><del>千万别直接打开htm之后，直接右键保存，注意到直接保存的是 .htm 格式，不是 .html （这个在之前的侧边栏环节也遇到这个问题），查查什么区别。</del></li>
-<li><del>这个网站下载的很慢，还是不如上面那个网站。</del></li>
-<li>这个网站还是垃圾，下载了之后内部语法乱的一笔，只有单一的一个html文件，图片也不知道给👴整哪里去了，center 居中之后又是乱糟糟，别玩了，就用上面那个吧，太漂亮了！</li>
-</ul>
-<p>真的 OK 了，本文结束。</p>
-<p>真的结束了#2</p>
-<p>以上</p>
-<p>June / 14 / 2020</p>
-<p>@PT</p>
-]]></content>
-      <categories>
-        <category>写作</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Clion中的EOF</title>
-    <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
-<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
-<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
-</li>
-<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
-</li>
-</ul>
-<hr>
-<p>以上，谨此纪念C++修习结束。</p>
-<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
-<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
-<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
-<p>再把合成相关的东西学学吧，没啥学不会的。</p>
-<hr>
-<p>06_21_2020 Sunday</p>
-<p>@PT</p>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于ssh本地查看Tensorboard记录</title>
-    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
-<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-cd /home/sdb3/home/hsj/taco1_tf/tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-source activate py36
-tensorboard --logdir ./logs-tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-本地浏览器打开 127.0.0.1:16006</code></pre>
-<ul>
-<li>成功实现本地查看 Tensorboard</li>
-<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
-<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
-<li>Distributions</li>
-<li>Histograms</li>
-<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
-]]></content>
-      <categories>
-        <category>Tensorflow</category>
-      </categories>
-      <tags>
-        <tag>Tensorboard，Tensorflow</tag>
       </tags>
   </entry>
 </search>
