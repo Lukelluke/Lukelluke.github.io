@@ -172,6 +172,8 @@
 </ol>
 <hr>
 <p>另一种分类方法：<strong>主要分三类：正常卷积、分组卷积、深度分离卷积</strong></p>
+<a id="more"></a>
+
 <ol>
 <li><h2 id="正常卷积："><a href="#正常卷积：" class="headerlink" title="正常卷积："></a><strong>正常卷积：</strong></h2></li>
 <li><p>参数量 = cin *  $K_h$ * $K_w$ * cout</p>
@@ -683,6 +685,30 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
     <url>/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-最长公共子序列："><a href="#1-最长公共子序列：" class="headerlink" title="1.最长公共子序列："></a>1.最长公共子序列：</h1><h2 id="最长公共子序列-LCS-Longest-Common-Subsequence"><a href="#最长公共子序列-LCS-Longest-Common-Subsequence" class="headerlink" title="最长公共子序列(LCS):Longest Common Subsequence"></a>最长公共子序列(LCS):<code>Longest Common Subsequence</code></h2><ul>
@@ -753,30 +779,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <li><img src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" alt="img"></li>
 </ul>
 ]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
       <categories>
         <category>-[Java, 算法] -[LeetCode]</category>
       </categories>
@@ -1221,7 +1223,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-ewoQkAXI" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-ITNQPhgf" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -1451,39 +1453,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
-    <url>/2020/07/23/%E5%85%B3%E4%BA%8E%20WORLD%20%E4%B8%AD%20code_spectral_envelope%20%E5%92%8C%20MFCC%20%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
-<li><a href="https://github.com/mmorise/World/issues/90" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/90</a> （有人提问 WORLD 提取得到的 mel spectrum 梅尔谱和传统概念上 经过一系列stft之后还要经过“三角滤波器组”的过程区别？）</li>
-<li><a href="https://github.com/mmorise/World/issues/33" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/33</a> （r9y9 在<a href="https://github.com/mmorise" target="_blank" rel="noopener">mmorise</a>/<strong><a href="https://github.com/mmorise/World" target="_blank" rel="noopener">World</a></strong> 下提问关于 编码/解码后音色变化问题；代码bug已解决；学习一下画图和使用特点）</li>
-</ol>
-<hr>
-<a id="more"></a>
-
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ol>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200723190241.png" alt="image-20200723190240435"></p>
-</li>
-<li><p>简言之，传统论文  <a href="https://www.sp.nitech.ac.jp/~tokuda/selected_pub/pdf/conference/tokuda_icslp1994.pdf" target="_blank" rel="noopener">Mel-cepstral analysis</a> 提到的方法，也就是正常思路的经过 FFT 后再经过三角滤波器组 得到的 mel 谱，之所以需要三角滤波，可以理解为是，因为MFCC是在 <strong>频谱图</strong> 上进行的操作，所以是未经过 <strong>平滑</strong> 操作的，所以需要滤波器；</p>
-</li>
-<li><p>而WORLD，是在频谱包络上进行的操作，本身已经是顺滑过的，所以得到的 sp 特征，看似流程上没有三角滤波，但是它在使用的时候，效果和SPTK、librosa、merlin之类工具得到的 MFCC 来处理的音频效果是差不多的。</p>
-</li>
-<li><p>所以，就可以理解，很多论文的实现上，作者们在遇到：MFCC 这个特征需要时，若非论文着重强调，是可以用 <strong>code_spectral_envelope</strong> ，并取维度参数为 36 等，来表示36维度（bin）的MFCC特征的。</p>
-</li>
-</ol>
-<hr>
-<p>以上，解决了一直没人能帮我说清楚的问题疑惑。</p>
-<p>还是要多看看源码和 issue，和大佬们交流才进步的多。</p>
-<hr>
-<p>这行里，可能大佬很多，但是能真正带领小白入门的系统专家真的少。sigh。我可能适合做老师，喜欢把大家难懂的东西，娓娓道来，教会孩子们。😁</p>
-]]></content>
-      <categories>
-        <category>-[语音]</category>
-      </categories>
-      <tags>
-        <tag>语音</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结</title>
     <url>/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
@@ -1569,6 +1538,39 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
+    <url>/2020/07/23/%E5%85%B3%E4%BA%8E%20WORLD%20%E4%B8%AD%20code_spectral_envelope%20%E5%92%8C%20MFCC%20%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
+<li><a href="https://github.com/mmorise/World/issues/90" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/90</a> （有人提问 WORLD 提取得到的 mel spectrum 梅尔谱和传统概念上 经过一系列stft之后还要经过“三角滤波器组”的过程区别？）</li>
+<li><a href="https://github.com/mmorise/World/issues/33" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/33</a> （r9y9 在<a href="https://github.com/mmorise" target="_blank" rel="noopener">mmorise</a>/<strong><a href="https://github.com/mmorise/World" target="_blank" rel="noopener">World</a></strong> 下提问关于 编码/解码后音色变化问题；代码bug已解决；学习一下画图和使用特点）</li>
+</ol>
+<hr>
+<a id="more"></a>
+
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ol>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200723190241.png" alt="image-20200723190240435"></p>
+</li>
+<li><p>简言之，传统论文  <a href="https://www.sp.nitech.ac.jp/~tokuda/selected_pub/pdf/conference/tokuda_icslp1994.pdf" target="_blank" rel="noopener">Mel-cepstral analysis</a> 提到的方法，也就是正常思路的经过 FFT 后再经过三角滤波器组 得到的 mel 谱，之所以需要三角滤波，可以理解为是，因为MFCC是在 <strong>频谱图</strong> 上进行的操作，所以是未经过 <strong>平滑</strong> 操作的，所以需要滤波器；</p>
+</li>
+<li><p>而WORLD，是在频谱包络上进行的操作，本身已经是顺滑过的，所以得到的 sp 特征，看似流程上没有三角滤波，但是它在使用的时候，效果和SPTK、librosa、merlin之类工具得到的 MFCC 来处理的音频效果是差不多的。</p>
+</li>
+<li><p>所以，就可以理解，很多论文的实现上，作者们在遇到：MFCC 这个特征需要时，若非论文着重强调，是可以用 <strong>code_spectral_envelope</strong> ，并取维度参数为 36 等，来表示36维度（bin）的MFCC特征的。</p>
+</li>
+</ol>
+<hr>
+<p>以上，解决了一直没人能帮我说清楚的问题疑惑。</p>
+<p>还是要多看看源码和 issue，和大佬们交流才进步的多。</p>
+<hr>
+<p>这行里，可能大佬很多，但是能真正带领小白入门的系统专家真的少。sigh。我可能适合做老师，喜欢把大家难懂的东西，娓娓道来，教会孩子们。😁</p>
+]]></content>
+      <categories>
+        <category>-[语音]</category>
+      </categories>
+      <tags>
+        <tag>语音</tag>
       </tags>
   </entry>
   <entry>
@@ -1704,12 +1706,12 @@ tensorboard --logdir ./logs-tacotron
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-AcbdtrmA" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-qKPjuJFv" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-AcbdtrmA"),
+            element: document.getElementById("aplayer-qKPjuJFv"),
             narrow: false,
             autoplay: false,
             showlrc: false,

@@ -469,7 +469,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-21 00:39:12" itemprop="dateModified" datetime="2020-09-21T00:39:12+08:00">2020-09-21</time>
+                <time title="修改时间：2020-09-21 00:40:18" itemprop="dateModified" datetime="2020-09-21T00:40:18+08:00">2020-09-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -526,78 +526,14 @@
 </ol>
 <hr>
 <p>另一种分类方法：<strong>主要分三类：正常卷积、分组卷积、深度分离卷积</strong></p>
-<ol>
-<li><h2 id="正常卷积："><a href="#正常卷积：" class="headerlink" title="正常卷积："></a><strong>正常卷积：</strong></h2></li>
-<li><p>参数量 = cin *  $K_h$ * $K_w$ * cout</p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830111253.png" alt="常规卷积示意图"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103246.jpeg" alt="img"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103436.png" alt="img"></p>
-</li>
-<li></li>
-<li><h2 id="分组卷积示意图："><a href="#分组卷积示意图：" class="headerlink" title="分组卷积示意图："></a><strong>分组卷积示意图：</strong></h2></li>
-<li><p>参数量： (cin * $K_h$ * $K_w$* cout ) / Groups</p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830111236.png" alt="分组卷积示意图"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103353.jpeg" alt="img"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103314.png" alt="img"></p>
-</li>
-<li><pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">GroupConv</span><span class="params">(nn.Module)</span>:</span>
-  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_ch, out_ch, groups)</span>:</span>
-      super(GroupConv, self).__init__()
-      self.conv = nn.Conv2d(
-          in_channels=in_ch,
-          out_channels=out_ch,
-          kernel_size=<span class="number">3</span>,
-          stride=<span class="number">1</span>,
-          padding=<span class="number">1</span>,
-          groups=groups
-      )
-
-  <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span>
-      out = self.conv(input)
-      <span class="keyword">return</span> out
-
-</code></pre>
-</li>
-</ol>
-<pre><code># 测试
-conv = CSDN_Tem(16, 32, 4)
-print(summary(conv, (16, 64, 64), batch_size=1))
-
-********************************
-----------------------------------------------------------------
-        Layer (type)               Output Shape         Param #
-================================================================
-            Conv2d-1            [1, 32, 64, 64]           1,184
-================================================================
-Total params: 1,184
-Trainable params: 1,184
-Non-trainable params: 0
-----------------------------------------------------------------
-Input size (MB): 0.25
-Forward/backward pass size (MB): 1.00
-Params size (MB): 0.00
-Estimated Total Size (MB): 1.25
-----------------------------------------------------------------
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">13. </span><br><span class="line"></span><br><span class="line">14. </span><br><span class="line"></span><br><span class="line">15. ## [深度可分离卷积(Depthwise Separable Convolution)][https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_30793735&#x2F;article&#x2F;details&#x2F;88915612]</span><br><span class="line"></span><br><span class="line">16. 参数量： $C_&#123;in&#125;$ * $K_h$ * $K_w$ + $C_&#123;out&#125;$ * 1 * 1</span><br><span class="line"></span><br><span class="line">17. 理解上，可以看作是， 先做一次 cin &#x3D;&#x3D; cout 的 分组卷积， 并且 groups &#x3D;&#x3D; channels，即每个通道作为一组； 然后再对上述结果，做一次 **逐点卷积(Pointwise Convolution)** 实现通道数改变的，这个过程使用大小为 **Cin * 1 * 1 ** 的卷积核实现，数量为 **Cout** 个</span><br><span class="line"></span><br><span class="line">18. &#96;&#96;&#96;python</span><br><span class="line">    class DepthSepConv(nn.Module):</span><br><span class="line">        def __init__(self, in_ch, out_ch):</span><br><span class="line">            super(DepthSepConv, self).__init__()</span><br><span class="line">            self.depth_conv &#x3D; nn.Conv2d(</span><br><span class="line">                in_channels&#x3D;in_ch,</span><br><span class="line">                out_channels&#x3D;in_ch,</span><br><span class="line">                kernel_size&#x3D;3,</span><br><span class="line">                stride&#x3D;1,</span><br><span class="line">                padding&#x3D;1,</span><br><span class="line">                groups&#x3D;in_ch</span><br><span class="line">            )</span><br><span class="line">            self.point_conv &#x3D; nn.Conv2d(</span><br><span class="line">                in_channels&#x3D;in_ch,</span><br><span class="line">                out_channels&#x3D;out_ch,</span><br><span class="line">                kernel_size&#x3D;1,</span><br><span class="line">                stride&#x3D;1,</span><br><span class="line">                padding&#x3D;0,</span><br><span class="line">                groups&#x3D;1</span><br><span class="line">            )</span><br><span class="line">    </span><br><span class="line">        def forward(self, input):</span><br><span class="line">            out &#x3D; self.depth_conv(input)</span><br><span class="line">            out &#x3D; self.point_conv(out)</span><br><span class="line">            return out</span><br><span class="line">    </span><br><span class="line">          </span><br><span class="line">    # 测试</span><br><span class="line">    conv &#x3D; DepthSepConv(16, 32)</span><br><span class="line">    print(summary(conv, (16, 64, 64), batch_size&#x3D;1))</span><br><span class="line">    </span><br><span class="line">    ************************</span><br><span class="line">    ----------------------------------------------------------------</span><br><span class="line">            Layer (type)               Output Shape         Param #</span><br><span class="line">    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">                Conv2d-1            [1, 16, 64, 64]             160</span><br><span class="line">                Conv2d-2            [1, 32, 64, 64]             544</span><br><span class="line">    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">    Total params: 704</span><br><span class="line">    Trainable params: 704</span><br><span class="line">    Non-trainable params: 0</span><br><span class="line">    ----------------------------------------------------------------</span><br></pre></td></tr></table></figure></code></pre><ol start="19">
-<li></li>
-</ol>
-<hr>
-<h1 id="SELayer"><a href="#SELayer" class="headerlink" title="SELayer"></a>SELayer</h1><p><strong>Squeeze-and-Excitation Networks</strong></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153344.png" alt="image-20200830114911949"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153339.png" alt="image-20200830140039015"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>, <span class="number">64</span>, <span class="number">64</span>])</span><br><span class="line">b = <span class="number">2</span> c = <span class="number">512</span></span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">After LinearFC, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">32</span>])</span><br><span class="line">After RELU, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">32</span>])</span><br><span class="line">After LinearFC2, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">After SIGMOID, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">----------------------------------------------------------------</span><br><span class="line">        Layer (type)               Output Shape         Param <span class="comment">#</span></span><br><span class="line">================================================================</span><br><span class="line"> AdaptiveAvgPool2d<span class="number">-1</span>            [<span class="number">-1</span>, <span class="number">512</span>, <span class="number">1</span>, <span class="number">1</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-2</span>                   [<span class="number">-1</span>, <span class="number">32</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">              ReLU<span class="number">-3</span>                   [<span class="number">-1</span>, <span class="number">32</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-4</span>                  [<span class="number">-1</span>, <span class="number">512</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">           Sigmoid<span class="number">-5</span>                  [<span class="number">-1</span>, <span class="number">512</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-6</span>                   [<span class="number">-1</span>, <span class="number">32</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">              ReLU<span class="number">-7</span>                   [<span class="number">-1</span>, <span class="number">32</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-8</span>                  [<span class="number">-1</span>, <span class="number">512</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">           Sigmoid<span class="number">-9</span>                  [<span class="number">-1</span>, <span class="number">512</span>]               <span class="number">0</span></span><br><span class="line">================================================================</span><br><span class="line">Total params: <span class="number">65</span>,<span class="number">536</span></span><br><span class="line">Trainable params: <span class="number">65</span>,<span class="number">536</span></span><br><span class="line">Non-trainable params: <span class="number">0</span></span><br><span class="line">----------------------------------------------------------------</span><br><span class="line">Input size (MB): <span class="number">8.00</span></span><br><span class="line">Forward/backward <span class="keyword">pass</span> size (MB): <span class="number">0.02</span></span><br><span class="line">Params size (MB): <span class="number">0.25</span></span><br><span class="line">Estimated Total Size (MB): <span class="number">8.27</span></span><br><span class="line">----------------------------------------------------------------</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153225.png" alt="image-20200830153224613"></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/31/0830%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
