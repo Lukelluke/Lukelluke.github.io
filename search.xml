@@ -157,7 +157,7 @@
       </tags>
   </entry>
   <entry>
-    <title>0830组会分享</title>
+    <title>0830组会分享——几种卷积辨析 &amp;&amp; SELayer论文及代码实现</title>
     <url>/2020/08/31/0830%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几种卷积类型辨析"><a href="#几种卷积类型辨析" class="headerlink" title="几种卷积类型辨析"></a>几种卷积类型辨析</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conv = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">1</span>, groups=<span class="number">3</span>)</span><br><span class="line">conv.weight.data.size()</span><br><span class="line"></span><br><span class="line"><span class="comment"># output = torch.Size([6, 2, 1, 1])</span></span><br></pre></td></tr></table></figure>
 
@@ -374,6 +374,7 @@ Estimated Total Size (MB): 1.25
     <title>《EMOTIONAL VOICE CONVERSION USING MULTITASK LEARNING WITH TEXT-TO-SPEECH》</title>
     <url>/2020/09/20/0920-EMOTIONAL%20VOICE%20CONVERSION%20USING%20MULTITASK%20LEARNING%20WITH%20TEXT-TO-SPEECH/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>0920-论文总结</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200921003657.png" alt="image-20200916195211586"></p>
 <p>2020.09.20</p>
 <a id="more"></a>
 
@@ -426,7 +427,7 @@ Estimated Total Size (MB): 1.25
 </li>
 <li>本文思路：<ul>
 <li>利用 <strong>多任务学习的 TTS 模型</strong>，来帮助 VC 模型 <strong>捕获语言信息</strong>并<strong>保持训练稳定性</strong>。</li>
-<li>TTS 框架来源 tacotron（有局部的稍微改动）：（Style Encoder 也是借鉴这篇）<img src="/2020/09/20/0920-EMOTIONAL%20VOICE%20CONVERSION%20USING%20MULTITASK%20LEARNING%20WITH%20TEXT-TO-SPEECH/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20200919190911.png" alt="image-20200919190909558"></li>
+<li>TTS 框架来源 tacotron（有局部的稍微改动）：（Style Encoder 也是借鉴这篇）<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200921003719.png" alt="image-20200919190909558"></li>
 <li>VC 框架：另外并联一个 “Content Encoder”</li>
 </ul>
 </li>
@@ -1220,7 +1221,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-kBZEaRKW" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-ewoQkAXI" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -1450,6 +1451,39 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
+    <url>/2020/07/23/%E5%85%B3%E4%BA%8E%20WORLD%20%E4%B8%AD%20code_spectral_envelope%20%E5%92%8C%20MFCC%20%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
+<li><a href="https://github.com/mmorise/World/issues/90" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/90</a> （有人提问 WORLD 提取得到的 mel spectrum 梅尔谱和传统概念上 经过一系列stft之后还要经过“三角滤波器组”的过程区别？）</li>
+<li><a href="https://github.com/mmorise/World/issues/33" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/33</a> （r9y9 在<a href="https://github.com/mmorise" target="_blank" rel="noopener">mmorise</a>/<strong><a href="https://github.com/mmorise/World" target="_blank" rel="noopener">World</a></strong> 下提问关于 编码/解码后音色变化问题；代码bug已解决；学习一下画图和使用特点）</li>
+</ol>
+<hr>
+<a id="more"></a>
+
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ol>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200723190241.png" alt="image-20200723190240435"></p>
+</li>
+<li><p>简言之，传统论文  <a href="https://www.sp.nitech.ac.jp/~tokuda/selected_pub/pdf/conference/tokuda_icslp1994.pdf" target="_blank" rel="noopener">Mel-cepstral analysis</a> 提到的方法，也就是正常思路的经过 FFT 后再经过三角滤波器组 得到的 mel 谱，之所以需要三角滤波，可以理解为是，因为MFCC是在 <strong>频谱图</strong> 上进行的操作，所以是未经过 <strong>平滑</strong> 操作的，所以需要滤波器；</p>
+</li>
+<li><p>而WORLD，是在频谱包络上进行的操作，本身已经是顺滑过的，所以得到的 sp 特征，看似流程上没有三角滤波，但是它在使用的时候，效果和SPTK、librosa、merlin之类工具得到的 MFCC 来处理的音频效果是差不多的。</p>
+</li>
+<li><p>所以，就可以理解，很多论文的实现上，作者们在遇到：MFCC 这个特征需要时，若非论文着重强调，是可以用 <strong>code_spectral_envelope</strong> ，并取维度参数为 36 等，来表示36维度（bin）的MFCC特征的。</p>
+</li>
+</ol>
+<hr>
+<p>以上，解决了一直没人能帮我说清楚的问题疑惑。</p>
+<p>还是要多看看源码和 issue，和大佬们交流才进步的多。</p>
+<hr>
+<p>这行里，可能大佬很多，但是能真正带领小白入门的系统专家真的少。sigh。我可能适合做老师，喜欢把大家难懂的东西，娓娓道来，教会孩子们。😁</p>
+]]></content>
+      <categories>
+        <category>-[语音]</category>
+      </categories>
+      <tags>
+        <tag>语音</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结</title>
     <url>/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
@@ -1572,39 +1606,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
-    <url>/2020/07/23/%E5%85%B3%E4%BA%8E%20WORLD%20%E4%B8%AD%20code_spectral_envelope%20%E5%92%8C%20MFCC%20%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
-<li><a href="https://github.com/mmorise/World/issues/90" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/90</a> （有人提问 WORLD 提取得到的 mel spectrum 梅尔谱和传统概念上 经过一系列stft之后还要经过“三角滤波器组”的过程区别？）</li>
-<li><a href="https://github.com/mmorise/World/issues/33" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/33</a> （r9y9 在<a href="https://github.com/mmorise" target="_blank" rel="noopener">mmorise</a>/<strong><a href="https://github.com/mmorise/World" target="_blank" rel="noopener">World</a></strong> 下提问关于 编码/解码后音色变化问题；代码bug已解决；学习一下画图和使用特点）</li>
-</ol>
-<hr>
-<a id="more"></a>
-
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ol>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200723190241.png" alt="image-20200723190240435"></p>
-</li>
-<li><p>简言之，传统论文  <a href="https://www.sp.nitech.ac.jp/~tokuda/selected_pub/pdf/conference/tokuda_icslp1994.pdf" target="_blank" rel="noopener">Mel-cepstral analysis</a> 提到的方法，也就是正常思路的经过 FFT 后再经过三角滤波器组 得到的 mel 谱，之所以需要三角滤波，可以理解为是，因为MFCC是在 <strong>频谱图</strong> 上进行的操作，所以是未经过 <strong>平滑</strong> 操作的，所以需要滤波器；</p>
-</li>
-<li><p>而WORLD，是在频谱包络上进行的操作，本身已经是顺滑过的，所以得到的 sp 特征，看似流程上没有三角滤波，但是它在使用的时候，效果和SPTK、librosa、merlin之类工具得到的 MFCC 来处理的音频效果是差不多的。</p>
-</li>
-<li><p>所以，就可以理解，很多论文的实现上，作者们在遇到：MFCC 这个特征需要时，若非论文着重强调，是可以用 <strong>code_spectral_envelope</strong> ，并取维度参数为 36 等，来表示36维度（bin）的MFCC特征的。</p>
-</li>
-</ol>
-<hr>
-<p>以上，解决了一直没人能帮我说清楚的问题疑惑。</p>
-<p>还是要多看看源码和 issue，和大佬们交流才进步的多。</p>
-<hr>
-<p>这行里，可能大佬很多，但是能真正带领小白入门的系统专家真的少。sigh。我可能适合做老师，喜欢把大家难懂的东西，娓娓道来，教会孩子们。😁</p>
-]]></content>
-      <categories>
-        <category>-[语音]</category>
-      </categories>
-      <tags>
-        <tag>语音</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于ssh本地查看Tensorboard记录</title>
     <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
@@ -1640,65 +1641,6 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>Tensorboard，Tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>散文诗</title>
-    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-ItQZeLxi" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-ItQZeLxi"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-<a id="more"></a>
-
-<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
-<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
-<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
-<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
-<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
-<hr>
-<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
-<p>最年少时，希冀能改变一点点世界。</p>
-<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
-<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
-<hr>
-<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
-<p>没必要。</p>
-<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
-<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
-<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
-<p>晚安</p>
-<p>06/17/2020 凌晨</p>
-<p>@PT</p>
-<hr>
-]]></content>
-      <categories>
-        <category>作家计划</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -1756,6 +1698,65 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>散文诗</title>
+    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
+        <div id="aplayer-AcbdtrmA" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-AcbdtrmA"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "父亲写的散文诗",
+              author: "许飞",
+              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
+              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+
+
+<hr>
+<p>不知怎么的，每次听这首歌都会泪目</p>
+<a id="more"></a>
+
+<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
+<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
+<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
+<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
+<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
+<hr>
+<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
+<p>最年少时，希冀能改变一点点世界。</p>
+<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
+<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
+<hr>
+<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
+<p>没必要。</p>
+<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
+<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
+<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
+<p>晚安</p>
+<p>06/17/2020 凌晨</p>
+<p>@PT</p>
+<hr>
+]]></content>
+      <categories>
+        <category>作家计划</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
