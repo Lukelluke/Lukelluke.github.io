@@ -174,6 +174,12 @@
 <p>另一种分类方法：<strong>主要分三类：正常卷积、分组卷积、深度分离卷积</strong></p>
 <a id="more"></a>
 
+<!--more-->
+
+
+
+
+
 <ol>
 <li><h2 id="正常卷积："><a href="#正常卷积：" class="headerlink" title="正常卷积："></a><strong>正常卷积：</strong></h2></li>
 <li><p>参数量 = cin *  $K_h$ * $K_w$ * cout</p>
@@ -685,30 +691,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
     <url>/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-最长公共子序列："><a href="#1-最长公共子序列：" class="headerlink" title="1.最长公共子序列："></a>1.最长公共子序列：</h1><h2 id="最长公共子序列-LCS-Longest-Common-Subsequence"><a href="#最长公共子序列-LCS-Longest-Common-Subsequence" class="headerlink" title="最长公共子序列(LCS):Longest Common Subsequence"></a>最长公共子序列(LCS):<code>Longest Common Subsequence</code></h2><ul>
@@ -779,6 +761,30 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <li><img src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" alt="img"></li>
 </ul>
 ]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
       <categories>
         <category>-[Java, 算法] -[LeetCode]</category>
       </categories>
@@ -1223,7 +1229,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-ITNQPhgf" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-EUBwxMbe" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -1574,40 +1580,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
-    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
-
-<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
-<ul>
-<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
-<ul>
-<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
-</li>
-<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
-</li>
-<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
-</li>
-</ul>
-<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>-[语音]</category>
-      </categories>
-      <tags>
-        <tag>语音</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于ssh本地查看Tensorboard记录</title>
     <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
@@ -1643,6 +1615,40 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>Tensorboard，Tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
+    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
+
+<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
+<ul>
+<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
+<ul>
+<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
+</li>
+<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
+</li>
+<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
+</li>
+</ul>
+<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[语音]</category>
+      </categories>
+      <tags>
+        <tag>语音</tag>
       </tags>
   </entry>
   <entry>
@@ -1706,12 +1712,12 @@ tensorboard --logdir ./logs-tacotron
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-qKPjuJFv" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-ullCvzUj" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-qKPjuJFv"),
+            element: document.getElementById("aplayer-ullCvzUj"),
             narrow: false,
             autoplay: false,
             showlrc: false,
