@@ -1,0 +1,271 @@
+sup {
+	position: relative;
+	top: -0.4em;
+	vertical-align: baseline;
+}
+sub {
+	position: relative;
+	top: 0.4em;
+	vertical-align: baseline;
+}
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+@media screen and (min-device-pixel-ratio:0), (-webkit-min-device-pixel-ratio:0), (min--moz-device-pixel-ratio: 0) { .view { font-size:10em; transform:scale(0.1); -moz-transform:scale(0.1); -webkit-transform:scale(0.1); -moz-transform-origin:top left; -webkit-transform-origin:top left; } }
+.layer { }.ie { font-size: 1pt; }
+.ie body { font-size: 12em; }
+.stl_01 {
+	position: absolute;
+	white-space: nowrap;
+}
+.stl_02 {
+	height: 70.16666em;
+	font-size: 1em;
+	margin: 0em;
+	line-height: 0.0em;
+	display: block;
+	border-style: none;
+	width: 49.58333em;
+}
+.stl_03 {
+	position: relative;
+}
+.stl_04 {
+	position: absolute;
+	left: 0em;
+	top: 0em;
+}
+.stl_05 {
+	position: relative;
+	width: 49.58333em;
+}
+.stl_06 {
+	height: 7.016666em;
+}
+.ie .stl_06 {
+	height: 70.16666em;
+}
+@font-face {
+	font-family:"QFSWVM+MicrosoftYaHei-Bold";
+	src:url("ae70dac3-0001-0000-0000-000000000000.woff") format("woff");
+}
+.stl_07 {
+	font-size: 1.416667em;
+	font-family: "QFSWVM+MicrosoftYaHei-Bold", "Times New Roman";
+	color: #000000;
+}
+.stl_08 {
+	line-height: 1.319824em;
+}
+.stl_09 {
+	letter-spacing: 0.0377em;
+}
+
+.ie .stl_09 {
+	letter-spacing: 0.8542px;
+}
+@font-face {
+	font-family:"EIRNTH+MicrosoftYaHei";
+	src:url("4681d513-0000-0000-0000-000000000000.woff") format("woff");
+}
+.stl_10 {
+	font-size: 0.916667em;
+	font-family: "EIRNTH+MicrosoftYaHei", "Times New Roman";
+	color: #000000;
+}
+.stl_11 {
+	letter-spacing: 0em;
+}
+
+.ie .stl_11 {
+	letter-spacing: 0px;
+}
+.stl_12 {
+	letter-spacing: 0.0507em;
+}
+
+.ie .stl_12 {
+	letter-spacing: 0.743px;
+}
+.stl_13 {
+	letter-spacing: 0.059em;
+}
+
+.ie .stl_13 {
+	letter-spacing: 0.865px;
+}
+.stl_14 {
+	font-size: 1em;
+	font-family: "QFSWVM+MicrosoftYaHei-Bold", "Times New Roman";
+	color: #000000;
+}
+.stl_15 {
+	letter-spacing: 0.0534em;
+}
+
+.ie .stl_15 {
+	letter-spacing: 0.8542px;
+}
+.stl_16 {
+	font-size: 0.916667em;
+	font-family: "QFSWVM+MicrosoftYaHei-Bold", "Times New Roman";
+	color: #000000;
+}
+.stl_17 {
+	letter-spacing: 0.0582em;
+}
+
+.ie .stl_17 {
+	letter-spacing: 0.8542px;
+}
+.stl_18 {
+	letter-spacing: 0.0269em;
+}
+
+.ie .stl_18 {
+	letter-spacing: 0.3941px;
+}
+.stl_19 {
+	letter-spacing: 0.0573em;
+}
+
+.ie .stl_19 {
+	letter-spacing: 0.8398px;
+}
+.stl_20 {
+	letter-spacing: 0.0462em;
+}
+
+.ie .stl_20 {
+	letter-spacing: 0.6778px;
+}
+.stl_21 {
+	letter-spacing: 0.0497em;
+}
+
+.ie .stl_21 {
+	letter-spacing: 0.729px;
+}
+.stl_22 {
+	letter-spacing: 0.0544em;
+}
+
+.ie .stl_22 {
+	letter-spacing: 0.7975px;
+}
+.stl_23 {
+	letter-spacing: 0.0469em;
+}
+
+.ie .stl_23 {
+	letter-spacing: 0.6881px;
+}
+.stl_24 {
+	letter-spacing: 0.0641em;
+}
+
+.ie .stl_24 {
+	letter-spacing: 0.9408px;
+}
+.stl_25 {
+	letter-spacing: 0.06em;
+}
+
+.ie .stl_25 {
+	letter-spacing: 0.8793px;
+}
+.stl_26 {
+	letter-spacing: 0.0521em;
+}
+
+.ie .stl_26 {
+	letter-spacing: 0.7648px;
+}
+.stl_27 {
+	font-size: 0.916667em;
+	font-family: "EIRNTH+MicrosoftYaHei", "Times New Roman";
+	color: #0000EE;
+}
+.stl_28 {
+	letter-spacing: 0.0479em;
+}
+
+.ie .stl_28 {
+	letter-spacing: 0.7023px;
+}
+.stl_29 {
+	letter-spacing: 0.0578em;
+}
+
+.ie .stl_29 {
+	letter-spacing: 0.8483px;
+}
+.stl_30 {
+	letter-spacing: 0.0576em;
+}
+
+.ie .stl_30 {
+	letter-spacing: 0.8442px;
+}
+.stl_31 {
+	letter-spacing: 0.0538em;
+}
+
+.ie .stl_31 {
+	letter-spacing: 0.7884px;
+}
+.stl_32 {
+	letter-spacing: 0.0488em;
+}
+
+.ie .stl_32 {
+	letter-spacing: 0.7163px;
+}
+.stl_33 {
+	letter-spacing: 0.0467em;
+}
+
+.ie .stl_33 {
+	letter-spacing: 0.6844px;
+}
+.stl_34 {
+	letter-spacing: 0.0482em;
+}
+
+.ie .stl_34 {
+	letter-spacing: 0.7075px;
+}
+.stl_35 {
+	letter-spacing: 0.0579em;
+}
+
+.ie .stl_35 {
+	letter-spacing: 0.849px;
+}
+.stl_36 {
+	letter-spacing: 0.0525em;
+}
+
+.ie .stl_36 {
+	letter-spacing: 0.7706px;
+}
+.stl_37 {
+	letter-spacing: 0.0594em;
+}
+
+.ie .stl_37 {
+	letter-spacing: 0.8708px;
+}
+.stl_38 {
+	letter-spacing: 0.04em;
+}
+
+.ie .stl_38 {
+	letter-spacing: 0.5872px;
+}
+.stl_39 {
+	letter-spacing: 0.0548em;
+}
+
+.ie .stl_39 {
+	letter-spacing: 0.8035px;
+}
