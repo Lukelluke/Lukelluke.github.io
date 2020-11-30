@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+      
+  <!--pjax：防止跳转页面音乐暂停-->
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script> 
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-simple.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+  <meta name="description" content="参考文章 问题来源：Kaldi librispeech example：数据预处理脚本文件：path &#x3D; kaldi&#x2F;egs&#x2F;librispeech&#x2F;s5&#x2F;local&#x2F;da ta_prep.sh 1234567891011121314151617181920212223242526272829303132333435363738394041# 双重for循环#第一层循环，按说话人for reade">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell_find命令备忘小结">
+<meta property="og:url" content="http://yoursite.com/2020/11/27/Shell_find%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%B0%8F%E7%BB%93/index.html">
+<meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="参考文章 问题来源：Kaldi librispeech example：数据预处理脚本文件：path &#x3D; kaldi&#x2F;egs&#x2F;librispeech&#x2F;s5&#x2F;local&#x2F;da ta_prep.sh 1234567891011121314151617181920212223242526272829303132333435363738394041# 双重for循环#第一层循环，按说话人for reade">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-27T05:20:47.426Z">
+<meta property="article:modified_time" content="2020-11-29T02:07:48.514Z">
+<meta property="article:author" content="黄圣杰">
+<meta property="article:tag" content="-[Shell] -[Kaldi]">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/27/Shell_find%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%B0%8F%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Shell_find命令备忘小结 | 黄圣杰</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="黄圣杰" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">黄圣杰</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">bjfuhsj.top</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/CV" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about-cat">
+
+    <a href="/ZONE/" rel="section"><i class="fa fa-fw fa-user"></i>about-cat</a>
+
+  </li>
+        <li class="menu-item menu-item-vcc2020-challenge">
+
+    <a href="/stargan" rel="section"><i class="fa fa-fw fa-picture-o"></i>VCC2020-Challenge</a>
+
+  </li>
+        <li class="menu-item menu-item-热榜">
+
+    <a href="/%E7%83%AD%E6%A6%9C" rel="section"><i class="fa fa-fw fa-fighter-jet"></i>热榜</a>
+
+  </li>
+        <li class="menu-item menu-item-随机数游戏工具">
+
+    <a href="/rolling-number-master" rel="section"><i class="fa fa-fw fa-gamepad"></i>随机数游戏工具</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/27/Shell_find%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%B0%8F%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+      <meta itemprop="name" content="黄圣杰">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黄圣杰">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Shell_find命令备忘小结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-27 13:20:47" itemprop="dateCreated datePublished" datetime="2020-11-27T13:20:47+08:00">2020-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-29 10:07:48" itemprop="dateModified" datetime="2020-11-29T10:07:48+08:00">2020-11-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kaldi-Shell/" itemprop="url" rel="index"><span itemprop="name">-[Kaldi] -[Shell]</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id><a href="#" class="headerlink" title></a></h2><p><a href="https://www.cnblogs.com/huyuanblog/p/10136286.html" target="_blank" rel="noopener">参考文章</a></p>
+<h2 id="问题来源：Kaldi-librispeech-example：数据预处理脚本文件："><a href="#问题来源：Kaldi-librispeech-example：数据预处理脚本文件：" class="headerlink" title="问题来源：Kaldi librispeech example：数据预处理脚本文件："></a>问题来源：<strong>Kaldi</strong> librispeech example：数据预处理脚本文件：</h2><p><strong>path = kaldi/egs/librispeech/s5/local/da ta_prep.sh</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 双重<span class="keyword">for</span>循环</span></span><br><span class="line"><span class="meta">#</span><span class="bash">第一层循环，按说话人</span></span><br><span class="line">for reader_dir in $(find -L $src -mindepth 1 -maxdepth 1 -type d | sort); do</span><br><span class="line">  reader=$(basename $reader_dir)</span><br><span class="line">  if ! [ $reader -eq $reader ]; then  # not integer.</span><br><span class="line">    echo "$0: unexpected subdirectory name $reader"</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">  </span><br><span class="line"><span class="meta">	#</span><span class="bash"> 从说话人信息文件中提取性别</span></span><br><span class="line">  reader_gender=$(egrep "^$reader[ ]+\|" $spk_file | awk -F'|' '&#123;gsub(/[ ]+/, ""); print tolower($2)&#125;')</span><br><span class="line">  if [ "$reader_gender" != 'm' ] &amp;&amp; [ "$reader_gender" != 'f' ]; then</span><br><span class="line">    echo "Unexpected gender: '$reader_gender'"</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">  </span><br><span class="line"><span class="meta">	#</span><span class="bash">第二重<span class="keyword">for</span>循环，按章节</span></span><br><span class="line">  for chapter_dir in $(find -L $reader_dir/ -mindepth 1 -maxdepth 1 -type d | sort); do</span><br><span class="line">    chapter=$(basename $chapter_dir)</span><br><span class="line">    if ! [ "$chapter" -eq "$chapter" ]; then</span><br><span class="line">      echo "$0: unexpected chapter-subdirectory name $chapter"</span><br><span class="line">      exit 1;</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    find -L $chapter_dir/ -iname "*.flac" | sort | xargs -I% basename % .flac | \</span><br><span class="line">      awk -v "dir=$chapter_dir" '&#123;printf "%s flac -c -d -s %s/%s.flac |\n", $0, dir, $0&#125;' &gt;&gt;$wav_scp|| exit 1</span><br><span class="line"></span><br><span class="line">    chapter_trans=$chapter_dir/$&#123;reader&#125;-$&#123;chapter&#125;.trans.txt</span><br><span class="line">    [ ! -f  $chapter_trans ] &amp;&amp; echo "$0: expected file $chapter_trans to exist" &amp;&amp; exit 1</span><br><span class="line">    cat $chapter_trans &gt;&gt;$trans</span><br><span class="line"></span><br><span class="line">    # NOTE: For now we are using per-chapter utt2spk. That is each chapter is considered</span><br><span class="line">    #       to be a different speaker. This is done for simplicity and because we want</span><br><span class="line">    #       e.g. the CMVN to be calculated per-chapter</span><br><span class="line">    awk -v "reader=$reader" -v "chapter=$chapter" '&#123;printf "%s %s-%s\n", $1, reader, chapter&#125;' \</span><br><span class="line">      &lt;$chapter_trans &gt;&gt;$utt2spk || exit 1</span><br><span class="line"></span><br><span class="line">    # reader -&gt; gender map (again using per-chapter granularity)</span><br><span class="line">    echo "$&#123;reader&#125;-$&#123;chapter&#125; $reader_gender" &gt;&gt;$spk2gender</span><br><span class="line">  done</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="命令语句解析"><a href="#命令语句解析" class="headerlink" title="命令语句解析"></a>命令语句解析</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(find -L $src -mindepth 1 -maxdepth 1 -type d | sort)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment"># 使用格式</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">和符号链接相关的选项:</span></span><br><span class="line">   -P   不跟踪符号链接(默认行为)</span><br><span class="line">   -L   当 find 检查或打印有关文件的信息时, 所使用的信息应取自链接指向的文件的属性, 而不是链接本身</span><br><span class="line">   -H   和 -L 参数刚好相反, 当 find 检查或打印有关文件的信息时, 所使用的信息应取自符号链接的属性</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">EXPRESSIONS(表达式):</span></span><br><span class="line"> OPTIONS(选项):</span><br><span class="line">   -d、-depth       在查找文件时, 首先查找当前目录中的文件, 然后再在其子目录中查找</span><br><span class="line">   -maxdepth n       find 查找目录的最大深度</span><br><span class="line">   -mindepth n       find 从指定的目录的第几层深度开始查找</span><br><span class="line">   -mount         查找文件时不跨越文件系统的 mount 点</span><br><span class="line">   -follow         和 ``-``L 参数类似</span><br><span class="line">   -regextype       指定后面所使用的正则表达式语法, 默认为 emacs</span><br><span class="line">     posix-awk        类 awk 的正则表达式语法 </span><br><span class="line">     posix-basic       基本正则表达式</span><br><span class="line">     posix-egrep       不使用正则表达式</span><br><span class="line">     posix-extended     扩展正则表达式</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">-<span class="built_in">type</span></span></span><br><span class="line">       b   块设备</span><br><span class="line">       c   字符设备</span><br><span class="line">       d   目录</span><br><span class="line">       p   命名管道</span><br><span class="line">       f   文件</span><br><span class="line">       l   链接文件</span><br><span class="line">       s   socket 文件</span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+<hr>
+<p>🌟 想起顾芯怡教的一招</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls     - hdfs://haruna/home/byte_arnold_hl_speech_asr/user/huanglu.thu19/corpus/edu/chinglish_haitian_2kh_16k/wav_ark/k190/*.scp | wc -l</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">🌟 wc -l  <span class="comment"># 统计文件个数</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">🌟 ls -l *.wav | wc -l  <span class="comment"># 统计某个目录下 某种后缀的文件个数</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">ls -l *.wav | grep <span class="string">"^-"</span> | wc -l</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">grep <span class="string">"^-"</span>  <span class="comment"># 过滤ls的输出信息，只保留一般文件，只保留目录是grep "^d"。</span></span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>🌟 在自己电脑下，还是得 <strong>cd 到指定路径下</strong>才行，字节的 HDFS 数据库是只能那么读取列表，所以才可以那么用</p>
+<hr>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> basename /tmp/<span class="built_in">test</span>/file.txt</span></span><br><span class="line">file.txt</span><br><span class="line"><span class="meta">$</span><span class="bash"> basename /tmp/<span class="built_in">test</span>/file.txt .txt</span></span><br><span class="line">file</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">basename [pathname] [suffix]</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">basename [string] [suffix]</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">suffix为后缀，如果suffix被指定了，basename会将pathname或string中的suffix去掉。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">$ basename <span class="variable">$PWD</span>/1027.md </span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">1027.md</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">$ basename <span class="variable">$PWD</span>/1027.md .md</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">1027</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<hr>
+<h3 id="🌟awk-命令：一种处理文本文件的语言"><a href="#🌟awk-命令：一种处理文本文件的语言" class="headerlink" title="🌟awk 命令：一种处理文本文件的语言"></a><strong>🌟awk</strong> 命令：一种处理文本文件的语言</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 从说话人信息文件中提取性别</span></span><br><span class="line">reader_gender=$(egrep "^$reader[ ]+\|" $spk_file | awk -F'|' '&#123;gsub(/[ ]+/, ""); print tolower($2)&#125;')</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Shell-Kaldi/" rel="tag"># -[Shell] -[Kaldi]</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/22/%E6%9C%AA%E4%B8%8A%E4%BC%A0-1122%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/" rel="prev" title="未上传-1122组会汇报">
+      <i class="fa fa-chevron-left"></i> 未上传-1122组会汇报
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/29/Sox%E7%8E%AF%E5%A2%83%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" rel="next" title="Sox环境解决办法">
+      Sox环境解决办法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+    
+    
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=444267925&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题来源：Kaldi-librispeech-example：数据预处理脚本文件："><span class="nav-number">2.</span> <span class="nav-text">问题来源：Kaldi librispeech example：数据预处理脚本文件：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令语句解析"><span class="nav-number">2.1.</span> <span class="nav-text">命令语句解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#🌟awk-命令：一种处理文本文件的语言"><span class="nav-number">2.2.</span> <span class="nav-text">🌟awk 命令：一种处理文本文件的语言</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="黄圣杰"
+      src="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+  <p class="site-author-name" itemprop="name">黄圣杰</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Lukelluke" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Lukelluke" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:huangshengjie@bjfu.edu.cn" title="E-Mail → mailto:huangshengjie@bjfu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+
+          
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width:100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">-[LeetCode] -[动态规划]</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2%E7%B3%BB%E5%88%97-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">-[LeetCode] -[最长子串系列] -[滑动窗口]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell-Kaldi/" rel="tag">-[Shell] -[Kaldi]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sox-kaldi/" rel="tag">-[Sox] -[kaldi]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Torch/" rel="tag">-[Torch]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E7%BC%96%E7%A8%8B/" rel="tag">-[python] -[编程]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorboard%EF%BC%8CTensorflow/" rel="tag">Tensorboard，Tensorflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VC/" rel="tag">VC</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95tags/" rel="tag">测试tags</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BC%9A/" rel="tag">组会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="tag">论文阅读笔记</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3/" rel="tag">语音</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90/" rel="tag">语音合成</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a><span class="tag-list-count">1</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+    
+    
+
+    <aside class="sidebar">
+
+
+
+
+    </div>
+
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备20024435号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄圣杰</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">58k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">53 分钟</span>
+</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  All is well.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("06/09/2020 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+
+        
+
+
+        document.getElementById("timeDate").innerHTML = "🌟本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'hsjptyz21',
+      projectId: 'AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
