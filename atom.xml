@@ -99,9 +99,9 @@
     <link href="http://yoursite.com/2020/11/22/%E6%9C%AA%E4%B8%8A%E4%BC%A0-1122%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/"/>
     <id>http://yoursite.com/2020/11/22/%E6%9C%AA%E4%B8%8A%E4%BC%A0-1122%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/</id>
     <published>2020-11-22T11:04:25.339Z</published>
-    <updated>2020-11-22T14:01:55.258Z</updated>
+    <updated>2020-11-30T08:26:46.688Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="11-22组会"><a href="#11-22组会" class="headerlink" title="11.22组会"></a>11.22组会</h2><hr><ol><li>身体好多了，这两周都在校内休息</li><li>网易让做 <strong>NER</strong>，没兴趣不想做，直接请一段时间假</li></ol><hr><ol><li>琢磨使用 <strong>Kaldi</strong> 来提取<strong>PPGs</strong>，先尝试了跑 demo Librispeech，遇到各种问题，还没全部跑通</li><li>NVAE256 官方给了一份 ckpt，可能是因为比较大，在做 Evaluete 的时候，load model 后就出现显存不足，后面再琢磨一下怎么载入</li><li>开题材料 <strong>修改完成</strong>了，还剩<strong>两张图</strong>还没重新画，明天搞定</li><li>AiShell3 环境配起来还有点问题，晚上再折腾一下</li></ol><ul><li>论文《Generative adversarial interpolative autoencoding》还没看完，争取这两天看完</li></ul><hr><ul><li>软著三个月</li><li>HDFS：存储音频视频 的数据库</li></ul><ul><li>PPT：少文字，多图</li><li></li></ul>]]></content>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="11-22组会"><a href="#11-22组会" class="headerlink" title="11.22组会"></a>11.22组会</h2><hr><ol><li>身体好多了，这两周都在校内休息</li><li>mentor让做 <strong>NER</strong>，没兴趣不想做，直接请一段时间假</li></ol><hr><ol><li>琢磨使用 <strong>Kaldi</strong> 来提取<strong>PPGs</strong>，先尝试了跑 demo Librispeech，遇到各种问题，还没全部跑通</li><li>NVAE256 官方给了一份 ckpt，可能是因为比较大，在做 Evaluete 的时候，load model 后就出现显存不足，后面再琢磨一下怎么载入</li><li>开题材料 <strong>修改完成</strong>了，还剩<strong>两张图</strong>还没重新画，明天搞定</li><li>AiShell3 环境配起来还有点问题，晚上再折腾一下</li></ol><ul><li>论文《Generative adversarial interpolative autoencoding》还没看完，争取这两天看完</li></ul><hr><ul><li>软著三个月</li><li>HDFS：存储音频视频 的数据库</li></ul><ul><li>PPT：少文字，多图</li><li></li></ul>]]></content>
     
     <summary type="html">
     
