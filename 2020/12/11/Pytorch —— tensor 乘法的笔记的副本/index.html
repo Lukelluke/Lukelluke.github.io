@@ -28,20 +28,20 @@
 
 
 
-  <meta name="description" content="var ap &#x3D; new APlayer({             element: document.getElementById(&quot;aplayer-WOJeQdpq&quot;),             narrow: false,             autoplay: false,             s">
+  <meta name="description" content="Pytorch —— tensor 乘法的笔记 参考链接：  一个关于pytorch的tensor点乘的小问题  torch.Tensor的4种乘法  Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）  🌟官方链接">
 <meta property="og:type" content="article">
-<meta property="og:title" content="散文诗">
-<meta property="og:url" content="http://yoursite.com/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/index.html">
+<meta property="og:title" content="Pytorch —— tensor 乘法的笔记的副本">
+<meta property="og:url" content="http://yoursite.com/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0%E7%9A%84%E5%89%AF%E6%9C%AC/index.html">
 <meta property="og:site_name" content="黄圣杰">
-<meta property="og:description" content="var ap &#x3D; new APlayer({             element: document.getElementById(&quot;aplayer-WOJeQdpq&quot;),             narrow: false,             autoplay: false,             s">
+<meta property="og:description" content="Pytorch —— tensor 乘法的笔记 参考链接：  一个关于pytorch的tensor点乘的小问题  torch.Tensor的4种乘法  Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）  🌟官方链接">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-16T15:43:27.000Z">
-<meta property="article:modified_time" content="2020-06-18T05:01:56.045Z">
+<meta property="article:published_time" content="2020-12-11T08:25:48.204Z">
+<meta property="article:modified_time" content="2021-10-14T10:16:13.373Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="随笔">
+<meta property="article:tag" content="keywords">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/">
+<link rel="canonical" href="http://yoursite.com/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0%E7%9A%84%E5%89%AF%E6%9C%AC/">
 
 
 <script id="page-configurations">
@@ -54,7 +54,7 @@
   };
 </script>
 
-  <title>散文诗 | 黄圣杰</title>
+  <title>Pytorch —— tensor 乘法的笔记的副本 | 黄圣杰</title>
   
 
 
@@ -86,8 +86,6 @@
 </noscript>
 
 <link rel="alternate" href="/atom.xml" title="黄圣杰" type="application/atom+xml">
-<link rel="stylesheet" href="/assets/css/APlayer.min.css" class="aplayer-style-marker">
-<script src="/assets/js/APlayer.min.js" class="aplayer-script-marker"></script>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -222,7 +220,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0%E7%9A%84%E5%89%AF%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
@@ -235,7 +233,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          散文诗
+          Pytorch —— tensor 乘法的笔记的副本
         </h1>
 
         <div class="post-meta">
@@ -245,24 +243,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-16 23:43:27" itemprop="dateCreated datePublished" datetime="2020-06-16T23:43:27+08:00">2020-06-16</time>
+              <time title="创建时间：2020-12-11 16:25:48" itemprop="dateCreated datePublished" datetime="2020-12-11T16:25:48+08:00">2020-12-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-18 13:01:56" itemprop="dateModified" datetime="2020-06-18T13:01:56+08:00">2020-06-18</time>
+                <time title="修改时间：2021-10-14 18:16:13" itemprop="dateModified" datetime="2021-10-14T18:16:13+08:00">2021-10-14</time>
               </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%BD%9C%E5%AE%B6%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">作家计划</span></a>
-                </span>
-            </span>
 
           
             <span class="post-meta-item" title="阅读次数">
@@ -284,7 +273,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>123</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -303,53 +292,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
-        <div id="aplayer-WOJeQdpq" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-WOJeQdpq"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-<a id="more"></a>
-
-<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
-<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
-<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
-<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
-<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
-<hr>
-<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
-<p>最年少时，希冀能改变一点点世界。</p>
-<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
-<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
-<hr>
-<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
-<p>没必要。</p>
-<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
-<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
-<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
-<p>晚安</p>
-<p>06/17/2020 凌晨</p>
-<p>@PT</p>
+        <h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
+<p>参考链接：</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
+</li>
+<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
+</li>
+</ul>
 <hr>
 
     </div>
@@ -359,9 +313,6 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag"># 随笔</a>
-          </div>
 
         
 
@@ -369,12 +320,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/" rel="prev" title="hexo一些基础指令备忘">
-      <i class="fa fa-chevron-left"></i> hexo一些基础指令备忘
+    <a href="/2020/12/08/PGAN%20%E8%AE%AD%E7%BB%83%E7%AC%94%E8%AE%B0/" rel="prev" title="PGAN 训练笔记">
+      <i class="fa fa-chevron-left"></i> PGAN 训练笔记
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/" rel="next" title="关于ssh本地查看Tensorboard记录">
-      关于ssh本地查看Tensorboard记录 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/" rel="next" title="Pytorch —— tensor 乘法的笔记">
+      Pytorch —— tensor 乘法的笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -437,6 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pytorch-——-tensor-乘法的笔记"><span class="nav-number">1.</span> <span class="nav-text">Pytorch —— tensor 乘法的笔记</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

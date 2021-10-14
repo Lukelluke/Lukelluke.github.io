@@ -157,6 +157,124 @@
       </tags>
   </entry>
   <entry>
+    <title>《PITCHNET —— UNSUPERVISED SINGING VOICE CONVERSION WITH PITCH ADVERSARIAL NETWORK》</title>
+    <url>/2020/09/07/0906%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB%EF%BC%9A%E6%AD%8C%E5%94%B1%E8%BD%AC%E6%8D%A2/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>0906组会分享</p>
+<h2 id="0906组会分享：歌唱转换-singing-voice-conversion"><a href="#0906组会分享：歌唱转换-singing-voice-conversion" class="headerlink" title="0906组会分享：歌唱转换 singing voice conversion"></a>0906组会分享：<strong>歌唱转换 singing voice conversion</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905170752.png" alt="image-20200905170750870"></p>
+<ul>
+<li><p>效果概览：<a href="https://tencent-ailab.github.io/pitch-net/" target="_blank" rel="noopener">https://tencent-ailab.github.io/pitch-net/</a></p>
+</li>
+<li><p>MOS评分：</p>
+<ul>
+<li>Baseline ：2.92</li>
+<li>PitchNet：3.75</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+
+
+<ul>
+<li><h2 id="论文的-baseline-对象："><a href="#论文的-baseline-对象：" class="headerlink" title="论文的 baseline 对象："></a>论文的 <strong>baseline</strong> 对象：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905171530.png" alt="image-20200905171528462"></h2></li>
+<li><h2 id="BaseLine-的贡献和缺点"><a href="#BaseLine-的贡献和缺点" class="headerlink" title="BaseLine 的贡献和缺点"></a><strong>BaseLine 的贡献和缺点</strong></h2></li>
+</ul>
+<p>贡献：</p>
+<ol>
+<li>利用 AE 模式下的无监督方式，解决了 平行语料的问题</li>
+<li>组成模块：<strong>WaveNetlike Encoder</strong> &amp;&amp;  <strong>WaveNet  autoregressive Decoder</strong> &amp;&amp; <strong>Speaker-Embedding Table</strong>（leanable）</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>和StarGan-VC之类的 单纯说话VC 任务不同，歌唱转换的效果重点是：说话人相似性 &amp;&amp; 音调合理性</li>
+<li>BaseLine 在音调处理上差强人意，总而言之，“<strong>语音和音调的联合表示</strong>”是难点</li>
+</ol>
+<hr>
+<ul>
+<li><h2 id="解决的问题："><a href="#解决的问题：" class="headerlink" title="解决的问题："></a><strong>解决的问题</strong>：</h2></li>
+</ul>
+<ol>
+<li>走调（音高 Pitch 失控现象）问题的缓解<ol>
+<li>在 Baseline 的 <strong>AE无监督</strong> 模式下，附带一个额外的<strong>音调回归网络（GAN）</strong>可以将音调信息从潜在空间中分离出来</li>
+<li><strong>目的是</strong>：让原本的<strong>Encoder</strong>在单纯学习 <strong>说话人无关的语言信息</strong> 基础上，再额外剥离掉 <strong>音高信息</strong> （<strong>not only singer-invariant but also pitch-invariant representation</strong>）</li>
+</ol>
+</li>
+<li>至于音高信息，当成一个独立问题来解决：设立独立模块来提取 <strong>source</strong> 的<strong>音高信息</strong>，以此配合 <strong>Decoder</strong> ，来<strong>操控</strong> <strong>生成语音</strong> 的<strong>音高</strong> <ol>
+<li>（根据作者相关 Git 项目下的 issue 讨论，这部分工作借用 Kaldi 来完成）</li>
+<li>【实现 <strong>音高可控性</strong> 】</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a><strong>模型</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223846.png" alt="image-20200905223845590"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223859.png" alt="image-20200905223857883"></p>
+<ul>
+<li><strong>Singer Classiﬁcation Network</strong> <strong>Pitch Regression Network</strong> 是为了使得 <strong>Encoder</strong> 能够在抽取特征向量 <strong>z</strong> 时，把 说话人信息 &amp;&amp; 音调信息 都剥离掉</li>
+<li></li>
+<li></li>
+</ul>
+<hr>
+<h2 id="Training-Loss：三个Loss"><a href="#Training-Loss：三个Loss" class="headerlink" title="Training Loss：三个Loss"></a><strong>Training Loss：三个Loss</strong></h2><ol>
+<li><strong>singer classiﬁcation loss</strong></li>
+<li><strong>pitch regression loss</strong></li>
+<li><strong>reconstruction loss</strong></li>
+</ol>
+<h2 id="几个公式的清晰理解："><a href="#几个公式的清晰理解：" class="headerlink" title="几个公式的清晰理解："></a>几个公式的清晰理解：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141104.png" alt="image-20200906141103220"></p>
+<ol>
+<li>说明了AE网络的Decoder产生结果 所需要的输入元素（Encoder结果+Kaldi抽取的音高+Embedding信息）</li>
+<li>介绍重构损失：在Decoder时配合<strong>source</strong>的embedding，和<strong>source</strong>语音做<strong>Loss</strong></li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141139.png" alt="image-20200906141138234"></p>
+<ol start="3">
+<li>一个 <strong>说话人分类器</strong>，同理为 StarGan-VC 的Domain-Classification，分类对象，是<strong>Encoder</strong>结果&amp;&amp;<strong>Embedding</strong></li>
+<li>另一个<strong>音高分类器</strong>，Pitch信息由 Kaldi 提取</li>
+<li>总的<strong>Loss</strong>结构：因为重构损失⬇️越好，另一方面，对于两个分类器，我们希望我们的 <strong>Encoder</strong>提取出来的隐变量 能彻底剥离 说话人信息 &amp;&amp; Pitch信息，所以这两个的误差，对于结果来说，应该越大越好。（所以这两个部分是配合 负号）</li>
+<li>上述两个 C分类器的损失，对于<strong>Encoder</strong>和<strong>Classifier</strong>来说，是完全相反的，【<strong>就是典型的GAN对抗思路</strong>】，所以他们的训练，采取“你一次我一次的过程”<ul>
+<li>训练中，缩小 $$L_{total}$$ 时，促进的是 <strong>Encoder</strong> 将两个元素剥离</li>
+<li>缩小 $L_{ad}$ 时，促进的是 <strong>Classifier</strong> 具有更强的分类能力，能看透隐变量 <strong>z</strong> 的实质和归属</li>
+</ul>
+</li>
+</ol>
+<p>Ps.整体思路比较清晰，就是<strong>自回归</strong>那个部分不知道是怎么具体实现的</p>
+<hr>
+<p>Quantitative and Qualitative Experiments**【定量 和 定性 实验】</p>
+<hr>
+<p>Tencent :LPCNet, </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;train</span><br><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;validation</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export EXPR_ID&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID</span><br><span class="line">export DATA_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb</span><br><span class="line">export CHECKPOINT_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR</span><br><span class="line">export CODE_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">cd &#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">CUDA_VISIBLE_DEVICES&#x3D;1  </span><br><span class="line">python train.py --data &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --root &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR --save &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CelebA64 数据预处理</span><br><span class="line"></span><br><span class="line">cd $CODE_DIR&#x2F;scripts</span><br><span class="line">python create_celeba64_lmdb.py --split train --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split valid --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split test  --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python create_celeba64_lmdb.py --split train --img_path ..&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path ..&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --split&#x3D;validation</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train.py --data $DATA_DIR&#x2F;celeba64_lmdb --root $CHECKPOINT_DIR --save $EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
+
+<p>/Users/huangshengjie/Desktop/NVAE/scripts/data1/datasets/imagenet-oord</p>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+      </categories>
+      <tags>
+        <tag>VC</tag>
+        <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>0830组会分享——几种卷积辨析 &amp;&amp; SELayer论文及代码实现</title>
     <url>/2020/08/31/0830%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几种卷积类型辨析"><a href="#几种卷积类型辨析" class="headerlink" title="几种卷积类型辨析"></a>几种卷积类型辨析</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conv = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">1</span>, groups=<span class="number">3</span>)</span><br><span class="line">conv.weight.data.size()</span><br><span class="line"></span><br><span class="line"><span class="comment"># output = torch.Size([6, 2, 1, 1])</span></span><br></pre></td></tr></table></figure>
@@ -258,163 +376,6 @@ Estimated Total Size (MB): 1.25
       <tags>
         <tag>组会</tag>
         <tag>pytorch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1.两数之和</title>
-    <url>/2020/06/21/1.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg" alt="img"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183108.png" alt="image-20200621235419362"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183128.png" alt="image-20200621235438971"></p>
-<h1 id="1-HashMap"><a href="#1-HashMap" class="headerlink" title="1. HashMap"></a>1. HashMap</h1><ul>
-<li>发现很多接发都用到了map，其中C++的vector容器，java是HashMap</li>
-<li>涉及到之前数据结构盲区 <strong>红黑树</strong> <a href="https://www.cnblogs.com/shoulinniao/p/11966194.html" target="_blank" rel="noopener">https://www.cnblogs.com/shoulinniao/p/11966194.html</a></li>
-<li></li>
-</ul>
-<hr>
-<h1 id="2-《Java核心技术卷一》P372，chap9-3：映射"><a href="#2-《Java核心技术卷一》P372，chap9-3：映射" class="headerlink" title="2.《Java核心技术卷一》P372，chap9.3：映射"></a>2.《Java核心技术卷一》P372，chap9.3：映射</h1><ul>
-<li>映射 <strong>MAP</strong> 数据结构= 「HashMap」&amp;&amp;「TreeMap」</li>
-<li>存放 {键<strong>KEY</strong>：值<strong>VALUE</strong>}对</li>
-<li>都只对 <strong>键（KEY）</strong>进行处理（ <strong>散列</strong>&amp;&amp; <strong>搜索树排序</strong>  ）</li>
-</ul>
-<h1 id="3-相关方法函数："><a href="#3-相关方法函数：" class="headerlink" title="3.相关方法函数："></a>3.相关方法函数：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//哈希map初始化，自己定义Key和Value的类型</span></span><br><span class="line">Map&lt;String, Employee&gt; staff = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个employee对象，用作Value</span></span><br><span class="line">Employee harry = <span class="keyword">new</span> Employee(<span class="string">"Harry Hacker"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//1.：map.put（key，value）方法：将 键值对 放进HashMap</span></span><br><span class="line">staff.put(<span class="string">"123456"</span>,harry)<span class="comment">//</span></span><br><span class="line"><span class="comment">//同一个key存两次，会覆盖，并且返回的是上一次存储的 Value值；</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2.：map.get(key) 方法：按照 Key 的值，来从HashMap中获取Value</span></span><br><span class="line">String id = <span class="string">"123456"</span>;</span><br><span class="line">Employee e = staff.get(id);</span><br><span class="line"></span><br><span class="line"><span class="comment">//get()方法还可以人为设置默认值：</span></span><br><span class="line">Map&lt;String, Integer&gt; score = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="keyword">int</span> score = score.get(id,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//放这个Key对应的Value不存在时，返回 0；</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><ol>
-<li><strong>import</strong> java.util.HashMap;//导入</li>
-<li><strong>HashMap&lt;K, V&gt; map = new HashMap&lt;K, V&gt;（）;</strong>//定义map，K和V是类，<strong><em>不允许是基本类型？</em></strong></li>
-<li><strong>put（K， V）</strong></li>
-<li><strong>V get（K）</strong></li>
-<li><strong>V remove（K）</strong>//移除K键的值，返回的是V，可以不接收</li>
-<li><strong>size（）</strong>//返回映射Map中的元素数目</li>
-<li><strong>replace（）</strong>//替换</li>
-</ol>
-</li>
-<li><pre><code class="java"> map.replace( Key,Value );
-&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
-</li>
-<li><p><strong>9. computeIfAbsent（）</strong>//</p>
-</li>
-<li><pre><code class="java"><span class="comment">//如果key键为java的,就添加，并且value为key键的长度</span>
-<span class="comment">//这个算子就是一个和put功能差不多的算子，都是往map里面添加数据。</span>
-
-map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).length());
-&lt;!--￼<span class="number">2</span>--&gt;</code></pre>
-</li>
-<li></li>
-</ul>
-<hr>
-<h1 id="4-关于遍历方法："><a href="#4-关于遍历方法：" class="headerlink" title="4.关于遍历方法："></a>4.关于遍历方法：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回所有 Key-Value 对：</span></span><br><span class="line"><span class="keyword">for</span>(Map.Entry n: map.entrySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有 Key：</span></span><br><span class="line"><span class="keyword">for</span>(String n : map.keySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有Value：</span></span><br><span class="line"><span class="keyword">for</span>(Integer n: map.values())&#123;</span><br><span class="line">		System.out.println(n);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<hr>
-<h1 id="5-其他："><a href="#5-其他：" class="headerlink" title="5.其他："></a>5.其他：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183135.png" alt="image-20200622181415228"></p>
-<ul>
-<li><h2 id="HashMap中链表转换成红黑树的操作——treeifyBin"><a href="#HashMap中链表转换成红黑树的操作——treeifyBin" class="headerlink" title="HashMap中链表转换成红黑树的操作——treeifyBin()"></a>HashMap中链表转换成红黑树的操作——treeifyBin()</h2></li>
-<li><p><a href="https://www.jianshu.com/p/309ea054cbc9" target="_blank" rel="noopener">https://www.jianshu.com/p/309ea054cbc9</a></p>
-</li>
-</ul>
-<hr>
-<h1 id="6-整理下HashMap里面的常见面试考点："><a href="#6-整理下HashMap里面的常见面试考点：" class="headerlink" title="6.整理下HashMap里面的常见面试考点："></a>6.整理下HashMap里面的常见面试考点：</h1><ol>
-<li><h2 id="HashMap-默认容量："><a href="#HashMap-默认容量：" class="headerlink" title="HashMap 默认容量："></a>HashMap 默认容量：</h2><ul>
-<li><strong>默认容量是：16 = 1 &lt;&lt; 4（位移动 = $1000_2$ =  $16_{10}$）；</strong></li>
-<li><strong>默认负载因子是：0.75（根据）</strong>（服从泊松分布）：红黑树部分也是这个原理：</li>
-<li>桶中的节点个数服从泊松分布；</li>
-<li>取 $\lambda = 0.5$ ，此时 ，每个捅中元素个数为 【0，8】个的概率分别如图所示，大于八个，基本已经到达百万分之一的级别，所以 <strong>Java8</strong> 中选择以 <strong>8</strong> 作为一个临界数字，来决定是否将链表转化为 <strong>红黑树</strong>；</li>
-<li>其中，在 最大桶元素个数 = 7 时，不变，作为缓冲，以防止过于频繁的转换消耗；  </li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183233.png" alt="image-20200622234017327"></p>
-</li>
-<li><h2 id="如何扩容？"><a href="#如何扩容？" class="headerlink" title="如何扩容？"></a>如何扩容？</h2><ul>
-<li>$2^n$ 的形式，每次翻两倍；（这和 Hash 的工作机制有关：（n - 1）&amp; hash）</li>
-<li>这样子的好处是，（$2^n$-1）= 一个全为1 的二进制树，计算更快；</li>
-</ul>
-</li>
-<li><h2 id="为什么HashMap的数组大小一定要是-2-的幂？"><a href="#为什么HashMap的数组大小一定要是-2-的幂？" class="headerlink" title="为什么HashMap的数组大小一定要是 2 的幂？"></a>为什么<strong>HashMap</strong>的数组大小一定要是 2 的幂？</h2><ul>
-<li><p>和 Hash 的工作机制有关；HashMap求索引时用&amp;运算,index=(n-1)&amp;hash</p>
-</li>
-<li><p>n = length : 表长度 = $2^n$ </p>
-</li>
-<li><p>（HashTable求索引用模运算，index = (hash &amp; 0x7FFFFFFF) % n）</p>
-</li>
-<li></li>
-<li><p>：只有这样才能保证 经过 ( $2^n $ ) 操作后得到全是1 的值；</p>
-</li>
-<li><p>然后这样才能经过非常快速的位运算，快速拿到数组下标，并且能保证分布均匀</p>
-</li>
-<li><p>若不是 $2^n$, 则运算过后，会有0存在，那么就会导致，不管 和他进行按位与 运算的数字是多少，都会出现某些位永远是 0，那么就会导致，某些 <strong>桶</strong> 里的元素永远都是 <strong>0个</strong>，不均匀且不合理； </p>
-</li>
-</ul>
-</li>
-<li><h2 id="HashMap-为什么是线程不安全的？"><a href="#HashMap-为什么是线程不安全的？" class="headerlink" title="HashMap 为什么是线程不安全的？"></a>HashMap 为什么是线程不安全的？</h2><ul>
-<li>在接近临界点时，若此时两个或者多个线程进行put操作，都会进行resize（扩容）和reHash（为key重新计算所在位置），而reHash在并发的情况下可能会形成<code>链表环</code>。</li>
-<li>总结来说就是在多线程环境下，使用HashMap进行put操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使用HashMap。</li>
-<li>为什么在并发执行put操作会引起死循环？是因为多线程会导致HashMap的Entry链表形成环形数据结构，一旦形成环形数据结构，Entry的next节点永远不为空，就会产生死循环获取Entry。</li>
-<li>jdk1.7的情况下，并发扩容时容易形成链表环，此情况在1.8时就好太多太多了。</li>
-<li>因为在1.8中当链表长度达到阈值（默认长度为8）时，链表会被改成树形（红黑树）结构。如果删剩节点变成7个并不会退回链表，而是保持不变，删剩6个时就会变回链表，7不变是缓冲，防止频繁变换。</li>
-<li>在JDK1.7中，当并发执行扩容操作时会造成环形链和数据丢失的情况。</li>
-<li>在JDK1.8中，在并发执行put操作时会发生数据覆盖的情况。</li>
-</ul>
-</li>
-<li><h2 id="Java-7-到-8-做了哪些改进？为什么？"><a href="#Java-7-到-8-做了哪些改进？为什么？" class="headerlink" title="Java 7 到 8 做了哪些改进？为什么？"></a>Java 7 到 8 做了哪些改进？为什么？</h2><ul>
-<li>如上题所述：</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h1 id="7-拓展"><a href="#7-拓展" class="headerlink" title="7.拓展"></a>7.拓展</h1><ol>
-<li><p>你能想到的做 HashMap 匹配的方法？ </p>
-<ul>
-<li><ol>
-<li>直接取模：（$-2^{31}$ ~ $2^{31} -1$ ）% n = （0 , $n-1$）</li>
-</ol>
-</li>
-<li>缺点：两个：<ul>
-<li>负数对 n求余，答案是负数；（所以需要额外把 负数 变为 正数 ）</li>
-<li>速度较慢（相比于位运算）：因为硬件中“求余”的本质是“除法”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>常考的“坑”：扩容：<strong>resize（）</strong></p>
-<ol>
-<li>扩容 <strong>resize( )</strong>包括 <strong>rehash ( )</strong></li>
-<li>机制是，当原来的容器中，容量达到了 <strong>0.75 * capacity</strong>， 再创建一个 <strong>2 * capacity</strong> 的新的桶；</li>
-<li>然后会把旧的桶中的数据 <strong>迁移</strong> 过去，迁移的时候，伴随着重新地对原始数据进行 <strong>rehash</strong> 计算；</li>
-<li><strong>resize（）</strong>里面的 <strong>transfer（）</strong>是一切问题的根源！！</li>
-</ol>
-</li>
-<li><ul>
-<li><strong>死锁问题：</strong>：本身是线程不安全的；完全是用户的问题；</li>
-</ul>
-</li>
-<li><ul>
-<li><strong>哈希表最致命的缺陷：哈希碰撞——&gt;</strong>最差情况下，会变成单链表；链表性能退化</li>
-</ul>
-</li>
-<li><ul>
-<li>所以在java7时代的 <strong>Tomcat（2011）</strong> 中引起了问题——&gt;可以通过一组精心设计的 恶意请求，造成 <strong>DoS（Deny of serveice）</strong></li>
-</ul>
-</li>
-<li><pre><code>&quot;Aa&quot;,&quot;BB&quot;,&quot;C#&quot; 的哈希值是相同的！
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">7. ![image-20200622231322114](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183234.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 8. Java8的改进点 &amp;&amp; 新API</span><br><span class="line"></span><br><span class="line">1. 从 **数组 + 链表**——&gt;**数组 + 链表 &#x2F; 红黑树**</span><br><span class="line"></span><br><span class="line">2. 扩容时，插入顺序的改进：（原来是，从旧的头先取，然后按照“头插法”插入新的桶，导致顺序不稳定）</span><br><span class="line"></span><br><span class="line">3. 函数方法：（java 8 引入了 Lamda 表达式）</span><br><span class="line"></span><br><span class="line">   1. forEach</span><br><span class="line">   2. compute 系列</span><br><span class="line"></span><br><span class="line">4.  Map 的新 API</span><br><span class="line"></span><br><span class="line">   1. Merge</span><br><span class="line">   2. replace</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   # 9.补充</span><br><span class="line"></span><br><span class="line">   1. **抑或运算**：可以更简单地理解为 **不进位的 加法 ！**</span><br><span class="line">   2. 红黑树转换，并不是要把整张表都从链表改成红黑树，而是只要 超过 8 个元素的 那个桶，改一下形式，就行了：</span><br><span class="line">   3. ![image-20200623000116947](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183235.png)</span><br><span class="line">   4. 二叉平衡树，平均查找时间：O（$log N$）</span><br><span class="line">   5. 单纯的二叉树，有个极端情况：插入顺序是有序的，那么就会造成演化成 **单链表**</span><br><span class="line">   6. 而红黑树，经过一定的旋转，保证了查找的效率（具体再仔细看看书）</span><br><span class="line">   7. **新的 Java8 中的 resize（）函数**：改进成了 **扩容时** 能保持原来的顺序，但是仍然不能保证 **线程安全**，只能说是大搭建撒后了线程冲突的概率。</span><br><span class="line">   8. 所以未来可能不会再多线程情况下遇到问题，但是还是不能放心地在多线程环境下使用它！（**Linux中的任务调度 是多线程的，有用到 HashMap**）</span><br><span class="line">   9. **HashCode** ： 默认使用 **32位** 的 **Int** 的**HashCode**；</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   # 10.面试题常见：</span><br><span class="line"></span><br><span class="line">   1. 为什么用 数组 +链表：经典的学院派操作</span><br><span class="line">   2. Hash 冲突你还知道哪些解决办法：可以在冲突的桶里面，再套一层 Hash 表；即，冲突的进行二次分流；（表中再有个表）</span><br><span class="line">   3. 用Lin课的Li身体代替数组结构可以吗？：不可以，数组的随机访问是 O（1）的，不受数组长度的影响，二链表的顺序访问速度是 O（n），不能起到随机访问的效果；</span><br><span class="line">   4. get（）的操作？：如果第一个元素就是要求的话，那么就直接返回它；不是的话，那么，先判断该桶是什么结构，如果是红黑树，那么就用树的查找方法 查找；否则若是链表结构，就采用链表的顺序访问形式访问</span><br><span class="line">   5. 为什么 String 、Integer 这样的 wrapper 类 适合作为键？：因为String是final，具有不变性，而且已经重写了 equals（）和hashcode（）方法了。不变性是必要的！因为 为了要计算 hashcode（），就要防止键改变，如果键再嵌入时和获取时返回不同的 hashcode 的话，就不能从 HashMap 中找到你想要的对象。</span><br><span class="line">   6. 如果HashMap的大小超过了负载因子（load factor）定义的容量怎么办？：扩容：resize（） &amp; rehash（）「注意，resize（）的效率非常低！！！」所以如果预先知道有一个很大的表要创建，那么可以预先再创建时，就指定一个较大的空间，相当于时 **空间换时间**；避免未来的频繁resize（）花费很多时间。</span><br><span class="line"></span><br><span class="line">   ## </span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 11.红黑树：自己补充</span><br><span class="line"></span><br><span class="line">![截屏2020-06-23上午12.50.42](&#x2F;Users&#x2F;huangshengjie&#x2F;Desktop&#x2F;截屏2020-06-23上午12.50.42.png)</span><br><span class="line"></span><br><span class="line">* [B站课程](https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1tE411f7tP?from&#x3D;search&amp;seid&#x3D;2421763921920035607)：</span><br><span class="line">* [一份链接文章](https:&#x2F;&#x2F;blog.csdn.net&#x2F;Mr_Helloworld_&#x2F;article&#x2F;details&#x2F;106694724)</span><br><span class="line">* ![image-20200624005349275](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183236.png)</span><br><span class="line">* ![image-20200624005402070](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183237.png)</span><br><span class="line">* ![image-20200624005251467](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183238.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"># 12.正题：001:两数之和：Java版</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class twoSum_001 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;暴力法</span><br><span class="line">    public int[] twoSum_force(int[] nums, int target)&#123;</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            for(int j&#x3D;i+1;j&lt; nums.length;j++)&#123;</span><br><span class="line">                if(nums[j] &#x3D;&#x3D; target - nums[i])&#123;</span><br><span class="line">                    return new int[] &#123;i, j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum soluition&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;两遍 Hash，一遍存，一遍查取；</span><br><span class="line">    public int[] twoSum_HashTwice(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            map.put(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i&#x3D;0; i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complement &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complement) &amp;&amp; map.get(complement) !&#x3D; i)&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complement)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;一遍 Hash，先查，查不到就接着存；</span><br><span class="line">    public int[] twoSum_HashOnce(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complemenmt &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complemenmt))&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complemenmt)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-</code></pre></li>
-</ol>
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
@@ -734,121 +695,209 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>《PITCHNET —— UNSUPERVISED SINGING VOICE CONVERSION WITH PITCH ADVERSARIAL NETWORK》</title>
-    <url>/2020/09/07/0906%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB%EF%BC%9A%E6%AD%8C%E5%94%B1%E8%BD%AC%E6%8D%A2/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>0906组会分享</p>
-<h2 id="0906组会分享：歌唱转换-singing-voice-conversion"><a href="#0906组会分享：歌唱转换-singing-voice-conversion" class="headerlink" title="0906组会分享：歌唱转换 singing voice conversion"></a>0906组会分享：<strong>歌唱转换 singing voice conversion</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905170752.png" alt="image-20200905170750870"></p>
-<ul>
-<li><p>效果概览：<a href="https://tencent-ailab.github.io/pitch-net/" target="_blank" rel="noopener">https://tencent-ailab.github.io/pitch-net/</a></p>
-</li>
-<li><p>MOS评分：</p>
-<ul>
-<li>Baseline ：2.92</li>
-<li>PitchNet：3.75</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
+    <title>杂记</title>
+    <url>/2020/11/29/1129%E6%B5%8B%E8%AF%95Torch%20gpu%20%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-测试-gpu-可用性"><a href="#1-测试-gpu-可用性" class="headerlink" title="1.测试  gpu 可用性"></a>1.测试  gpu 可用性</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'1'</span></span><br><span class="line">print(torch.version.cuda)</span><br><span class="line">print(torch.__version__)</span><br><span class="line">print(torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
 
 
 
-<ul>
-<li><h2 id="论文的-baseline-对象："><a href="#论文的-baseline-对象：" class="headerlink" title="论文的 baseline 对象："></a>论文的 <strong>baseline</strong> 对象：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905171530.png" alt="image-20200905171528462"></h2></li>
-<li><h2 id="BaseLine-的贡献和缺点"><a href="#BaseLine-的贡献和缺点" class="headerlink" title="BaseLine 的贡献和缺点"></a><strong>BaseLine 的贡献和缺点</strong></h2></li>
-</ul>
-<p>贡献：</p>
-<ol>
-<li>利用 AE 模式下的无监督方式，解决了 平行语料的问题</li>
-<li>组成模块：<strong>WaveNetlike Encoder</strong> &amp;&amp;  <strong>WaveNet  autoregressive Decoder</strong> &amp;&amp; <strong>Speaker-Embedding Table</strong>（leanable）</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>和StarGan-VC之类的 单纯说话VC 任务不同，歌唱转换的效果重点是：说话人相似性 &amp;&amp; 音调合理性</li>
-<li>BaseLine 在音调处理上差强人意，总而言之，“<strong>语音和音调的联合表示</strong>”是难点</li>
-</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'0'</span></span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">tf.test.is_gpu_available()</span><br></pre></td></tr></table></figure>
+
+
+
 <hr>
-<ul>
-<li><h2 id="解决的问题："><a href="#解决的问题：" class="headerlink" title="解决的问题："></a><strong>解决的问题</strong>：</h2></li>
-</ul>
-<ol>
-<li>走调（音高 Pitch 失控现象）问题的缓解<ol>
-<li>在 Baseline 的 <strong>AE无监督</strong> 模式下，附带一个额外的<strong>音调回归网络（GAN）</strong>可以将音调信息从潜在空间中分离出来</li>
-<li><strong>目的是</strong>：让原本的<strong>Encoder</strong>在单纯学习 <strong>说话人无关的语言信息</strong> 基础上，再额外剥离掉 <strong>音高信息</strong> （<strong>not only singer-invariant but also pitch-invariant representation</strong>）</li>
-</ol>
-</li>
-<li>至于音高信息，当成一个独立问题来解决：设立独立模块来提取 <strong>source</strong> 的<strong>音高信息</strong>，以此配合 <strong>Decoder</strong> ，来<strong>操控</strong> <strong>生成语音</strong> 的<strong>音高</strong> <ol>
-<li>（根据作者相关 Git 项目下的 issue 讨论，这部分工作借用 Kaldi 来完成）</li>
-<li>【实现 <strong>音高可控性</strong> 】</li>
-</ol>
-</li>
-</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install -c conda-forge librosa</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install tensorflow-gpu&#x3D;&#x3D;1.9.0  # 自动带cudatoolkit</span><br><span class="line"># 版本匹配信息：https:&#x2F;&#x2F;www.tensorflow.org&#x2F;install&#x2F;source#common_installation_problems</span><br></pre></td></tr></table></figure>
+
+
+
 <hr>
-<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a><strong>模型</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223846.png" alt="image-20200905223845590"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223859.png" alt="image-20200905223857883"></p>
-<ul>
-<li><strong>Singer Classiﬁcation Network</strong> <strong>Pitch Regression Network</strong> 是为了使得 <strong>Encoder</strong> 能够在抽取特征向量 <strong>z</strong> 时，把 说话人信息 &amp;&amp; 音调信息 都剥离掉</li>
-<li></li>
-<li></li>
-</ul>
-<hr>
-<h2 id="Training-Loss：三个Loss"><a href="#Training-Loss：三个Loss" class="headerlink" title="Training Loss：三个Loss"></a><strong>Training Loss：三个Loss</strong></h2><ol>
-<li><strong>singer classiﬁcation loss</strong></li>
-<li><strong>pitch regression loss</strong></li>
-<li><strong>reconstruction loss</strong></li>
-</ol>
-<h2 id="几个公式的清晰理解："><a href="#几个公式的清晰理解：" class="headerlink" title="几个公式的清晰理解："></a>几个公式的清晰理解：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141104.png" alt="image-20200906141103220"></p>
-<ol>
-<li>说明了AE网络的Decoder产生结果 所需要的输入元素（Encoder结果+Kaldi抽取的音高+Embedding信息）</li>
-<li>介绍重构损失：在Decoder时配合<strong>source</strong>的embedding，和<strong>source</strong>语音做<strong>Loss</strong></li>
-</ol>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141139.png" alt="image-20200906141138234"></p>
-<ol start="3">
-<li>一个 <strong>说话人分类器</strong>，同理为 StarGan-VC 的Domain-Classification，分类对象，是<strong>Encoder</strong>结果&amp;&amp;<strong>Embedding</strong></li>
-<li>另一个<strong>音高分类器</strong>，Pitch信息由 Kaldi 提取</li>
-<li>总的<strong>Loss</strong>结构：因为重构损失⬇️越好，另一方面，对于两个分类器，我们希望我们的 <strong>Encoder</strong>提取出来的隐变量 能彻底剥离 说话人信息 &amp;&amp; Pitch信息，所以这两个的误差，对于结果来说，应该越大越好。（所以这两个部分是配合 负号）</li>
-<li>上述两个 C分类器的损失，对于<strong>Encoder</strong>和<strong>Classifier</strong>来说，是完全相反的，【<strong>就是典型的GAN对抗思路</strong>】，所以他们的训练，采取“你一次我一次的过程”<ul>
-<li>训练中，缩小 $$L_{total}$$ 时，促进的是 <strong>Encoder</strong> 将两个元素剥离</li>
-<li>缩小 $L_{ad}$ 时，促进的是 <strong>Classifier</strong> 具有更强的分类能力，能看透隐变量 <strong>z</strong> 的实质和归属</li>
-</ul>
-</li>
-</ol>
-<p>Ps.整体思路比较清晰，就是<strong>自回归</strong>那个部分不知道是怎么具体实现的</p>
-<hr>
-<p>Quantitative and Qualitative Experiments**【定量 和 定性 实验】</p>
-<hr>
-<p>Tencent :LPCNet, </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;train</span><br><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;validation</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py timit -gpu 1</span><br></pre></td></tr></table></figure>
 
 
 
 
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export EXPR_ID&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID</span><br><span class="line">export DATA_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb</span><br><span class="line">export CHECKPOINT_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR</span><br><span class="line">export CODE_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">cd &#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">CUDA_VISIBLE_DEVICES&#x3D;1  </span><br><span class="line">python train.py --data &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --root &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR --save &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.randn(<span class="number">10000</span>, <span class="number">1000</span>)</span><br><span class="line">b = torch.randn(<span class="number">1000</span>, <span class="number">2000</span>)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t1 = time.time()</span><br><span class="line">print(a.device, t1 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">device = torch.device(<span class="string">'cuda'</span>)</span><br><span class="line">a = a.to(device)</span><br><span class="line">b = b.to(device)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CelebA64 数据预处理</span><br><span class="line"></span><br><span class="line">cd $CODE_DIR&#x2F;scripts</span><br><span class="line">python create_celeba64_lmdb.py --split train --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split valid --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split test  --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
+<h1 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda -V </span><br><span class="line">conda info  </span><br><span class="line">conda config --get channels</span><br><span class="line">conda config --show</span><br><span class="line">vim ~&#x2F;.condarc    </span><br><span class="line"></span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;free&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;main&#x2F;</span><br><span class="line"></span><br><span class="line">conda config --remove-key channels</span><br></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python create_celeba64_lmdb.py --split train --img_path ..&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path ..&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
+<h1 id="3-批处理文件改后缀"><a href="#3-批处理文件改后缀" class="headerlink" title="3. 批处理文件改后缀"></a>3. 批处理文件改后缀</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --split&#x3D;validation</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train.py --data $DATA_DIR&#x2F;celeba64_lmdb --root $CHECKPOINT_DIR --save $EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
-
-<p>/Users/huangshengjie/Desktop/NVAE/scripts/data1/datasets/imagenet-oord</p>
 ]]></content>
       <categories>
-        <category>论文阅读笔记</category>
+        <category>-[Torch]</category>
       </categories>
       <tags>
-        <tag>VC</tag>
-        <tag>论文阅读笔记</tag>
+        <tag>-[Torch]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1.两数之和</title>
+    <url>/2020/06/21/1.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg" alt="img"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183108.png" alt="image-20200621235419362"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183128.png" alt="image-20200621235438971"></p>
+<h1 id="1-HashMap"><a href="#1-HashMap" class="headerlink" title="1. HashMap"></a>1. HashMap</h1><ul>
+<li>发现很多接发都用到了map，其中C++的vector容器，java是HashMap</li>
+<li>涉及到之前数据结构盲区 <strong>红黑树</strong> <a href="https://www.cnblogs.com/shoulinniao/p/11966194.html" target="_blank" rel="noopener">https://www.cnblogs.com/shoulinniao/p/11966194.html</a></li>
+<li></li>
+</ul>
+<hr>
+<h1 id="2-《Java核心技术卷一》P372，chap9-3：映射"><a href="#2-《Java核心技术卷一》P372，chap9-3：映射" class="headerlink" title="2.《Java核心技术卷一》P372，chap9.3：映射"></a>2.《Java核心技术卷一》P372，chap9.3：映射</h1><ul>
+<li>映射 <strong>MAP</strong> 数据结构= 「HashMap」&amp;&amp;「TreeMap」</li>
+<li>存放 {键<strong>KEY</strong>：值<strong>VALUE</strong>}对</li>
+<li>都只对 <strong>键（KEY）</strong>进行处理（ <strong>散列</strong>&amp;&amp; <strong>搜索树排序</strong>  ）</li>
+</ul>
+<h1 id="3-相关方法函数："><a href="#3-相关方法函数：" class="headerlink" title="3.相关方法函数："></a>3.相关方法函数：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//哈希map初始化，自己定义Key和Value的类型</span></span><br><span class="line">Map&lt;String, Employee&gt; staff = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个employee对象，用作Value</span></span><br><span class="line">Employee harry = <span class="keyword">new</span> Employee(<span class="string">"Harry Hacker"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//1.：map.put（key，value）方法：将 键值对 放进HashMap</span></span><br><span class="line">staff.put(<span class="string">"123456"</span>,harry)<span class="comment">//</span></span><br><span class="line"><span class="comment">//同一个key存两次，会覆盖，并且返回的是上一次存储的 Value值；</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2.：map.get(key) 方法：按照 Key 的值，来从HashMap中获取Value</span></span><br><span class="line">String id = <span class="string">"123456"</span>;</span><br><span class="line">Employee e = staff.get(id);</span><br><span class="line"></span><br><span class="line"><span class="comment">//get()方法还可以人为设置默认值：</span></span><br><span class="line">Map&lt;String, Integer&gt; score = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="keyword">int</span> score = score.get(id,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//放这个Key对应的Value不存在时，返回 0；</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><ol>
+<li><strong>import</strong> java.util.HashMap;//导入</li>
+<li><strong>HashMap&lt;K, V&gt; map = new HashMap&lt;K, V&gt;（）;</strong>//定义map，K和V是类，<strong><em>不允许是基本类型？</em></strong></li>
+<li><strong>put（K， V）</strong></li>
+<li><strong>V get（K）</strong></li>
+<li><strong>V remove（K）</strong>//移除K键的值，返回的是V，可以不接收</li>
+<li><strong>size（）</strong>//返回映射Map中的元素数目</li>
+<li><strong>replace（）</strong>//替换</li>
+</ol>
+</li>
+<li><pre><code class="java"> map.replace( Key,Value );
+&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
+</li>
+<li><p><strong>9. computeIfAbsent（）</strong>//</p>
+</li>
+<li><pre><code class="java"><span class="comment">//如果key键为java的,就添加，并且value为key键的长度</span>
+<span class="comment">//这个算子就是一个和put功能差不多的算子，都是往map里面添加数据。</span>
+
+map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).length());
+&lt;!--￼<span class="number">2</span>--&gt;</code></pre>
+</li>
+<li></li>
+</ul>
+<hr>
+<h1 id="4-关于遍历方法："><a href="#4-关于遍历方法：" class="headerlink" title="4.关于遍历方法："></a>4.关于遍历方法：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回所有 Key-Value 对：</span></span><br><span class="line"><span class="keyword">for</span>(Map.Entry n: map.entrySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有 Key：</span></span><br><span class="line"><span class="keyword">for</span>(String n : map.keySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有Value：</span></span><br><span class="line"><span class="keyword">for</span>(Integer n: map.values())&#123;</span><br><span class="line">		System.out.println(n);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h1 id="5-其他："><a href="#5-其他：" class="headerlink" title="5.其他："></a>5.其他：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183135.png" alt="image-20200622181415228"></p>
+<ul>
+<li><h2 id="HashMap中链表转换成红黑树的操作——treeifyBin"><a href="#HashMap中链表转换成红黑树的操作——treeifyBin" class="headerlink" title="HashMap中链表转换成红黑树的操作——treeifyBin()"></a>HashMap中链表转换成红黑树的操作——treeifyBin()</h2></li>
+<li><p><a href="https://www.jianshu.com/p/309ea054cbc9" target="_blank" rel="noopener">https://www.jianshu.com/p/309ea054cbc9</a></p>
+</li>
+</ul>
+<hr>
+<h1 id="6-整理下HashMap里面的常见面试考点："><a href="#6-整理下HashMap里面的常见面试考点：" class="headerlink" title="6.整理下HashMap里面的常见面试考点："></a>6.整理下HashMap里面的常见面试考点：</h1><ol>
+<li><h2 id="HashMap-默认容量："><a href="#HashMap-默认容量：" class="headerlink" title="HashMap 默认容量："></a>HashMap 默认容量：</h2><ul>
+<li><strong>默认容量是：16 = 1 &lt;&lt; 4（位移动 = $1000_2$ =  $16_{10}$）；</strong></li>
+<li><strong>默认负载因子是：0.75（根据）</strong>（服从泊松分布）：红黑树部分也是这个原理：</li>
+<li>桶中的节点个数服从泊松分布；</li>
+<li>取 $\lambda = 0.5$ ，此时 ，每个捅中元素个数为 【0，8】个的概率分别如图所示，大于八个，基本已经到达百万分之一的级别，所以 <strong>Java8</strong> 中选择以 <strong>8</strong> 作为一个临界数字，来决定是否将链表转化为 <strong>红黑树</strong>；</li>
+<li>其中，在 最大桶元素个数 = 7 时，不变，作为缓冲，以防止过于频繁的转换消耗；  </li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183233.png" alt="image-20200622234017327"></p>
+</li>
+<li><h2 id="如何扩容？"><a href="#如何扩容？" class="headerlink" title="如何扩容？"></a>如何扩容？</h2><ul>
+<li>$2^n$ 的形式，每次翻两倍；（这和 Hash 的工作机制有关：（n - 1）&amp; hash）</li>
+<li>这样子的好处是，（$2^n$-1）= 一个全为1 的二进制树，计算更快；</li>
+</ul>
+</li>
+<li><h2 id="为什么HashMap的数组大小一定要是-2-的幂？"><a href="#为什么HashMap的数组大小一定要是-2-的幂？" class="headerlink" title="为什么HashMap的数组大小一定要是 2 的幂？"></a>为什么<strong>HashMap</strong>的数组大小一定要是 2 的幂？</h2><ul>
+<li><p>和 Hash 的工作机制有关；HashMap求索引时用&amp;运算,index=(n-1)&amp;hash</p>
+</li>
+<li><p>n = length : 表长度 = $2^n$ </p>
+</li>
+<li><p>（HashTable求索引用模运算，index = (hash &amp; 0x7FFFFFFF) % n）</p>
+</li>
+<li></li>
+<li><p>：只有这样才能保证 经过 ( $2^n $ ) 操作后得到全是1 的值；</p>
+</li>
+<li><p>然后这样才能经过非常快速的位运算，快速拿到数组下标，并且能保证分布均匀</p>
+</li>
+<li><p>若不是 $2^n$, 则运算过后，会有0存在，那么就会导致，不管 和他进行按位与 运算的数字是多少，都会出现某些位永远是 0，那么就会导致，某些 <strong>桶</strong> 里的元素永远都是 <strong>0个</strong>，不均匀且不合理； </p>
+</li>
+</ul>
+</li>
+<li><h2 id="HashMap-为什么是线程不安全的？"><a href="#HashMap-为什么是线程不安全的？" class="headerlink" title="HashMap 为什么是线程不安全的？"></a>HashMap 为什么是线程不安全的？</h2><ul>
+<li>在接近临界点时，若此时两个或者多个线程进行put操作，都会进行resize（扩容）和reHash（为key重新计算所在位置），而reHash在并发的情况下可能会形成<code>链表环</code>。</li>
+<li>总结来说就是在多线程环境下，使用HashMap进行put操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使用HashMap。</li>
+<li>为什么在并发执行put操作会引起死循环？是因为多线程会导致HashMap的Entry链表形成环形数据结构，一旦形成环形数据结构，Entry的next节点永远不为空，就会产生死循环获取Entry。</li>
+<li>jdk1.7的情况下，并发扩容时容易形成链表环，此情况在1.8时就好太多太多了。</li>
+<li>因为在1.8中当链表长度达到阈值（默认长度为8）时，链表会被改成树形（红黑树）结构。如果删剩节点变成7个并不会退回链表，而是保持不变，删剩6个时就会变回链表，7不变是缓冲，防止频繁变换。</li>
+<li>在JDK1.7中，当并发执行扩容操作时会造成环形链和数据丢失的情况。</li>
+<li>在JDK1.8中，在并发执行put操作时会发生数据覆盖的情况。</li>
+</ul>
+</li>
+<li><h2 id="Java-7-到-8-做了哪些改进？为什么？"><a href="#Java-7-到-8-做了哪些改进？为什么？" class="headerlink" title="Java 7 到 8 做了哪些改进？为什么？"></a>Java 7 到 8 做了哪些改进？为什么？</h2><ul>
+<li>如上题所述：</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="7-拓展"><a href="#7-拓展" class="headerlink" title="7.拓展"></a>7.拓展</h1><ol>
+<li><p>你能想到的做 HashMap 匹配的方法？ </p>
+<ul>
+<li><ol>
+<li>直接取模：（$-2^{31}$ ~ $2^{31} -1$ ）% n = （0 , $n-1$）</li>
+</ol>
+</li>
+<li>缺点：两个：<ul>
+<li>负数对 n求余，答案是负数；（所以需要额外把 负数 变为 正数 ）</li>
+<li>速度较慢（相比于位运算）：因为硬件中“求余”的本质是“除法”</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常考的“坑”：扩容：<strong>resize（）</strong></p>
+<ol>
+<li>扩容 <strong>resize( )</strong>包括 <strong>rehash ( )</strong></li>
+<li>机制是，当原来的容器中，容量达到了 <strong>0.75 * capacity</strong>， 再创建一个 <strong>2 * capacity</strong> 的新的桶；</li>
+<li>然后会把旧的桶中的数据 <strong>迁移</strong> 过去，迁移的时候，伴随着重新地对原始数据进行 <strong>rehash</strong> 计算；</li>
+<li><strong>resize（）</strong>里面的 <strong>transfer（）</strong>是一切问题的根源！！</li>
+</ol>
+</li>
+<li><ul>
+<li><strong>死锁问题：</strong>：本身是线程不安全的；完全是用户的问题；</li>
+</ul>
+</li>
+<li><ul>
+<li><strong>哈希表最致命的缺陷：哈希碰撞——&gt;</strong>最差情况下，会变成单链表；链表性能退化</li>
+</ul>
+</li>
+<li><ul>
+<li>所以在java7时代的 <strong>Tomcat（2011）</strong> 中引起了问题——&gt;可以通过一组精心设计的 恶意请求，造成 <strong>DoS（Deny of serveice）</strong></li>
+</ul>
+</li>
+<li><pre><code>&quot;Aa&quot;,&quot;BB&quot;,&quot;C#&quot; 的哈希值是相同的！
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">7. ![image-20200622231322114](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183234.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 8. Java8的改进点 &amp;&amp; 新API</span><br><span class="line"></span><br><span class="line">1. 从 **数组 + 链表**——&gt;**数组 + 链表 &#x2F; 红黑树**</span><br><span class="line"></span><br><span class="line">2. 扩容时，插入顺序的改进：（原来是，从旧的头先取，然后按照“头插法”插入新的桶，导致顺序不稳定）</span><br><span class="line"></span><br><span class="line">3. 函数方法：（java 8 引入了 Lamda 表达式）</span><br><span class="line"></span><br><span class="line">   1. forEach</span><br><span class="line">   2. compute 系列</span><br><span class="line"></span><br><span class="line">4.  Map 的新 API</span><br><span class="line"></span><br><span class="line">   1. Merge</span><br><span class="line">   2. replace</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   # 9.补充</span><br><span class="line"></span><br><span class="line">   1. **抑或运算**：可以更简单地理解为 **不进位的 加法 ！**</span><br><span class="line">   2. 红黑树转换，并不是要把整张表都从链表改成红黑树，而是只要 超过 8 个元素的 那个桶，改一下形式，就行了：</span><br><span class="line">   3. ![image-20200623000116947](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183235.png)</span><br><span class="line">   4. 二叉平衡树，平均查找时间：O（$log N$）</span><br><span class="line">   5. 单纯的二叉树，有个极端情况：插入顺序是有序的，那么就会造成演化成 **单链表**</span><br><span class="line">   6. 而红黑树，经过一定的旋转，保证了查找的效率（具体再仔细看看书）</span><br><span class="line">   7. **新的 Java8 中的 resize（）函数**：改进成了 **扩容时** 能保持原来的顺序，但是仍然不能保证 **线程安全**，只能说是大搭建撒后了线程冲突的概率。</span><br><span class="line">   8. 所以未来可能不会再多线程情况下遇到问题，但是还是不能放心地在多线程环境下使用它！（**Linux中的任务调度 是多线程的，有用到 HashMap**）</span><br><span class="line">   9. **HashCode** ： 默认使用 **32位** 的 **Int** 的**HashCode**；</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   # 10.面试题常见：</span><br><span class="line"></span><br><span class="line">   1. 为什么用 数组 +链表：经典的学院派操作</span><br><span class="line">   2. Hash 冲突你还知道哪些解决办法：可以在冲突的桶里面，再套一层 Hash 表；即，冲突的进行二次分流；（表中再有个表）</span><br><span class="line">   3. 用Lin课的Li身体代替数组结构可以吗？：不可以，数组的随机访问是 O（1）的，不受数组长度的影响，二链表的顺序访问速度是 O（n），不能起到随机访问的效果；</span><br><span class="line">   4. get（）的操作？：如果第一个元素就是要求的话，那么就直接返回它；不是的话，那么，先判断该桶是什么结构，如果是红黑树，那么就用树的查找方法 查找；否则若是链表结构，就采用链表的顺序访问形式访问</span><br><span class="line">   5. 为什么 String 、Integer 这样的 wrapper 类 适合作为键？：因为String是final，具有不变性，而且已经重写了 equals（）和hashcode（）方法了。不变性是必要的！因为 为了要计算 hashcode（），就要防止键改变，如果键再嵌入时和获取时返回不同的 hashcode 的话，就不能从 HashMap 中找到你想要的对象。</span><br><span class="line">   6. 如果HashMap的大小超过了负载因子（load factor）定义的容量怎么办？：扩容：resize（） &amp; rehash（）「注意，resize（）的效率非常低！！！」所以如果预先知道有一个很大的表要创建，那么可以预先再创建时，就指定一个较大的空间，相当于时 **空间换时间**；避免未来的频繁resize（）花费很多时间。</span><br><span class="line"></span><br><span class="line">   ## </span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 11.红黑树：自己补充</span><br><span class="line"></span><br><span class="line">![截屏2020-06-23上午12.50.42](&#x2F;Users&#x2F;huangshengjie&#x2F;Desktop&#x2F;截屏2020-06-23上午12.50.42.png)</span><br><span class="line"></span><br><span class="line">* [B站课程](https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1tE411f7tP?from&#x3D;search&amp;seid&#x3D;2421763921920035607)：</span><br><span class="line">* [一份链接文章](https:&#x2F;&#x2F;blog.csdn.net&#x2F;Mr_Helloworld_&#x2F;article&#x2F;details&#x2F;106694724)</span><br><span class="line">* ![image-20200624005349275](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183236.png)</span><br><span class="line">* ![image-20200624005402070](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183237.png)</span><br><span class="line">* ![image-20200624005251467](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183238.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"># 12.正题：001:两数之和：Java版</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class twoSum_001 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;暴力法</span><br><span class="line">    public int[] twoSum_force(int[] nums, int target)&#123;</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            for(int j&#x3D;i+1;j&lt; nums.length;j++)&#123;</span><br><span class="line">                if(nums[j] &#x3D;&#x3D; target - nums[i])&#123;</span><br><span class="line">                    return new int[] &#123;i, j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum soluition&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;两遍 Hash，一遍存，一遍查取；</span><br><span class="line">    public int[] twoSum_HashTwice(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            map.put(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i&#x3D;0; i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complement &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complement) &amp;&amp; map.get(complement) !&#x3D; i)&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complement)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;一遍 Hash，先查，查不到就接着存；</span><br><span class="line">    public int[] twoSum_HashOnce(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complemenmt &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complemenmt))&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complemenmt)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+</code></pre></li>
+</ol>
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
@@ -930,52 +979,27 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>杂记</title>
-    <url>/2020/11/29/1129%E6%B5%8B%E8%AF%95Torch%20gpu%20%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-测试-gpu-可用性"><a href="#1-测试-gpu-可用性" class="headerlink" title="1.测试  gpu 可用性"></a>1.测试  gpu 可用性</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'1'</span></span><br><span class="line">print(torch.version.cuda)</span><br><span class="line">print(torch.__version__)</span><br><span class="line">print(torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'0'</span></span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">tf.test.is_gpu_available()</span><br></pre></td></tr></table></figure>
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-<hr>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install -c conda-forge librosa</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install tensorflow-gpu&#x3D;&#x3D;1.9.0  # 自动带cudatoolkit</span><br><span class="line"># 版本匹配信息：https:&#x2F;&#x2F;www.tensorflow.org&#x2F;install&#x2F;source#common_installation_problems</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py timit -gpu 1</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.randn(<span class="number">10000</span>, <span class="number">1000</span>)</span><br><span class="line">b = torch.randn(<span class="number">1000</span>, <span class="number">2000</span>)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t1 = time.time()</span><br><span class="line">print(a.device, t1 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">device = torch.device(<span class="string">'cuda'</span>)</span><br><span class="line">a = a.to(device)</span><br><span class="line">b = b.to(device)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda -V </span><br><span class="line">conda info  </span><br><span class="line">conda config --get channels</span><br><span class="line">conda config --show</span><br><span class="line">vim ~&#x2F;.condarc    </span><br><span class="line"></span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;free&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;main&#x2F;</span><br><span class="line"></span><br><span class="line">conda config --remove-key channels</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="3-批处理文件改后缀"><a href="#3-批处理文件改后缀" class="headerlink" title="3. 批处理文件改后缀"></a>3. 批处理文件改后缀</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
-]]></content>
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
       <categories>
-        <category>-[Torch]</category>
+        <category>-[Java, 算法] -[LeetCode]</category>
       </categories>
       <tags>
-        <tag>-[Torch]</tag>
+        <tag>-[LeetCode] -[动态规划]</tag>
       </tags>
   </entry>
   <entry>
@@ -1054,81 +1078,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </categories>
       <tags>
         <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>16.最接近的三数之和 &amp;&amp; 数组排序（默认升）</title>
-    <url>/2020/06/24/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&amp;&amp;%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-知识点："><a href="#1-知识点：" class="headerlink" title="1.知识点："></a>1.知识点：</h1><ul>
-<li>双指针</li>
-<li>数组排序（默认升序）；自定义降序</li>
-</ul>
-<h1 id="2-排序代码"><a href="#2-排序代码" class="headerlink" title="2.排序代码"></a>2.排序代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Java 中 实现 数组的排序</span></span><br><span class="line"><span class="comment"> * 默认是 上升序列；</span></span><br><span class="line"><span class="comment"> * 若要 下降，则默认需要 Integer 或者 Float 等 "类"类型，不能使用基础类型；</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 最接近的三数之和<span class="title">_16</span>  </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//注意，要想改变默认的排列顺序，不能使用基本类型（int,double, char）,而要使用它们对应的类</span></span><br><span class="line">        Integer[] arr = &#123;<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        <span class="comment">//定义一个自定义类MyComparator的对象</span></span><br><span class="line">      <span class="comment">//法一：实现降序；需要类型，不能是基础类型</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr,Collections.reverseOrder());</span></span><br><span class="line">      <span class="comment">//法二：实现降序</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr, (a,b) -&gt; (b - a));         </span></span><br><span class="line"></span><br><span class="line">      <span class="comment">//法三：需要自己重写 Comparator</span></span><br><span class="line">        Comparator cmp = <span class="keyword">new</span> MyComparator();      </span><br><span class="line">        Arrays.sort(arr, cmp);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : arr) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//若得到的是 int ，需要先手动转为 Integer 类型！</span></span><br><span class="line">        <span class="keyword">int</span> scores[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">89</span>,<span class="number">4</span>&#125;;</span><br><span class="line">        Integer newScores[] = <span class="keyword">new</span> Integer [<span class="number">5</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;scores.length;i++)&#123;</span><br><span class="line"><span class="comment">//            newScores[i]= new Integer(scores[i]);</span></span><br><span class="line">            newScores[i] = scores[i];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        Arrays.sort(newScores,Collections.reverseOrder());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : newScores) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现Comparator接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="comment">//作用是检查下面的方法名是不是父类中所有的，也起到注释的作用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Integer a, Integer b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &gt; b ? -<span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><h2 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h2></li>
-<li><pre><code class="java">Collections.reverseOrder()
-&lt;!--￼<span class="number">1</span>--&gt;
-
-* 道理同上</code></pre>
-</li>
-<li><pre><code class="java">自己重写 Comparator
-&lt;!--￼<span class="number">2</span>--&gt;
-
-才可以实现 用 <span class="keyword">int</span> 类型直接排序（默认是升序列）</code></pre>
-</li>
-<li><p>若要降序，基本都需要 Integer 类型；</p>
-</li>
-<li><p>若是 int 基础类型，那么需要手动 转换一下类型；</p>
-</li>
-</ul>
-<hr>
-<h1 id="3-题目："><a href="#3-题目：" class="headerlink" title="3.题目："></a>3.题目：</h1><h2 id="寻找数组中三个数字之和，要求和最接近于目标数值"><a href="#寻找数组中三个数字之和，要求和最接近于目标数值" class="headerlink" title="寻找数组中三个数字之和，要求和最接近于目标数值"></a>寻找数组中三个数字之和，要求和最接近于目标数值</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183440.png" alt="image-20200624135415119"></p>
-<ul>
-<li><p>法一：暴力：O（$N^3$）</p>
-</li>
-<li><p>```java<br>//法一：暴力 O(n^3)<br> int best = 100000;<br> int diff = 100000;<br> for(int i=0;i&lt;nums.length;i++){</p>
-<pre><code>for(int j = i+1;j&lt;nums.length;j++){
-    for(int k = j+1;k&lt;nums.length;k++){
-        if(Math.abs(nums[i]+nums[j]+nums[k] - target) &lt; diff){
-            diff = Math.abs(nums[i]+nums[j]+nums[k] - target);
-            best = nums[i]+nums[j]+nums[k];
-        }
-    }
-}</code></pre><p> }<br> return best;</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">* </span><br><span class="line"></span><br><span class="line">* 法二：双指针：第一个元素从头到尾遍历，二、三元素从表头、尾向中间靠拢。</span><br><span class="line"></span><br><span class="line">  * 好处是：省掉了很多没必要的不可能组合；（有点剪枝的意思了）</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class 最接近的三数之和_16 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public int threeSumClosest(int[] nums, int target)&#123;</span><br><span class="line">        Arrays.sort(nums);&#x2F;&#x2F;升序排列</span><br><span class="line">        int n &#x3D; nums.length;</span><br><span class="line">        int best &#x3D; 10001000;</span><br><span class="line"></span><br><span class="line">        for(int i &#x3D; 0;i &lt; n; i++)&#123;</span><br><span class="line">            &#x2F;&#x2F;若下一个元素和当前元素内容一样，则可以跳过；</span><br><span class="line">            &#x2F;&#x2F;continue，直接跳过当前循环，进入下一次循环；</span><br><span class="line">            if(i&gt;0 &amp;&amp; nums[i] &#x3D;&#x3D; nums[i-1])&#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;使用双指针，枚举 b 和 c；</span><br><span class="line">            int j &#x3D; i+1, k &#x3D; n-1;</span><br><span class="line">            while(j &lt; k)&#123;</span><br><span class="line">                int sum &#x3D; nums[i] + nums[j] + nums[k];</span><br><span class="line">                &#x2F;&#x2F;如果直接等于target，那么直接返回，最接近；</span><br><span class="line">                if(sum &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return target;</span><br><span class="line">                &#125;</span><br><span class="line">                if(Math.abs(sum - target) &lt; Math.abs(best - target))&#123;</span><br><span class="line">                    best &#x3D; sum;</span><br><span class="line">                &#125;</span><br><span class="line">                if(sum &gt; target)&#123;</span><br><span class="line">                    int k0 &#x3D; k - 1;</span><br><span class="line">                    &#x2F;&#x2F;开始移动 c 的指针，直到比原本的 c 值要小；</span><br><span class="line">                    &#x2F;&#x2F; 向左移动到下一个不想等的元素；</span><br><span class="line">                    while(j &lt; k0 &amp;&amp; nums[k0] &#x3D;&#x3D; nums[k])&#123;</span><br><span class="line">                        --k0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    k &#x3D; k0;  &#x2F;&#x2F; 如果发生 k &#x3D; k0 &#x3D;&#x3D; j;那么会退出现在的 while(j &lt; k)</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    &#x2F;&#x2F;如果 sum &lt; target，那么就把 b 指针向左移动；</span><br><span class="line">                    int j0 &#x3D; j+1;</span><br><span class="line">                    while(j0 &lt; k &amp;&amp; nums[j0] &#x3D;&#x3D; nums[j])&#123;</span><br><span class="line">                        ++j0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    j &#x3D; j0;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return best;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-        <tag>双指针</tag>
       </tags>
   </entry>
   <entry>
@@ -1244,38 +1193,54 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>67. 二进制求和</title>
-    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
-<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
+    <title>16.最接近的三数之和 &amp;&amp; 数组排序（默认升）</title>
+    <url>/2020/06/24/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&amp;&amp;%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-知识点："><a href="#1-知识点：" class="headerlink" title="1.知识点："></a>1.知识点：</h1><ul>
+<li>双指针</li>
+<li>数组排序（默认升序）；自定义降序</li>
 </ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
+<h1 id="2-排序代码"><a href="#2-排序代码" class="headerlink" title="2.排序代码"></a>2.排序代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Java 中 实现 数组的排序</span></span><br><span class="line"><span class="comment"> * 默认是 上升序列；</span></span><br><span class="line"><span class="comment"> * 若要 下降，则默认需要 Integer 或者 Float 等 "类"类型，不能使用基础类型；</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 最接近的三数之和<span class="title">_16</span>  </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//注意，要想改变默认的排列顺序，不能使用基本类型（int,double, char）,而要使用它们对应的类</span></span><br><span class="line">        Integer[] arr = &#123;<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        <span class="comment">//定义一个自定义类MyComparator的对象</span></span><br><span class="line">      <span class="comment">//法一：实现降序；需要类型，不能是基础类型</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr,Collections.reverseOrder());</span></span><br><span class="line">      <span class="comment">//法二：实现降序</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr, (a,b) -&gt; (b - a));         </span></span><br><span class="line"></span><br><span class="line">      <span class="comment">//法三：需要自己重写 Comparator</span></span><br><span class="line">        Comparator cmp = <span class="keyword">new</span> MyComparator();      </span><br><span class="line">        Arrays.sort(arr, cmp);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : arr) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//若得到的是 int ，需要先手动转为 Integer 类型！</span></span><br><span class="line">        <span class="keyword">int</span> scores[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">89</span>,<span class="number">4</span>&#125;;</span><br><span class="line">        Integer newScores[] = <span class="keyword">new</span> Integer [<span class="number">5</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;scores.length;i++)&#123;</span><br><span class="line"><span class="comment">//            newScores[i]= new Integer(scores[i]);</span></span><br><span class="line">            newScores[i] = scores[i];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        Arrays.sort(newScores,Collections.reverseOrder());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : newScores) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现Comparator接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="comment">//作用是检查下面的方法名是不是父类中所有的，也起到注释的作用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Integer a, Integer b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &gt; b ? -<span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
-<li>Java 的反转函数 reverse() 将字符串反转</li>
-<li>string.reverse（）；</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
-<li>位运算符：</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
-<li>^ : 按位抑或：不进位的加法：</li>
+<li><h2 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h2></li>
+<li><pre><code class="java">Collections.reverseOrder()
+&lt;!--￼<span class="number">1</span>--&gt;
+
+* 道理同上</code></pre>
+</li>
+<li><pre><code class="java">自己重写 Comparator
+&lt;!--￼<span class="number">2</span>--&gt;
+
+才可以实现 用 <span class="keyword">int</span> 类型直接排序（默认是升序列）</code></pre>
+</li>
+<li><p>若要降序，基本都需要 Integer 类型；</p>
+</li>
+<li><p>若是 int 基础类型，那么需要手动 转换一下类型；</p>
+</li>
 </ul>
-<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
-<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
-<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
-</ul>
-<p>是个学习的机会；</p>
 <hr>
-<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
+<h1 id="3-题目："><a href="#3-题目：" class="headerlink" title="3.题目："></a>3.题目：</h1><h2 id="寻找数组中三个数字之和，要求和最接近于目标数值"><a href="#寻找数组中三个数字之和，要求和最接近于目标数值" class="headerlink" title="寻找数组中三个数字之和，要求和最接近于目标数值"></a>寻找数组中三个数字之和，要求和最接近于目标数值</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183440.png" alt="image-20200624135415119"></p>
+<ul>
+<li><p>法一：暴力：O（$N^3$）</p>
+</li>
+<li><p>```java<br>//法一：暴力 O(n^3)<br> int best = 100000;<br> int diff = 100000;<br> for(int i=0;i&lt;nums.length;i++){</p>
+<pre><code>for(int j = i+1;j&lt;nums.length;j++){
+    for(int k = j+1;k&lt;nums.length;k++){
+        if(Math.abs(nums[i]+nums[j]+nums[k] - target) &lt; diff){
+            diff = Math.abs(nums[i]+nums[j]+nums[k] - target);
+            best = nums[i]+nums[j]+nums[k];
+        }
+    }
+}</code></pre><p> }<br> return best;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">* </span><br><span class="line"></span><br><span class="line">* 法二：双指针：第一个元素从头到尾遍历，二、三元素从表头、尾向中间靠拢。</span><br><span class="line"></span><br><span class="line">  * 好处是：省掉了很多没必要的不可能组合；（有点剪枝的意思了）</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class 最接近的三数之和_16 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public int threeSumClosest(int[] nums, int target)&#123;</span><br><span class="line">        Arrays.sort(nums);&#x2F;&#x2F;升序排列</span><br><span class="line">        int n &#x3D; nums.length;</span><br><span class="line">        int best &#x3D; 10001000;</span><br><span class="line"></span><br><span class="line">        for(int i &#x3D; 0;i &lt; n; i++)&#123;</span><br><span class="line">            &#x2F;&#x2F;若下一个元素和当前元素内容一样，则可以跳过；</span><br><span class="line">            &#x2F;&#x2F;continue，直接跳过当前循环，进入下一次循环；</span><br><span class="line">            if(i&gt;0 &amp;&amp; nums[i] &#x3D;&#x3D; nums[i-1])&#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;使用双指针，枚举 b 和 c；</span><br><span class="line">            int j &#x3D; i+1, k &#x3D; n-1;</span><br><span class="line">            while(j &lt; k)&#123;</span><br><span class="line">                int sum &#x3D; nums[i] + nums[j] + nums[k];</span><br><span class="line">                &#x2F;&#x2F;如果直接等于target，那么直接返回，最接近；</span><br><span class="line">                if(sum &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return target;</span><br><span class="line">                &#125;</span><br><span class="line">                if(Math.abs(sum - target) &lt; Math.abs(best - target))&#123;</span><br><span class="line">                    best &#x3D; sum;</span><br><span class="line">                &#125;</span><br><span class="line">                if(sum &gt; target)&#123;</span><br><span class="line">                    int k0 &#x3D; k - 1;</span><br><span class="line">                    &#x2F;&#x2F;开始移动 c 的指针，直到比原本的 c 值要小；</span><br><span class="line">                    &#x2F;&#x2F; 向左移动到下一个不想等的元素；</span><br><span class="line">                    while(j &lt; k0 &amp;&amp; nums[k0] &#x3D;&#x3D; nums[k])&#123;</span><br><span class="line">                        --k0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    k &#x3D; k0;  &#x2F;&#x2F; 如果发生 k &#x3D; k0 &#x3D;&#x3D; j;那么会退出现在的 while(j &lt; k)</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    &#x2F;&#x2F;如果 sum &lt; target，那么就把 b 指针向左移动；</span><br><span class="line">                    int j0 &#x3D; j+1;</span><br><span class="line">                    while(j0 &lt; k &amp;&amp; nums[j0] &#x3D;&#x3D; nums[j])&#123;</span><br><span class="line">                        ++j0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    j &#x3D; j0;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return best;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
 ]]></content>
       <categories>
         <category>-[Java, 算法] -[LeetCode]</category>
       </categories>
       <tags>
         <tag>LeetCode</tag>
+        <tag>双指针</tag>
       </tags>
   </entry>
   <entry>
@@ -1307,6 +1272,24 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>C++</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Pytorch —— tensor 乘法的笔记</title>
+    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
+<p>参考链接：</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
+</li>
+<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
+</li>
+</ul>
+<hr>
+]]></content>
   </entry>
   <entry>
     <title>《Voice Conversion with transformer network-samsung》论文总结</title>
@@ -1369,6 +1352,41 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>67. 二进制求和</title>
+    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
+<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
+<ul>
+<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
+<li>Java 的反转函数 reverse() 将字符串反转</li>
+<li>string.reverse（）；</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
+<li>位运算符：</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
+<li>^ : 按位抑或：不进位的加法：</li>
+</ul>
+<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
+<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
+<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
+</ul>
+<p>是个学习的机会；</p>
+<hr>
+<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
@@ -1451,24 +1469,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
   </entry>
   <entry>
-    <title>Pytorch —— tensor 乘法的笔记</title>
-    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
-<p>参考链接：</p>
-<ul>
-<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
-</li>
-<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
-</li>
-</ul>
-<hr>
-]]></content>
-  </entry>
-  <entry>
     <title>Shell_find命令备忘小结</title>
     <url>/2020/11/27/Shell_find%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id><a href="#" class="headerlink" title></a></h2><p><a href="https://www.cnblogs.com/huyuanblog/p/10136286.html" target="_blank" rel="noopener">参考文章</a></p>
@@ -1529,6 +1529,24 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>-[Shell] -[Kaldi]</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Pytorch —— tensor 乘法的笔记的副本</title>
+    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0%E7%9A%84%E5%89%AF%E6%9C%AC/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
+<p>参考链接：</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
+</li>
+<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
+</li>
+</ul>
+<hr>
+]]></content>
   </entry>
   <entry>
     <title>Sox环境解决办法</title>
@@ -1628,73 +1646,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>1103——WaveNet &amp; 机器学习 考点小结</title>
-    <url>/2020/11/03/WaveNet%E5%B0%8F%E7%BB%93/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="WaveNet小结"><a href="#WaveNet小结" class="headerlink" title="WaveNet小结"></a>WaveNet小结</h2><a id="more"></a>
-
-<ol>
-<li><h4 id="WaveNet-一种语音合成的模型-https-www-pianshen-com-article-43431455160-image-20201016164508908-https-blog-1301959139-cos-ap-beijing-myqcloud-com-picGo-20201016164510-png"><a href="#WaveNet-一种语音合成的模型-https-www-pianshen-com-article-43431455160-image-20201016164508908-https-blog-1301959139-cos-ap-beijing-myqcloud-com-picGo-20201016164510-png" class="headerlink" title="WaveNet:一种语音合成的模型 https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)"></a>WaveNet:一种语音合成的模型 <a href="https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)" target="_blank" rel="noopener">https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)</a></h4></li>
-<li><h3 id="WaveNet，一种端到端的语音合成模型https-zhuanlan-zhihu-com-p-51359150"><a href="#WaveNet，一种端到端的语音合成模型https-zhuanlan-zhihu-com-p-51359150" class="headerlink" title="WaveNet，一种端到端的语音合成模型https://zhuanlan.zhihu.com/p/51359150"></a>WaveNet，一种端到端的语音合成模型<img src="/2020/11/03/WaveNet%E5%B0%8F%E7%BB%93/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20201016164427.png" alt="image-20201016164426034"><a href="https://zhuanlan.zhihu.com/p/51359150" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/51359150</a></h3></li>
-</ol>
-<hr>
-<h3 id="预测："><a href="#预测：" class="headerlink" title="预测："></a>预测：</h3><ol>
-<li><p>机器学习各种 Loss 总结：</p>
-<ol>
-<li><a href="https://blog.csdn.net/perfect1t/article/details/88199179" target="_blank" rel="noopener">https://blog.csdn.net/perfect1t/article/details/88199179</a></li>
-<li><a href="https://www.cnblogs.com/guoyaohua/p/9217206.html" target="_blank" rel="noopener">https://www.cnblogs.com/guoyaohua/p/9217206.html</a></li>
-<li><a href="https://www.cnblogs.com/lliuye/p/9549881.html" target="_blank" rel="noopener">https://www.cnblogs.com/lliuye/p/9549881.html</a></li>
-</ol>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181353.png" alt="image-20201016181352142"></p>
-</li>
-<li><p><img src="/2020/11/03/WaveNet%E5%B0%8F%E7%BB%93/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201019005049252.png" alt="image-20201019005049252"><a href="https://zhuanlan.zhihu.com/p/74874291" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74874291</a></p>
-</li>
-<li><p>常见优化算法及其优缺点：</p>
-<ol>
-<li><p><a href="https://blog.csdn.net/qq_19446965/article/details/81591521" target="_blank" rel="noopener">https://blog.csdn.net/qq_19446965/article/details/81591521</a> </p>
-</li>
-<li><p><a href="http://www.julyedu.com/question/big/kp_id/23/ques_id/1524![image-20201016181800596](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181802.png)![image-20201016181557363](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181558.png)" target="_blank" rel="noopener">http://www.julyedu.com/question/big/kp_id/23/ques_id/1524![image-20201016181800596](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181802.png)![image-20201016181557363](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181558.png)</a></p>
-</li>
-<li><h3 id="深度学习中优化方法——momentum、Nesterov-Momentum、AdaGrad、Adadelta、RMSprop、Adam"><a href="#深度学习中优化方法——momentum、Nesterov-Momentum、AdaGrad、Adadelta、RMSprop、Adam" class="headerlink" title="深度学习中优化方法——momentum、Nesterov Momentum、AdaGrad、Adadelta、RMSprop、Adam"></a>深度学习中优化方法——momentum、Nesterov Momentum、AdaGrad、Adadelta、RMSprop、Adam</h3><ol>
-<li><h3 id="https-blog-csdn-net-u012328159-article-details-80311892-image-20201019162755198-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201019162757-png"><a href="#https-blog-csdn-net-u012328159-article-details-80311892-image-20201019162755198-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201019162757-png" class="headerlink" title="https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)"></a><a href="https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)</a></h3></li>
-<li><p><a href="https://blog.csdn.net/u012328159/article/details/80252012![image-20201019162915626](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019162916.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012328159/article/details/80252012![image-20201019162915626](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019162916.png)</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/yangmang/p/7477802.html![image-20201019165031144](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019165036.png)" target="_blank" rel="noopener">https://www.cnblogs.com/yangmang/p/7477802.html![image-20201019165031144](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019165036.png)</a></p>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>常用激活函数：<a href="https://zhuanlan.zhihu.com/p/32610035![image-20201016224701337](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201016224703.png)" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32610035![image-20201016224701337](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201016224703.png)</a></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224719.jpg" alt="img"></p>
-</li>
-<li><p><a href="https://zhuanlan.zhihu.com/p/73214810![image-20201016224906446](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224907.png)" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/73214810![image-20201016224906446](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224907.png)</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/itmorn/p/11132494.html![image-20201019170355380](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170356.png)" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/p/11132494.html![image-20201019170355380](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170356.png)</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/itmorn/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%9D%A2%E8%AF%95%E9%A2%98/default.html?page=2![image-20201019170708536](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170710.png)" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%9D%A2%E8%AF%95%E9%A2%98/default.html?page=2![image-20201019170708536](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170710.png)</a></p>
-</li>
-</ol>
-<hr>
-<ol>
-<li><h6 id="A率13折线PCM编码的C语言实现-https-blog-csdn-net-u010480899-article-details-51172633-image-20201017001812322-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201017001813-png"><a href="#A率13折线PCM编码的C语言实现-https-blog-csdn-net-u010480899-article-details-51172633-image-20201017001812322-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201017001813-png" class="headerlink" title="A率13折线PCM编码的C语言实现 https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)"></a>A率13折线PCM编码的C语言实现 <a href="https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)" target="_blank" rel="noopener">https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)</a></h6></li>
-<li><p><a href="https://blog.csdn.net/u012323667/article/details/79214336?utm_medium=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecas![image-20201017003241394](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003242.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012323667/article/details/79214336?utm_medium=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecas![image-20201017003241394](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003242.png)</a></p>
-</li>
-<li><p>!                              <a href="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003854.png" target="_blank" rel="noopener">image-20201017003852920</a><a href="https://wenku.baidu.com/view/725f75bf1a37f111f1855b3c.html#![image-20201017003821332](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003822.png)" target="_blank" rel="noopener">https://wenku.baidu.com/view/725f75bf1a37f111f1855b3c.html#![image-20201017003821332](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003822.png)</a></p>
-</li>
-</ol>
-<p><strong>1</strong></p>
-]]></content>
-      <categories>
-        <category>语音</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>语音合成</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2020/06/07/hello-world/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
@@ -1777,7 +1728,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-mJGXmljN" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-ekdEkhSl" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -1831,6 +1782,73 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
       <tags>
         <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1103——WaveNet &amp; 机器学习 考点小结</title>
+    <url>/2020/11/03/WaveNet%E5%B0%8F%E7%BB%93/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="WaveNet小结"><a href="#WaveNet小结" class="headerlink" title="WaveNet小结"></a>WaveNet小结</h2><a id="more"></a>
+
+<ol>
+<li><h4 id="WaveNet-一种语音合成的模型-https-www-pianshen-com-article-43431455160-image-20201016164508908-https-blog-1301959139-cos-ap-beijing-myqcloud-com-picGo-20201016164510-png"><a href="#WaveNet-一种语音合成的模型-https-www-pianshen-com-article-43431455160-image-20201016164508908-https-blog-1301959139-cos-ap-beijing-myqcloud-com-picGo-20201016164510-png" class="headerlink" title="WaveNet:一种语音合成的模型 https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)"></a>WaveNet:一种语音合成的模型 <a href="https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)" target="_blank" rel="noopener">https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)</a></h4></li>
+<li><h3 id="WaveNet，一种端到端的语音合成模型https-zhuanlan-zhihu-com-p-51359150"><a href="#WaveNet，一种端到端的语音合成模型https-zhuanlan-zhihu-com-p-51359150" class="headerlink" title="WaveNet，一种端到端的语音合成模型https://zhuanlan.zhihu.com/p/51359150"></a>WaveNet，一种端到端的语音合成模型<img src="/2020/11/03/WaveNet%E5%B0%8F%E7%BB%93/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20201016164427.png" alt="image-20201016164426034"><a href="https://zhuanlan.zhihu.com/p/51359150" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/51359150</a></h3></li>
+</ol>
+<hr>
+<h3 id="预测："><a href="#预测：" class="headerlink" title="预测："></a>预测：</h3><ol>
+<li><p>机器学习各种 Loss 总结：</p>
+<ol>
+<li><a href="https://blog.csdn.net/perfect1t/article/details/88199179" target="_blank" rel="noopener">https://blog.csdn.net/perfect1t/article/details/88199179</a></li>
+<li><a href="https://www.cnblogs.com/guoyaohua/p/9217206.html" target="_blank" rel="noopener">https://www.cnblogs.com/guoyaohua/p/9217206.html</a></li>
+<li><a href="https://www.cnblogs.com/lliuye/p/9549881.html" target="_blank" rel="noopener">https://www.cnblogs.com/lliuye/p/9549881.html</a></li>
+</ol>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181353.png" alt="image-20201016181352142"></p>
+</li>
+<li><p><img src="/2020/11/03/WaveNet%E5%B0%8F%E7%BB%93/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201019005049252.png" alt="image-20201019005049252"><a href="https://zhuanlan.zhihu.com/p/74874291" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74874291</a></p>
+</li>
+<li><p>常见优化算法及其优缺点：</p>
+<ol>
+<li><p><a href="https://blog.csdn.net/qq_19446965/article/details/81591521" target="_blank" rel="noopener">https://blog.csdn.net/qq_19446965/article/details/81591521</a> </p>
+</li>
+<li><p><a href="http://www.julyedu.com/question/big/kp_id/23/ques_id/1524![image-20201016181800596](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181802.png)![image-20201016181557363](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181558.png)" target="_blank" rel="noopener">http://www.julyedu.com/question/big/kp_id/23/ques_id/1524![image-20201016181800596](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181802.png)![image-20201016181557363](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181558.png)</a></p>
+</li>
+<li><h3 id="深度学习中优化方法——momentum、Nesterov-Momentum、AdaGrad、Adadelta、RMSprop、Adam"><a href="#深度学习中优化方法——momentum、Nesterov-Momentum、AdaGrad、Adadelta、RMSprop、Adam" class="headerlink" title="深度学习中优化方法——momentum、Nesterov Momentum、AdaGrad、Adadelta、RMSprop、Adam"></a>深度学习中优化方法——momentum、Nesterov Momentum、AdaGrad、Adadelta、RMSprop、Adam</h3><ol>
+<li><h3 id="https-blog-csdn-net-u012328159-article-details-80311892-image-20201019162755198-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201019162757-png"><a href="#https-blog-csdn-net-u012328159-article-details-80311892-image-20201019162755198-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201019162757-png" class="headerlink" title="https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)"></a><a href="https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)</a></h3></li>
+<li><p><a href="https://blog.csdn.net/u012328159/article/details/80252012![image-20201019162915626](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019162916.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012328159/article/details/80252012![image-20201019162915626](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019162916.png)</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/yangmang/p/7477802.html![image-20201019165031144](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019165036.png)" target="_blank" rel="noopener">https://www.cnblogs.com/yangmang/p/7477802.html![image-20201019165031144](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019165036.png)</a></p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>常用激活函数：<a href="https://zhuanlan.zhihu.com/p/32610035![image-20201016224701337](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201016224703.png)" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32610035![image-20201016224701337](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201016224703.png)</a></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224719.jpg" alt="img"></p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/73214810![image-20201016224906446](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224907.png)" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/73214810![image-20201016224906446](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224907.png)</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/itmorn/p/11132494.html![image-20201019170355380](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170356.png)" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/p/11132494.html![image-20201019170355380](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170356.png)</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/itmorn/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%9D%A2%E8%AF%95%E9%A2%98/default.html?page=2![image-20201019170708536](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170710.png)" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%9D%A2%E8%AF%95%E9%A2%98/default.html?page=2![image-20201019170708536](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170710.png)</a></p>
+</li>
+</ol>
+<hr>
+<ol>
+<li><h6 id="A率13折线PCM编码的C语言实现-https-blog-csdn-net-u010480899-article-details-51172633-image-20201017001812322-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201017001813-png"><a href="#A率13折线PCM编码的C语言实现-https-blog-csdn-net-u010480899-article-details-51172633-image-20201017001812322-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201017001813-png" class="headerlink" title="A率13折线PCM编码的C语言实现 https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)"></a>A率13折线PCM编码的C语言实现 <a href="https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)" target="_blank" rel="noopener">https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)</a></h6></li>
+<li><p><a href="https://blog.csdn.net/u012323667/article/details/79214336?utm_medium=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecas![image-20201017003241394](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003242.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012323667/article/details/79214336?utm_medium=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecas![image-20201017003241394](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003242.png)</a></p>
+</li>
+<li><p>!                              <a href="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003854.png" target="_blank" rel="noopener">image-20201017003852920</a><a href="https://wenku.baidu.com/view/725f75bf1a37f111f1855b3c.html#![image-20201017003821332](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003822.png)" target="_blank" rel="noopener">https://wenku.baidu.com/view/725f75bf1a37f111f1855b3c.html#![image-20201017003821332](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003822.png)</a></p>
+</li>
+</ol>
+<p><strong>1</strong></p>
+]]></content>
+      <categories>
+        <category>语音</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>语音合成</tag>
       </tags>
   </entry>
   <entry>
@@ -2128,40 +2146,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
-    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
-
-<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
-<ul>
-<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
-<ul>
-<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
-</li>
-<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
-</li>
-<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
-</li>
-</ul>
-<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>-[语音]</category>
-      </categories>
-      <tags>
-        <tag>语音</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于ssh本地查看Tensorboard记录</title>
     <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
@@ -2197,6 +2181,40 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>Tensorboard，Tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
+    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
+
+<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
+<ul>
+<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
+<ul>
+<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
+</li>
+<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
+</li>
+<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
+</li>
+</ul>
+<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[语音]</category>
+      </categories>
+      <tags>
+        <tag>语音</tag>
       </tags>
   </entry>
   <entry>
@@ -2257,15 +2275,72 @@ tensorboard --logdir ./logs-tacotron
       </tags>
   </entry>
   <entry>
+    <title>python 切片的一些混淆点（备忘）</title>
+    <url>/2020/07/16/%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-经常混淆的py切片细节"><a href="#1-经常混淆的py切片细节" class="headerlink" title="1.经常混淆的py切片细节"></a>1.经常混淆的py切片细节</h2><a id="more"></a>
+
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200716200314.png" alt="image-20200716200313100"></p>
+<h1 id="python-中的-1-和-1"><a href="#python-中的-1-和-1" class="headerlink" title="python 中的 [:-1] 和 [::-1]"></a>python 中的 [:-1] 和 [::-1]</h1><ul>
+<li><p><a href="https://www.runoob.com/note/51257" target="_blank" rel="noopener">https://www.runoob.com/note/51257</a></p>
+</li>
+<li><pre><code class="python">a=<span class="string">'python'</span>
+b=a[::<span class="number">-1</span>]
+print(b) <span class="comment">#nohtyp</span>
+c=a[::<span class="number">-2</span>]
+print(c) <span class="comment">#nhy</span>
+<span class="comment">#从后往前数的话，最后一个位置为-1</span>
+d=a[:<span class="number">-1</span>]  <span class="comment">#从位置0到位置-1之前的数</span>
+print(d)  <span class="comment">#pytho</span>
+e=a[:<span class="number">-2</span>]  <span class="comment">#从位置0到位置-2之前的数</span>
+print(e)  <span class="comment">#pyth</span>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">* &#96;&#96;&#96;python</span><br><span class="line">  b &#x3D; a[i:j]   # 表示复制a[i]到a[j-1]，以生成新的list对象</span><br><span class="line">  </span><br><span class="line">  a &#x3D; [0,1,2,3,4,5,6,7,8,9]</span><br><span class="line">  b &#x3D; a[1:3]   # [1,2]</span><br><span class="line">  </span><br><span class="line">  # 当i缺省时，默认为0，即 a[:3]相当于 a[0:3]</span><br><span class="line">  # 当j缺省时，默认为len(alist), 即a[1:]相当于a[1:10]</span><br><span class="line">  # 当i,j都缺省时，a[:]就相当于完整复制一份a</span><br><span class="line">  </span><br><span class="line">  b &#x3D; a[i:j:s]    # 表示：i,j与上面的一样，但s表示步进，缺省为1.</span><br><span class="line">  # 所以a[i:j:1]相当于a[i:j]</span><br><span class="line">  </span><br><span class="line">  # 当s&lt;0时，i缺省时，默认为-1. j缺省时，默认为-len(a)-1</span><br><span class="line">  # 所以a[::-1]相当于 a[-1:-len(a)-1:-1]，也就是从最后一个元素到第一个元素复制一遍，即倒序。</span><br></pre></td></tr></table></figure>
+
+
+</code></pre>
+</li>
+</ul>
+<hr>
+<h2 id="2-关于-torch-的pad：full模式（相对于tf中的same模式）"><a href="#2-关于-torch-的pad：full模式（相对于tf中的same模式）" class="headerlink" title="2.关于 torch 的pad：full模式（相对于tf中的same模式）"></a>2.关于 torch 的pad：full模式（相对于tf中的same模式）</h2><p>$$<br>              H_{out} = \left\lfloor\frac{H_{in}  + 2 \times \text{padding}[0] - \text{dilation}[0]<br>                        \times (\text{kernel_size}[0] - 1) - 1}{\text{stride}[0]} + 1\right\rfloor</p>
+<pre><code>W_{out} = \left\lfloor\frac{W_{in}  + 2 \times \text{padding}[1] - \text{dilation}[1]
+          \times (\text{kernel_size}[1] - 1) - 1}{\text{stride}[1]} + 1\right\rfloor</code></pre><p>$$</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801174740.png" alt="image-20200801174738560"></p>
+<h2 id="相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。"><a href="#相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。" class="headerlink" title="相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。"></a>相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。</h2><ul>
+<li><strong>简单一点</strong>：先只看 t = kernel【0】// 2；</li>
+<li>Kernel【0】为奇数，那么padding就等于 t;</li>
+<li>否则，kernel【0】为偶数，那么padding就等于 【t - 1】</li>
+</ul>
+<hr>
+<h2 id="3-反卷积"><a href="#3-反卷积" class="headerlink" title="3.反卷积"></a>3.反卷积</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801184750.png" alt="image-20200801184748828"></p>
+<p><a href="https://blog.csdn.net/g11d111/article/details/82665265" target="_blank" rel="noopener">https://blog.csdn.net/g11d111/article/details/82665265</a></p>
+<ul>
+<li>反卷积这部分用的少，公式其实就是正卷积中，in 和 out 对调；</li>
+<li>只不过 反卷积没有了 正卷积 中 的 <strong>向下取整</strong> 的操作</li>
+<li>所以在反卷积中， 需要按规矩公式，简单计算一下padding 尺寸参数；</li>
+<li>最简单就是用局部代码输出看一下结果，看是否符合输入输出尺寸要求</li>
+</ul>
+<hr>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801193707.png" alt="image-20200801193706275"></p>
+<p><a href="https://blog.csdn.net/m0_37586991/article/details/87855342" target="_blank" rel="noopener">https://blog.csdn.net/m0_37586991/article/details/87855342</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801194743.png" alt="image-20200801194739307"></p>
+<hr>
+]]></content>
+      <categories>
+        <category>-[python]</category>
+      </categories>
+      <tags>
+        <tag>-[python] -[编程]</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-UrvJkhhh" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-WOJeQdpq" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-UrvJkhhh"),
+            element: document.getElementById("aplayer-WOJeQdpq"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -2345,71 +2420,6 @@ tensorboard --logdir ./logs-tacotron
 ]]></content>
   </entry>
   <entry>
-    <title>python 切片的一些混淆点（备忘）</title>
-    <url>/2020/07/16/%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-经常混淆的py切片细节"><a href="#1-经常混淆的py切片细节" class="headerlink" title="1.经常混淆的py切片细节"></a>1.经常混淆的py切片细节</h2><a id="more"></a>
-
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200716200314.png" alt="image-20200716200313100"></p>
-<h1 id="python-中的-1-和-1"><a href="#python-中的-1-和-1" class="headerlink" title="python 中的 [:-1] 和 [::-1]"></a>python 中的 [:-1] 和 [::-1]</h1><ul>
-<li><p><a href="https://www.runoob.com/note/51257" target="_blank" rel="noopener">https://www.runoob.com/note/51257</a></p>
-</li>
-<li><pre><code class="python">a=<span class="string">'python'</span>
-b=a[::<span class="number">-1</span>]
-print(b) <span class="comment">#nohtyp</span>
-c=a[::<span class="number">-2</span>]
-print(c) <span class="comment">#nhy</span>
-<span class="comment">#从后往前数的话，最后一个位置为-1</span>
-d=a[:<span class="number">-1</span>]  <span class="comment">#从位置0到位置-1之前的数</span>
-print(d)  <span class="comment">#pytho</span>
-e=a[:<span class="number">-2</span>]  <span class="comment">#从位置0到位置-2之前的数</span>
-print(e)  <span class="comment">#pyth</span>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">* &#96;&#96;&#96;python</span><br><span class="line">  b &#x3D; a[i:j]   # 表示复制a[i]到a[j-1]，以生成新的list对象</span><br><span class="line">  </span><br><span class="line">  a &#x3D; [0,1,2,3,4,5,6,7,8,9]</span><br><span class="line">  b &#x3D; a[1:3]   # [1,2]</span><br><span class="line">  </span><br><span class="line">  # 当i缺省时，默认为0，即 a[:3]相当于 a[0:3]</span><br><span class="line">  # 当j缺省时，默认为len(alist), 即a[1:]相当于a[1:10]</span><br><span class="line">  # 当i,j都缺省时，a[:]就相当于完整复制一份a</span><br><span class="line">  </span><br><span class="line">  b &#x3D; a[i:j:s]    # 表示：i,j与上面的一样，但s表示步进，缺省为1.</span><br><span class="line">  # 所以a[i:j:1]相当于a[i:j]</span><br><span class="line">  </span><br><span class="line">  # 当s&lt;0时，i缺省时，默认为-1. j缺省时，默认为-len(a)-1</span><br><span class="line">  # 所以a[::-1]相当于 a[-1:-len(a)-1:-1]，也就是从最后一个元素到第一个元素复制一遍，即倒序。</span><br></pre></td></tr></table></figure>
-
-
-</code></pre>
-</li>
-</ul>
-<hr>
-<h2 id="2-关于-torch-的pad：full模式（相对于tf中的same模式）"><a href="#2-关于-torch-的pad：full模式（相对于tf中的same模式）" class="headerlink" title="2.关于 torch 的pad：full模式（相对于tf中的same模式）"></a>2.关于 torch 的pad：full模式（相对于tf中的same模式）</h2><p>$$<br>              H_{out} = \left\lfloor\frac{H_{in}  + 2 \times \text{padding}[0] - \text{dilation}[0]<br>                        \times (\text{kernel_size}[0] - 1) - 1}{\text{stride}[0]} + 1\right\rfloor</p>
-<pre><code>W_{out} = \left\lfloor\frac{W_{in}  + 2 \times \text{padding}[1] - \text{dilation}[1]
-          \times (\text{kernel_size}[1] - 1) - 1}{\text{stride}[1]} + 1\right\rfloor</code></pre><p>$$</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801174740.png" alt="image-20200801174738560"></p>
-<h2 id="相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。"><a href="#相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。" class="headerlink" title="相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。"></a>相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。</h2><ul>
-<li><strong>简单一点</strong>：先只看 t = kernel【0】// 2；</li>
-<li>Kernel【0】为奇数，那么padding就等于 t;</li>
-<li>否则，kernel【0】为偶数，那么padding就等于 【t - 1】</li>
-</ul>
-<hr>
-<h2 id="3-反卷积"><a href="#3-反卷积" class="headerlink" title="3.反卷积"></a>3.反卷积</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801184750.png" alt="image-20200801184748828"></p>
-<p><a href="https://blog.csdn.net/g11d111/article/details/82665265" target="_blank" rel="noopener">https://blog.csdn.net/g11d111/article/details/82665265</a></p>
-<ul>
-<li>反卷积这部分用的少，公式其实就是正卷积中，in 和 out 对调；</li>
-<li>只不过 反卷积没有了 正卷积 中 的 <strong>向下取整</strong> 的操作</li>
-<li>所以在反卷积中， 需要按规矩公式，简单计算一下padding 尺寸参数；</li>
-<li>最简单就是用局部代码输出看一下结果，看是否符合输入输出尺寸要求</li>
-</ul>
-<hr>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801193707.png" alt="image-20200801193706275"></p>
-<p><a href="https://blog.csdn.net/m0_37586991/article/details/87855342" target="_blank" rel="noopener">https://blog.csdn.net/m0_37586991/article/details/87855342</a></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801194743.png" alt="image-20200801194739307"></p>
-<hr>
-]]></content>
-      <categories>
-        <category>-[python]</category>
-      </categories>
-      <tags>
-        <tag>-[python] -[编程]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>跑Kaldi-libspeech遇到的问题</title>
-    <url>/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>run.pl: job failed, log is in exp/chain_cleaned/tdnn_1d_sp/log/train.0.3.log</p>
-<p>kaldi cudaError_t 46 : “all CUDA-capable devices are busy or unavailable” returned from ‘cudaGetLastError()’</p>
-<p><img src="/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201130104204647.png" alt="image-20201130104204647"></p>
-]]></content>
-  </entry>
-  <entry>
     <title>第一篇</title>
     <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
@@ -2419,5 +2429,13 @@ print(e)  <span class="comment">#pyth</span>
       <tags>
         <tag>测试tags</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>跑Kaldi-libspeech遇到的问题</title>
+    <url>/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>run.pl: job failed, log is in exp/chain_cleaned/tdnn_1d_sp/log/train.0.3.log</p>
+<p>kaldi cudaError_t 46 : “all CUDA-capable devices are busy or unavailable” returned from ‘cudaGetLastError()’</p>
+<p><img src="/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201130104204647.png" alt="image-20201130104204647"></p>
+]]></content>
   </entry>
 </search>
