@@ -157,6 +157,110 @@
       </tags>
   </entry>
   <entry>
+    <title>0830组会分享——几种卷积辨析 &amp;&amp; SELayer论文及代码实现</title>
+    <url>/2020/08/31/0830%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几种卷积类型辨析"><a href="#几种卷积类型辨析" class="headerlink" title="几种卷积类型辨析"></a>几种卷积类型辨析</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conv = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">1</span>, groups=<span class="number">3</span>)</span><br><span class="line">conv.weight.data.size()</span><br><span class="line"></span><br><span class="line"><span class="comment"># output = torch.Size([6, 2, 1, 1])</span></span><br></pre></td></tr></table></figure>
+
+<p>一种分类方法：</p>
+<p>几种卷积示意：（分组卷积 <strong>group_convolution</strong>；深度卷积 <strong>depthwise convolution</strong>； 全局深度卷积 <strong>global depthwise convolution</strong>）</p>
+<ol>
+<li>groups 默认值为1， 对应的是<strong>常规卷积</strong>操作</li>
+<li>groups &gt; 1， 且能够同时被in_channel / out_channel整除，对应<strong>group_convolution</strong></li>
+<li>groups == input_channel == out_channel , 对应<strong>depthwise convolution</strong>,为条件2的特殊情况</li>
+<li>在条件3的基础上，各卷积核的 H == input_height; W == input_width, 对应为 <strong>global depthwise convolution</strong>, 为条件3的特殊情况</li>
+<li></li>
+</ol>
+<hr>
+<p>另一种分类方法：<strong>主要分三类：正常卷积、分组卷积、深度分离卷积</strong></p>
+<a id="more"></a>
+
+<!--more-->
+
+
+
+
+
+<ol>
+<li><h2 id="正常卷积："><a href="#正常卷积：" class="headerlink" title="正常卷积："></a><strong>正常卷积：</strong></h2></li>
+<li><p>参数量 = cin *  $K_h$ * $K_w$ * cout</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830111253.png" alt="常规卷积示意图"></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103246.jpeg" alt="img"></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103436.png" alt="img"></p>
+</li>
+<li></li>
+<li><h2 id="分组卷积示意图："><a href="#分组卷积示意图：" class="headerlink" title="分组卷积示意图："></a><strong>分组卷积示意图：</strong></h2></li>
+<li><p>参数量： (cin * $K_h$ * $K_w$* cout ) / Groups</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830111236.png" alt="分组卷积示意图"></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103353.jpeg" alt="img"></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103314.png" alt="img"></p>
+</li>
+<li><pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">GroupConv</span><span class="params">(nn.Module)</span>:</span>
+  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_ch, out_ch, groups)</span>:</span>
+      super(GroupConv, self).__init__()
+      self.conv = nn.Conv2d(
+          in_channels=in_ch,
+          out_channels=out_ch,
+          kernel_size=<span class="number">3</span>,
+          stride=<span class="number">1</span>,
+          padding=<span class="number">1</span>,
+          groups=groups
+      )
+
+  <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span>
+      out = self.conv(input)
+      <span class="keyword">return</span> out
+
+</code></pre>
+</li>
+</ol>
+<pre><code># 测试
+conv = CSDN_Tem(16, 32, 4)
+print(summary(conv, (16, 64, 64), batch_size=1))
+
+********************************
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1            [1, 32, 64, 64]           1,184
+================================================================
+Total params: 1,184
+Trainable params: 1,184
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.25
+Forward/backward pass size (MB): 1.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 1.25
+----------------------------------------------------------------
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">13. </span><br><span class="line"></span><br><span class="line">14. </span><br><span class="line"></span><br><span class="line">15. ## [深度可分离卷积(Depthwise Separable Convolution)][https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_30793735&#x2F;article&#x2F;details&#x2F;88915612]</span><br><span class="line"></span><br><span class="line">16. 参数量： $C_&#123;in&#125;$ * $K_h$ * $K_w$ + $C_&#123;out&#125;$ * 1 * 1</span><br><span class="line"></span><br><span class="line">17. 理解上，可以看作是， 先做一次 cin &#x3D;&#x3D; cout 的 分组卷积， 并且 groups &#x3D;&#x3D; channels，即每个通道作为一组； 然后再对上述结果，做一次 **逐点卷积(Pointwise Convolution)** 实现通道数改变的，这个过程使用大小为 **Cin * 1 * 1 ** 的卷积核实现，数量为 **Cout** 个</span><br><span class="line"></span><br><span class="line">18. &#96;&#96;&#96;python</span><br><span class="line">    class DepthSepConv(nn.Module):</span><br><span class="line">        def __init__(self, in_ch, out_ch):</span><br><span class="line">            super(DepthSepConv, self).__init__()</span><br><span class="line">            self.depth_conv &#x3D; nn.Conv2d(</span><br><span class="line">                in_channels&#x3D;in_ch,</span><br><span class="line">                out_channels&#x3D;in_ch,</span><br><span class="line">                kernel_size&#x3D;3,</span><br><span class="line">                stride&#x3D;1,</span><br><span class="line">                padding&#x3D;1,</span><br><span class="line">                groups&#x3D;in_ch</span><br><span class="line">            )</span><br><span class="line">            self.point_conv &#x3D; nn.Conv2d(</span><br><span class="line">                in_channels&#x3D;in_ch,</span><br><span class="line">                out_channels&#x3D;out_ch,</span><br><span class="line">                kernel_size&#x3D;1,</span><br><span class="line">                stride&#x3D;1,</span><br><span class="line">                padding&#x3D;0,</span><br><span class="line">                groups&#x3D;1</span><br><span class="line">            )</span><br><span class="line">    </span><br><span class="line">        def forward(self, input):</span><br><span class="line">            out &#x3D; self.depth_conv(input)</span><br><span class="line">            out &#x3D; self.point_conv(out)</span><br><span class="line">            return out</span><br><span class="line">    </span><br><span class="line">          </span><br><span class="line">    # 测试</span><br><span class="line">    conv &#x3D; DepthSepConv(16, 32)</span><br><span class="line">    print(summary(conv, (16, 64, 64), batch_size&#x3D;1))</span><br><span class="line">    </span><br><span class="line">    ************************</span><br><span class="line">    ----------------------------------------------------------------</span><br><span class="line">            Layer (type)               Output Shape         Param #</span><br><span class="line">    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">                Conv2d-1            [1, 16, 64, 64]             160</span><br><span class="line">                Conv2d-2            [1, 32, 64, 64]             544</span><br><span class="line">    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">    Total params: 704</span><br><span class="line">    Trainable params: 704</span><br><span class="line">    Non-trainable params: 0</span><br><span class="line">    ----------------------------------------------------------------</span><br></pre></td></tr></table></figure></code></pre><ol start="19">
+<li></li>
+</ol>
+<hr>
+<h1 id="SELayer"><a href="#SELayer" class="headerlink" title="SELayer"></a>SELayer</h1><p><strong>Squeeze-and-Excitation Networks</strong></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153344.png" alt="image-20200830114911949"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153339.png" alt="image-20200830140039015"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>, <span class="number">64</span>, <span class="number">64</span>])</span><br><span class="line">b = <span class="number">2</span> c = <span class="number">512</span></span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">After LinearFC, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">32</span>])</span><br><span class="line">After RELU, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">32</span>])</span><br><span class="line">After LinearFC2, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">After SIGMOID, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">----------------------------------------------------------------</span><br><span class="line">        Layer (type)               Output Shape         Param <span class="comment">#</span></span><br><span class="line">================================================================</span><br><span class="line"> AdaptiveAvgPool2d<span class="number">-1</span>            [<span class="number">-1</span>, <span class="number">512</span>, <span class="number">1</span>, <span class="number">1</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-2</span>                   [<span class="number">-1</span>, <span class="number">32</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">              ReLU<span class="number">-3</span>                   [<span class="number">-1</span>, <span class="number">32</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-4</span>                  [<span class="number">-1</span>, <span class="number">512</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">           Sigmoid<span class="number">-5</span>                  [<span class="number">-1</span>, <span class="number">512</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-6</span>                   [<span class="number">-1</span>, <span class="number">32</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">              ReLU<span class="number">-7</span>                   [<span class="number">-1</span>, <span class="number">32</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-8</span>                  [<span class="number">-1</span>, <span class="number">512</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">           Sigmoid<span class="number">-9</span>                  [<span class="number">-1</span>, <span class="number">512</span>]               <span class="number">0</span></span><br><span class="line">================================================================</span><br><span class="line">Total params: <span class="number">65</span>,<span class="number">536</span></span><br><span class="line">Trainable params: <span class="number">65</span>,<span class="number">536</span></span><br><span class="line">Non-trainable params: <span class="number">0</span></span><br><span class="line">----------------------------------------------------------------</span><br><span class="line">Input size (MB): <span class="number">8.00</span></span><br><span class="line">Forward/backward <span class="keyword">pass</span> size (MB): <span class="number">0.02</span></span><br><span class="line">Params size (MB): <span class="number">0.25</span></span><br><span class="line">Estimated Total Size (MB): <span class="number">8.27</span></span><br><span class="line">----------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153225.png" alt="image-20200830153224613"></p>
+]]></content>
+      <categories>
+        <category>组会</category>
+      </categories>
+      <tags>
+        <tag>组会</tag>
+        <tag>pytorch</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《PITCHNET —— UNSUPERVISED SINGING VOICE CONVERSION WITH PITCH ADVERSARIAL NETWORK》</title>
     <url>/2020/09/07/0906%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB%EF%BC%9A%E6%AD%8C%E5%94%B1%E8%BD%AC%E6%8D%A2/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>0906组会分享</p>
@@ -272,110 +376,6 @@
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>0830组会分享——几种卷积辨析 &amp;&amp; SELayer论文及代码实现</title>
-    <url>/2020/08/31/0830%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几种卷积类型辨析"><a href="#几种卷积类型辨析" class="headerlink" title="几种卷积类型辨析"></a>几种卷积类型辨析</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conv = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">1</span>, groups=<span class="number">3</span>)</span><br><span class="line">conv.weight.data.size()</span><br><span class="line"></span><br><span class="line"><span class="comment"># output = torch.Size([6, 2, 1, 1])</span></span><br></pre></td></tr></table></figure>
-
-<p>一种分类方法：</p>
-<p>几种卷积示意：（分组卷积 <strong>group_convolution</strong>；深度卷积 <strong>depthwise convolution</strong>； 全局深度卷积 <strong>global depthwise convolution</strong>）</p>
-<ol>
-<li>groups 默认值为1， 对应的是<strong>常规卷积</strong>操作</li>
-<li>groups &gt; 1， 且能够同时被in_channel / out_channel整除，对应<strong>group_convolution</strong></li>
-<li>groups == input_channel == out_channel , 对应<strong>depthwise convolution</strong>,为条件2的特殊情况</li>
-<li>在条件3的基础上，各卷积核的 H == input_height; W == input_width, 对应为 <strong>global depthwise convolution</strong>, 为条件3的特殊情况</li>
-<li></li>
-</ol>
-<hr>
-<p>另一种分类方法：<strong>主要分三类：正常卷积、分组卷积、深度分离卷积</strong></p>
-<a id="more"></a>
-
-<!--more-->
-
-
-
-
-
-<ol>
-<li><h2 id="正常卷积："><a href="#正常卷积：" class="headerlink" title="正常卷积："></a><strong>正常卷积：</strong></h2></li>
-<li><p>参数量 = cin *  $K_h$ * $K_w$ * cout</p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830111253.png" alt="常规卷积示意图"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103246.jpeg" alt="img"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103436.png" alt="img"></p>
-</li>
-<li></li>
-<li><h2 id="分组卷积示意图："><a href="#分组卷积示意图：" class="headerlink" title="分组卷积示意图："></a><strong>分组卷积示意图：</strong></h2></li>
-<li><p>参数量： (cin * $K_h$ * $K_w$* cout ) / Groups</p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830111236.png" alt="分组卷积示意图"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103353.jpeg" alt="img"></p>
-</li>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830103314.png" alt="img"></p>
-</li>
-<li><pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">GroupConv</span><span class="params">(nn.Module)</span>:</span>
-  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_ch, out_ch, groups)</span>:</span>
-      super(GroupConv, self).__init__()
-      self.conv = nn.Conv2d(
-          in_channels=in_ch,
-          out_channels=out_ch,
-          kernel_size=<span class="number">3</span>,
-          stride=<span class="number">1</span>,
-          padding=<span class="number">1</span>,
-          groups=groups
-      )
-
-  <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span>
-      out = self.conv(input)
-      <span class="keyword">return</span> out
-
-</code></pre>
-</li>
-</ol>
-<pre><code># 测试
-conv = CSDN_Tem(16, 32, 4)
-print(summary(conv, (16, 64, 64), batch_size=1))
-
-********************************
-----------------------------------------------------------------
-        Layer (type)               Output Shape         Param #
-================================================================
-            Conv2d-1            [1, 32, 64, 64]           1,184
-================================================================
-Total params: 1,184
-Trainable params: 1,184
-Non-trainable params: 0
-----------------------------------------------------------------
-Input size (MB): 0.25
-Forward/backward pass size (MB): 1.00
-Params size (MB): 0.00
-Estimated Total Size (MB): 1.25
-----------------------------------------------------------------
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">13. </span><br><span class="line"></span><br><span class="line">14. </span><br><span class="line"></span><br><span class="line">15. ## [深度可分离卷积(Depthwise Separable Convolution)][https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_30793735&#x2F;article&#x2F;details&#x2F;88915612]</span><br><span class="line"></span><br><span class="line">16. 参数量： $C_&#123;in&#125;$ * $K_h$ * $K_w$ + $C_&#123;out&#125;$ * 1 * 1</span><br><span class="line"></span><br><span class="line">17. 理解上，可以看作是， 先做一次 cin &#x3D;&#x3D; cout 的 分组卷积， 并且 groups &#x3D;&#x3D; channels，即每个通道作为一组； 然后再对上述结果，做一次 **逐点卷积(Pointwise Convolution)** 实现通道数改变的，这个过程使用大小为 **Cin * 1 * 1 ** 的卷积核实现，数量为 **Cout** 个</span><br><span class="line"></span><br><span class="line">18. &#96;&#96;&#96;python</span><br><span class="line">    class DepthSepConv(nn.Module):</span><br><span class="line">        def __init__(self, in_ch, out_ch):</span><br><span class="line">            super(DepthSepConv, self).__init__()</span><br><span class="line">            self.depth_conv &#x3D; nn.Conv2d(</span><br><span class="line">                in_channels&#x3D;in_ch,</span><br><span class="line">                out_channels&#x3D;in_ch,</span><br><span class="line">                kernel_size&#x3D;3,</span><br><span class="line">                stride&#x3D;1,</span><br><span class="line">                padding&#x3D;1,</span><br><span class="line">                groups&#x3D;in_ch</span><br><span class="line">            )</span><br><span class="line">            self.point_conv &#x3D; nn.Conv2d(</span><br><span class="line">                in_channels&#x3D;in_ch,</span><br><span class="line">                out_channels&#x3D;out_ch,</span><br><span class="line">                kernel_size&#x3D;1,</span><br><span class="line">                stride&#x3D;1,</span><br><span class="line">                padding&#x3D;0,</span><br><span class="line">                groups&#x3D;1</span><br><span class="line">            )</span><br><span class="line">    </span><br><span class="line">        def forward(self, input):</span><br><span class="line">            out &#x3D; self.depth_conv(input)</span><br><span class="line">            out &#x3D; self.point_conv(out)</span><br><span class="line">            return out</span><br><span class="line">    </span><br><span class="line">          </span><br><span class="line">    # 测试</span><br><span class="line">    conv &#x3D; DepthSepConv(16, 32)</span><br><span class="line">    print(summary(conv, (16, 64, 64), batch_size&#x3D;1))</span><br><span class="line">    </span><br><span class="line">    ************************</span><br><span class="line">    ----------------------------------------------------------------</span><br><span class="line">            Layer (type)               Output Shape         Param #</span><br><span class="line">    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">                Conv2d-1            [1, 16, 64, 64]             160</span><br><span class="line">                Conv2d-2            [1, 32, 64, 64]             544</span><br><span class="line">    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">    Total params: 704</span><br><span class="line">    Trainable params: 704</span><br><span class="line">    Non-trainable params: 0</span><br><span class="line">    ----------------------------------------------------------------</span><br></pre></td></tr></table></figure></code></pre><ol start="19">
-<li></li>
-</ol>
-<hr>
-<h1 id="SELayer"><a href="#SELayer" class="headerlink" title="SELayer"></a>SELayer</h1><p><strong>Squeeze-and-Excitation Networks</strong></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153344.png" alt="image-20200830114911949"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153339.png" alt="image-20200830140039015"></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>, <span class="number">64</span>, <span class="number">64</span>])</span><br><span class="line">b = <span class="number">2</span> c = <span class="number">512</span></span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">After LinearFC, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">32</span>])</span><br><span class="line">After RELU, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">32</span>])</span><br><span class="line">After LinearFC2, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">After SIGMOID, tmp.shape = torch.Size([<span class="number">2</span>, <span class="number">512</span>])</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">512</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">----------------------------------------------------------------</span><br><span class="line">        Layer (type)               Output Shape         Param <span class="comment">#</span></span><br><span class="line">================================================================</span><br><span class="line"> AdaptiveAvgPool2d<span class="number">-1</span>            [<span class="number">-1</span>, <span class="number">512</span>, <span class="number">1</span>, <span class="number">1</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-2</span>                   [<span class="number">-1</span>, <span class="number">32</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">              ReLU<span class="number">-3</span>                   [<span class="number">-1</span>, <span class="number">32</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-4</span>                  [<span class="number">-1</span>, <span class="number">512</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">           Sigmoid<span class="number">-5</span>                  [<span class="number">-1</span>, <span class="number">512</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-6</span>                   [<span class="number">-1</span>, <span class="number">32</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">              ReLU<span class="number">-7</span>                   [<span class="number">-1</span>, <span class="number">32</span>]               <span class="number">0</span></span><br><span class="line">            Linear<span class="number">-8</span>                  [<span class="number">-1</span>, <span class="number">512</span>]          <span class="number">16</span>,<span class="number">384</span></span><br><span class="line">           Sigmoid<span class="number">-9</span>                  [<span class="number">-1</span>, <span class="number">512</span>]               <span class="number">0</span></span><br><span class="line">================================================================</span><br><span class="line">Total params: <span class="number">65</span>,<span class="number">536</span></span><br><span class="line">Trainable params: <span class="number">65</span>,<span class="number">536</span></span><br><span class="line">Non-trainable params: <span class="number">0</span></span><br><span class="line">----------------------------------------------------------------</span><br><span class="line">Input size (MB): <span class="number">8.00</span></span><br><span class="line">Forward/backward <span class="keyword">pass</span> size (MB): <span class="number">0.02</span></span><br><span class="line">Params size (MB): <span class="number">0.25</span></span><br><span class="line">Estimated Total Size (MB): <span class="number">8.27</span></span><br><span class="line">----------------------------------------------------------------</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200830153225.png" alt="image-20200830153224613"></p>
-]]></content>
-      <categories>
-        <category>组会</category>
-      </categories>
-      <tags>
-        <tag>组会</tag>
-        <tag>pytorch</tag>
       </tags>
   </entry>
   <entry>
@@ -531,216 +531,6 @@ Estimated Total Size (MB): 1.25
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《ONE-SHOT VOICE CONVERSION BY VECTOR QUANTIZATION》</title>
-    <url>/2020/10/18/10.18%E7%BB%84%E4%BC%9A-VQVC%20%E7%AE%80%E6%9E%90/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h3 id="1018组会"><a href="#1018组会" class="headerlink" title="1018组会"></a>1018组会</h3><h3 id="VQVC-简析"><a href="#VQVC-简析" class="headerlink" title="VQVC 简析"></a>VQVC 简析</h3><ul>
-<li>《ONE-SHOT VOICE CONVERSION BY VECTOR QUANTIZATION》</li>
-<li><a href="https://ericwudayi.github.io/VQVC-DEMO/" target="_blank" rel="noopener">https://ericwudayi.github.io/VQVC-DEMO/</a></li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018132533.png" alt="image-20201018132532040"></p>
-<ul>
-<li>《VQVC+: One-Shot Voice Conversion by Vector Quantization and U-Net architecture》</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018001018.png" alt="image-20201018001016143"></p>
-<a id="more"></a>
-
-<hr>
-<h2 id="1-特点"><a href="#1-特点" class="headerlink" title="1. 特点"></a>1. 特点</h2><ul>
-<li>模型结构：AE 类型，U-Net 框架</li>
-<li>常见 VC 特征解纠缠思路：The disentangle capability is achieved by vector quantization (VQ), adversarial training, or instance normalization (IN)<ul>
-<li>VQ</li>
-<li>对抗</li>
-<li>IN</li>
-</ul>
-</li>
-<li>VQVC：对 <strong>隐变量</strong> 进行 <strong>量化</strong></li>
-</ul>
-<hr>
-<h2 id="2-相关"><a href="#2-相关" class="headerlink" title="2. 相关"></a>2. 相关</h2><h3 id="（一）直接转换语音，不需要单独-“特征解纠缠”"><a href="#（一）直接转换语音，不需要单独-“特征解纠缠”" class="headerlink" title="（一）直接转换语音，不需要单独 “特征解纠缠”"></a>（一）直接转换语音，不需要单独 “特征解纠缠”</h3><ol>
-<li>CycleGAN &amp;&amp; StarGAN 专注于解决 <strong>“多对多问题”</strong> </li>
-<li>BLOW：基于Flow的方式：<strong>直接对 波形 进行转换，而不用转换成 语音特征</strong></li>
-</ol>
-<h3 id><a href="#" class="headerlink" title></a></h3><h3 id="（二）-speaker-amp-amp-linguistic-解耦"><a href="#（二）-speaker-amp-amp-linguistic-解耦" class="headerlink" title="（二） speaker &amp;&amp; linguistic 解耦"></a>（二） speaker &amp;&amp; linguistic 解耦</h3><ol>
-<li>AutoVC—— AE 结构，通过控制 <strong>隐变量</strong> 尺寸（layer dimension）来实现解纠缠</li>
-<li>IN 法<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201101114502.png" alt="image-20201018105402931"></li>
-<li>VQVC</li>
-</ol>
-<hr>
-<h2 id="3-加入-U-Net-的原因："><a href="#3-加入-U-Net-的原因：" class="headerlink" title="3. 加入 U-Net 的原因："></a>3. 加入 U-Net 的原因：</h2><ul>
-<li>以上这些 特征解纠缠 的思路可行，但是由于这些额外限制，会使得重构音质受损</li>
-<li>U-Net 的重构能力超级强，所以本身是没法做 VC 的，因为她 解纠缠 能力不好</li>
-<li>本文尝试 结合 U-Net 的强大重构能力，以及 VQ 的 特征解耦能力，使得转换的语音，在相似度提高的同时，解决流畅度问题；</li>
-</ul>
-<hr>
-<h2 id="4-VQVC-思路："><a href="#4-VQVC-思路：" class="headerlink" title="4. VQVC 思路："></a>4. VQVC 思路：</h2><ul>
-<li>内容：离散码</li>
-<li>说话人信息：连续语音信号 - 离散码</li>
-</ul>
-<ol>
-<li>先做 Encode 得到隐变量 Z；</li>
-<li>再对这个隐变量做 量化，（结合 codebook ），提取出 内容向量 C（content embedding）——不同说话人，说同样一句话，得到的向量趋于相似向量值；</li>
-<li>将 Z 和 C 做量化减法，得到 Speaker Embedding——S</li>
-</ol>
-<p>内容：离散码<br>说话人信息：连续语音信号-离散码</p>
-<ol start="4">
-<li></li>
-</ol>
-<hr>
-<ul>
-<li>Codebook 本身是可训练的</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018152001.png" alt="image-20201018152000315"></li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018152107.png" alt="image-20201018152105943"></li>
-</ul>
-<p>公式（1）：</p>
-<ul>
-<li><p>x（带帽）表示的是 语音 x 中的一个小片段；</p>
-</li>
-<li><p><strong>argmin</strong> 函数：求取 使得函数 y = f(x) 取得最小值的 x 值集合</p>
-</li>
-<li><p>将 Encode 之后的 隐变量 z，拿来和 Codebook 中的向量 求取差值最小项（欧式距离）</p>
-</li>
-<li><p>最后的 $C_x$ 是将上述 x^ 做一个整体的 concate 得到的</p>
-</li>
-</ul>
-<p>公式（2）：</p>
-<p>结合（VQVC+）的部分公式 来看：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018152951.png" alt="image-20201018152950185"></p>
-<ul>
-<li>$E_t$ 表示的是，在所有 T 帧上，求取 Z 和 C 的<strong>期望值 s</strong>，最后将 s 重复 T 次，以此表征 speaker embedding；</li>
-<li>重复 T 次是为了让 s 的尺寸 和 C 一样，并方便后续操作</li>
-</ul>
-<p>公式（3）：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018153359.png" alt="image-20201018153358420"></p>
-<ul>
-<li>第一个损失： <strong>重构损失</strong> </li>
-</ul>
-<p>公式（4）、（5）：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018153716.png" alt="image-20201018153714828"></p>
-<ul>
-<li>第二个损失：隐变量损失 L(latent)</li>
-<li>目的是更好地从 隐变量Z 中提取 Content Embedding，来代表整个语音片段的内容部分</li>
-<li>🌟值得一提的是：为了让 C 更好地表征内容，在这个环节中，Codebook不做更新：防止网络为了缩小 Loss，而把 Codebook 往 说话人信息方向靠，使得提取出来的 Content Embedding 含有 Spealer 信息；</li>
-</ul>
-<p>公式（5）：</p>
-<ul>
-<li>两个 Loss 的叠加</li>
-</ul>
-<hr>
-<h2 id="关于-IN："><a href="#关于-IN：" class="headerlink" title="关于 IN："></a>关于 IN：</h2><ul>
-<li>本图来自（VQVC+）：</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018154453.png" alt="image-20201018154451621"></p>
-<ul>
-<li>在 Encode 得到隐变量 z 之后，在进一步提取 content embedding 之前，需要先做一次 IN（Instant Norm）</li>
-<li>IN 本身也被其他论文证明，具有</li>
-<li>特征解耦 的功效（这里 IN 是必须操作）</li>
-<li>这样能预先一步过滤 说话人信息</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018160224.png" alt="image-20201018160153595"></p>
-<hr>
-<h2 id="一些特征处理细节："><a href="#一些特征处理细节：" class="headerlink" title="一些特征处理细节："></a>一些特征处理细节：</h2><ul>
-<li>n_mels = 160</li>
-<li>GriffinLim</li>
-<li>24K</li>
-<li>一些额外的规范化normalize 处理：<ul>
-<li>减去均值，除以均方差，处理到【0，1】</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018155430.png" alt="image-20201018155429424"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018155439.png" alt="image-20201018155438508"></p>
-<hr>
-<h2 id="结果："><a href="#结果：" class="headerlink" title="结果："></a>结果：</h2><ol>
-<li>消融实验</li>
-</ol>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162111.png" alt="image-20201018162109398"></p>
-<ol start="2">
-<li>ABX 实验<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162140.png" alt="image-20201018162138602"></li>
-</ol>
-<ol start="3">
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162224.png" alt="image-20201018162222357"></p>
-</li>
-<li><p>Speaker Embedding 区分度：语音片段长度120帧；CodeBook 尺寸 32；训练使用数据 20 人<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162242.png" alt="image-20201018162241525"></p>
-</li>
-</ol>
-<h2 id="疑问点："><a href="#疑问点：" class="headerlink" title="疑问点："></a>疑问点：</h2><ul>
-<li><p>量化部分的具体操作看不懂，说的不详细</p>
-</li>
-<li><p>没有代码对照</p>
-</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018155903.png" alt="image-20201018155901510"></p>
-<hr>
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ul>
-<li>创新意义 &gt; 实用意义</li>
-<li>没脱离 AE 结构，还是在隐变量 特征解耦上做文章，效果不突出；</li>
-<li>Demo 听起来，语气语调信息损失严重</li>
-<li>当作已有方法总结中的一种，不建议使用</li>
-</ul>
-<hr>
-<ul>
-<li>开题报告</li>
-<li>PPT</li>
-<li></li>
-</ul>
-]]></content>
-      <categories>
-        <category>论文阅读笔记</category>
-      </categories>
-      <tags>
-        <tag>VC</tag>
-        <tag>论文阅读笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>杂记</title>
-    <url>/2020/11/29/1129%E6%B5%8B%E8%AF%95Torch%20gpu%20%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-测试-gpu-可用性"><a href="#1-测试-gpu-可用性" class="headerlink" title="1.测试  gpu 可用性"></a>1.测试  gpu 可用性</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'1'</span></span><br><span class="line">print(torch.version.cuda)</span><br><span class="line">print(torch.__version__)</span><br><span class="line">print(torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'0'</span></span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">tf.test.is_gpu_available()</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install -c conda-forge librosa</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install tensorflow-gpu&#x3D;&#x3D;1.9.0  # 自动带cudatoolkit</span><br><span class="line"># 版本匹配信息：https:&#x2F;&#x2F;www.tensorflow.org&#x2F;install&#x2F;source#common_installation_problems</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py timit -gpu 1</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.randn(<span class="number">10000</span>, <span class="number">1000</span>)</span><br><span class="line">b = torch.randn(<span class="number">1000</span>, <span class="number">2000</span>)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t1 = time.time()</span><br><span class="line">print(a.device, t1 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">device = torch.device(<span class="string">'cuda'</span>)</span><br><span class="line">a = a.to(device)</span><br><span class="line">b = b.to(device)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda -V </span><br><span class="line">conda info  </span><br><span class="line">conda config --get channels</span><br><span class="line">conda config --show</span><br><span class="line">vim ~&#x2F;.condarc    </span><br><span class="line"></span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;free&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;main&#x2F;</span><br><span class="line"></span><br><span class="line">conda config --remove-key channels</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="3-批处理文件改后缀"><a href="#3-批处理文件改后缀" class="headerlink" title="3. 批处理文件改后缀"></a>3. 批处理文件改后缀</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>-[Torch]</category>
-      </categories>
-      <tags>
-        <tag>-[Torch]</tag>
       </tags>
   </entry>
   <entry>
@@ -979,27 +769,213 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+    <title>《ONE-SHOT VOICE CONVERSION BY VECTOR QUANTIZATION》</title>
+    <url>/2020/10/18/10.18%E7%BB%84%E4%BC%9A-VQVC%20%E7%AE%80%E6%9E%90/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h3 id="1018组会"><a href="#1018组会" class="headerlink" title="1018组会"></a>1018组会</h3><h3 id="VQVC-简析"><a href="#VQVC-简析" class="headerlink" title="VQVC 简析"></a>VQVC 简析</h3><ul>
+<li>《ONE-SHOT VOICE CONVERSION BY VECTOR QUANTIZATION》</li>
+<li><a href="https://ericwudayi.github.io/VQVC-DEMO/" target="_blank" rel="noopener">https://ericwudayi.github.io/VQVC-DEMO/</a></li>
 </ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018132533.png" alt="image-20201018132532040"></p>
+<ul>
+<li>《VQVC+: One-Shot Voice Conversion by Vector Quantization and U-Net architecture》</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018001018.png" alt="image-20201018001016143"></p>
+<a id="more"></a>
 
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
+<hr>
+<h2 id="1-特点"><a href="#1-特点" class="headerlink" title="1. 特点"></a>1. 特点</h2><ul>
+<li>模型结构：AE 类型，U-Net 框架</li>
+<li>常见 VC 特征解纠缠思路：The disentangle capability is achieved by vector quantization (VQ), adversarial training, or instance normalization (IN)<ul>
+<li>VQ</li>
+<li>对抗</li>
+<li>IN</li>
+</ul>
+</li>
+<li>VQVC：对 <strong>隐变量</strong> 进行 <strong>量化</strong></li>
+</ul>
+<hr>
+<h2 id="2-相关"><a href="#2-相关" class="headerlink" title="2. 相关"></a>2. 相关</h2><h3 id="（一）直接转换语音，不需要单独-“特征解纠缠”"><a href="#（一）直接转换语音，不需要单独-“特征解纠缠”" class="headerlink" title="（一）直接转换语音，不需要单独 “特征解纠缠”"></a>（一）直接转换语音，不需要单独 “特征解纠缠”</h3><ol>
+<li>CycleGAN &amp;&amp; StarGAN 专注于解决 <strong>“多对多问题”</strong> </li>
+<li>BLOW：基于Flow的方式：<strong>直接对 波形 进行转换，而不用转换成 语音特征</strong></li>
+</ol>
+<h3 id><a href="#" class="headerlink" title></a></h3><h3 id="（二）-speaker-amp-amp-linguistic-解耦"><a href="#（二）-speaker-amp-amp-linguistic-解耦" class="headerlink" title="（二） speaker &amp;&amp; linguistic 解耦"></a>（二） speaker &amp;&amp; linguistic 解耦</h3><ol>
+<li>AutoVC—— AE 结构，通过控制 <strong>隐变量</strong> 尺寸（layer dimension）来实现解纠缠</li>
+<li>IN 法<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201101114502.png" alt="image-20201018105402931"></li>
+<li>VQVC</li>
+</ol>
+<hr>
+<h2 id="3-加入-U-Net-的原因："><a href="#3-加入-U-Net-的原因：" class="headerlink" title="3. 加入 U-Net 的原因："></a>3. 加入 U-Net 的原因：</h2><ul>
+<li>以上这些 特征解纠缠 的思路可行，但是由于这些额外限制，会使得重构音质受损</li>
+<li>U-Net 的重构能力超级强，所以本身是没法做 VC 的，因为她 解纠缠 能力不好</li>
+<li>本文尝试 结合 U-Net 的强大重构能力，以及 VQ 的 特征解耦能力，使得转换的语音，在相似度提高的同时，解决流畅度问题；</li>
+</ul>
+<hr>
+<h2 id="4-VQVC-思路："><a href="#4-VQVC-思路：" class="headerlink" title="4. VQVC 思路："></a>4. VQVC 思路：</h2><ul>
+<li>内容：离散码</li>
+<li>说话人信息：连续语音信号 - 离散码</li>
+</ul>
+<ol>
+<li>先做 Encode 得到隐变量 Z；</li>
+<li>再对这个隐变量做 量化，（结合 codebook ），提取出 内容向量 C（content embedding）——不同说话人，说同样一句话，得到的向量趋于相似向量值；</li>
+<li>将 Z 和 C 做量化减法，得到 Speaker Embedding——S</li>
+</ol>
+<p>内容：离散码<br>说话人信息：连续语音信号-离散码</p>
+<ol start="4">
+<li></li>
+</ol>
+<hr>
+<ul>
+<li>Codebook 本身是可训练的</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018152001.png" alt="image-20201018152000315"></li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018152107.png" alt="image-20201018152105943"></li>
+</ul>
+<p>公式（1）：</p>
+<ul>
+<li><p>x（带帽）表示的是 语音 x 中的一个小片段；</p>
+</li>
+<li><p><strong>argmin</strong> 函数：求取 使得函数 y = f(x) 取得最小值的 x 值集合</p>
+</li>
+<li><p>将 Encode 之后的 隐变量 z，拿来和 Codebook 中的向量 求取差值最小项（欧式距离）</p>
+</li>
+<li><p>最后的 $C_x$ 是将上述 x^ 做一个整体的 concate 得到的</p>
+</li>
+</ul>
+<p>公式（2）：</p>
+<p>结合（VQVC+）的部分公式 来看：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018152951.png" alt="image-20201018152950185"></p>
+<ul>
+<li>$E_t$ 表示的是，在所有 T 帧上，求取 Z 和 C 的<strong>期望值 s</strong>，最后将 s 重复 T 次，以此表征 speaker embedding；</li>
+<li>重复 T 次是为了让 s 的尺寸 和 C 一样，并方便后续操作</li>
+</ul>
+<p>公式（3）：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018153359.png" alt="image-20201018153358420"></p>
+<ul>
+<li>第一个损失： <strong>重构损失</strong> </li>
+</ul>
+<p>公式（4）、（5）：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018153716.png" alt="image-20201018153714828"></p>
+<ul>
+<li>第二个损失：隐变量损失 L(latent)</li>
+<li>目的是更好地从 隐变量Z 中提取 Content Embedding，来代表整个语音片段的内容部分</li>
+<li>🌟值得一提的是：为了让 C 更好地表征内容，在这个环节中，Codebook不做更新：防止网络为了缩小 Loss，而把 Codebook 往 说话人信息方向靠，使得提取出来的 Content Embedding 含有 Spealer 信息；</li>
+</ul>
+<p>公式（5）：</p>
+<ul>
+<li>两个 Loss 的叠加</li>
+</ul>
+<hr>
+<h2 id="关于-IN："><a href="#关于-IN：" class="headerlink" title="关于 IN："></a>关于 IN：</h2><ul>
+<li>本图来自（VQVC+）：</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018154453.png" alt="image-20201018154451621"></p>
+<ul>
+<li>在 Encode 得到隐变量 z 之后，在进一步提取 content embedding 之前，需要先做一次 IN（Instant Norm）</li>
+<li>IN 本身也被其他论文证明，具有</li>
+<li>特征解耦 的功效（这里 IN 是必须操作）</li>
+<li>这样能预先一步过滤 说话人信息</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018160224.png" alt="image-20201018160153595"></p>
+<hr>
+<h2 id="一些特征处理细节："><a href="#一些特征处理细节：" class="headerlink" title="一些特征处理细节："></a>一些特征处理细节：</h2><ul>
+<li>n_mels = 160</li>
+<li>GriffinLim</li>
+<li>24K</li>
+<li>一些额外的规范化normalize 处理：<ul>
+<li>减去均值，除以均方差，处理到【0，1】</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018155430.png" alt="image-20201018155429424"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018155439.png" alt="image-20201018155438508"></p>
+<hr>
+<h2 id="结果："><a href="#结果：" class="headerlink" title="结果："></a>结果：</h2><ol>
+<li>消融实验</li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162111.png" alt="image-20201018162109398"></p>
+<ol start="2">
+<li>ABX 实验<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162140.png" alt="image-20201018162138602"></li>
+</ol>
+<ol start="3">
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162224.png" alt="image-20201018162222357"></p>
+</li>
+<li><p>Speaker Embedding 区分度：语音片段长度120帧；CodeBook 尺寸 32；训练使用数据 20 人<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018162242.png" alt="image-20201018162241525"></p>
+</li>
+</ol>
+<h2 id="疑问点："><a href="#疑问点：" class="headerlink" title="疑问点："></a>疑问点：</h2><ul>
+<li><p>量化部分的具体操作看不懂，说的不详细</p>
+</li>
+<li><p>没有代码对照</p>
+</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201018155903.png" alt="image-20201018155901510"></p>
+<hr>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ul>
+<li>创新意义 &gt; 实用意义</li>
+<li>没脱离 AE 结构，还是在隐变量 特征解耦上做文章，效果不突出；</li>
+<li>Demo 听起来，语气语调信息损失严重</li>
+<li>当作已有方法总结中的一种，不建议使用</li>
+</ul>
+<hr>
+<ul>
+<li>开题报告</li>
+<li>PPT</li>
+<li></li>
+</ul>
+]]></content>
       <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
+        <category>论文阅读笔记</category>
       </categories>
       <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
+        <tag>VC</tag>
+        <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>杂记</title>
+    <url>/2020/11/29/1129%E6%B5%8B%E8%AF%95Torch%20gpu%20%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-测试-gpu-可用性"><a href="#1-测试-gpu-可用性" class="headerlink" title="1.测试  gpu 可用性"></a>1.测试  gpu 可用性</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'1'</span></span><br><span class="line">print(torch.version.cuda)</span><br><span class="line">print(torch.__version__)</span><br><span class="line">print(torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">'CUDA_VISIBLE_DEVICES'</span>]=<span class="string">'0'</span></span><br><span class="line"><span class="keyword">import</span>  time</span><br><span class="line">tf.test.is_gpu_available()</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install -c conda-forge librosa</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install tensorflow-gpu&#x3D;&#x3D;1.9.0  # 自动带cudatoolkit</span><br><span class="line"># 版本匹配信息：https:&#x2F;&#x2F;www.tensorflow.org&#x2F;install&#x2F;source#common_installation_problems</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;&quot;1&quot; python train1.py timit -gpu 1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.randn(<span class="number">10000</span>, <span class="number">1000</span>)</span><br><span class="line">b = torch.randn(<span class="number">1000</span>, <span class="number">2000</span>)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t1 = time.time()</span><br><span class="line">print(a.device, t1 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">device = torch.device(<span class="string">'cuda'</span>)</span><br><span class="line">a = a.to(device)</span><br><span class="line">b = b.to(device)</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">t0 = time.time()</span><br><span class="line">c = torch.matmul(a, b)</span><br><span class="line">t2 = time.time()</span><br><span class="line">print(a.device, t2 - t0, c.norm(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda -V </span><br><span class="line">conda info  </span><br><span class="line">conda config --get channels</span><br><span class="line">conda config --show</span><br><span class="line">vim ~&#x2F;.condarc    </span><br><span class="line"></span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;free&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;main&#x2F;</span><br><span class="line"></span><br><span class="line">conda config --remove-key channels</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-批处理文件改后缀"><a href="#3-批处理文件改后缀" class="headerlink" title="3. 批处理文件改后缀"></a>3. 批处理文件改后缀</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[Torch]</category>
+      </categories>
+      <tags>
+        <tag>-[Torch]</tag>
       </tags>
   </entry>
   <entry>
@@ -1073,6 +1049,30 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <li><img src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" alt="img"></li>
 </ul>
 ]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
       <categories>
         <category>-[Java, 算法] -[LeetCode]</category>
       </categories>
@@ -1166,33 +1166,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
-    <url>/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&amp;&amp;%20001(%E9%80%86)/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
-<h1 id="2-类型：链表-amp-amp-栈"><a href="#2-类型：链表-amp-amp-栈" class="headerlink" title="2.类型：链表 &amp;&amp; 栈"></a>2.类型：链表 &amp;&amp; 栈</h1><p>正序的数字链表，求和时希望从个位开始算（逆序算），所以应该想到利用 <strong>栈</strong>（FILO）</p>
-<h1 id="3-与002区别："><a href="#3-与002区别：" class="headerlink" title="3.与002区别："></a>3.与002区别：</h1><ul>
-<li><p>002采用的是直接逆序存储的数字链表，所以可以直接从数字的尾巴开始求和，另外增加一个 <strong>进位标志符号</strong> 就可以；</p>
-</li>
-<li></li>
-</ul>
-<hr>
-<h1 id="4-代码-Java"><a href="#4-代码-Java" class="headerlink" title="4.代码 Java"></a>4.代码 Java</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_445</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">         <span class="keyword">int</span> val;</span><br><span class="line">         ListNode next;</span><br><span class="line">         ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment">     * public class ListNode &#123;</span></span><br><span class="line"><span class="comment">     *     int val;</span></span><br><span class="line"><span class="comment">     *     ListNode next;</span></span><br><span class="line"><span class="comment">     *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment">     * &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack1.push(l1.val);</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>( l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack2.push(l2.val);</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;<span class="comment">//进位符号</span></span><br><span class="line">        ListNode head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty() || !stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = carry;</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack1.pop();</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack2.pop();</span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            node.next = head;</span><br><span class="line">            head = node;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>16.最接近的三数之和 &amp;&amp; 数组排序（默认升）</title>
     <url>/2020/06/24/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&amp;&amp;%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-知识点："><a href="#1-知识点：" class="headerlink" title="1.知识点："></a>1.知识点：</h1><ul>
@@ -1244,6 +1217,68 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
+    <url>/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&amp;&amp;%20001(%E9%80%86)/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
+<h1 id="2-类型：链表-amp-amp-栈"><a href="#2-类型：链表-amp-amp-栈" class="headerlink" title="2.类型：链表 &amp;&amp; 栈"></a>2.类型：链表 &amp;&amp; 栈</h1><p>正序的数字链表，求和时希望从个位开始算（逆序算），所以应该想到利用 <strong>栈</strong>（FILO）</p>
+<h1 id="3-与002区别："><a href="#3-与002区别：" class="headerlink" title="3.与002区别："></a>3.与002区别：</h1><ul>
+<li><p>002采用的是直接逆序存储的数字链表，所以可以直接从数字的尾巴开始求和，另外增加一个 <strong>进位标志符号</strong> 就可以；</p>
+</li>
+<li></li>
+</ul>
+<hr>
+<h1 id="4-代码-Java"><a href="#4-代码-Java" class="headerlink" title="4.代码 Java"></a>4.代码 Java</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_445</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">         <span class="keyword">int</span> val;</span><br><span class="line">         ListNode next;</span><br><span class="line">         ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment">     * public class ListNode &#123;</span></span><br><span class="line"><span class="comment">     *     int val;</span></span><br><span class="line"><span class="comment">     *     ListNode next;</span></span><br><span class="line"><span class="comment">     *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment">     * &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack1 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        Stack&lt;Integer&gt; stack2 = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack1.push(l1.val);</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>( l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack2.push(l2.val);</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;<span class="comment">//进位符号</span></span><br><span class="line">        ListNode head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack1.empty() || !stack2.empty())&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = carry;</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack1.pop();</span><br><span class="line">            sum += stack1.isEmpty()? <span class="number">0</span>:stack2.pop();</span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            node.next = head;</span><br><span class="line">            head = node;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>67. 二进制求和</title>
+    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
+<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
+<ul>
+<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
+<li>Java 的反转函数 reverse() 将字符串反转</li>
+<li>string.reverse（）；</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
+<li>位运算符：</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
+<li>^ : 按位抑或：不进位的加法：</li>
+</ul>
+<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
+<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
+<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
+</ul>
+<p>是个学习的机会；</p>
+<hr>
+<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Clion中的EOF</title>
     <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
@@ -1272,24 +1307,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>C++</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Pytorch —— tensor 乘法的笔记</title>
-    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
-<p>参考链接：</p>
-<ul>
-<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
-</li>
-<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
-</li>
-</ul>
-<hr>
-]]></content>
   </entry>
   <entry>
     <title>《Voice Conversion with transformer network-samsung》论文总结</title>
@@ -1355,39 +1372,40 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>67. 二进制求和</title>
-    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
-<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
+    <title>Pytorch —— tensor 乘法的笔记</title>
+    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
+<p>参考链接：</p>
 <ul>
-<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
-<li>Java 的反转函数 reverse() 将字符串反转</li>
-<li>string.reverse（）；</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
-<li>位运算符：</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
-<li>^ : 按位抑或：不进位的加法：</li>
+<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
+</li>
+<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
+</li>
 </ul>
-<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
-<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
-<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
-</ul>
-<p>是个学习的机会；</p>
 <hr>
-<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 ]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
+  </entry>
+  <entry>
+    <title>Pytorch —— tensor 乘法的笔记的副本</title>
+    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0%E7%9A%84%E5%89%AF%E6%9C%AC/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
+<p>参考链接：</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
+</li>
+<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
+</li>
+</ul>
+<hr>
+]]></content>
   </entry>
   <entry>
     <title>PGAN 训练笔记</title>
@@ -1469,6 +1487,40 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
   </entry>
   <entry>
+    <title>Sox环境解决办法</title>
+    <url>/2020/11/29/Sox%E7%8E%AF%E5%A2%83%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><a href="https://www.bbsmax.com/A/ZOJPRymxdv/" target="_blank" rel="noopener">参考文章</a></p>
+<ol>
+<li>下载<a href="https://sourceforge.net/projects/sox/" target="_blank" rel="noopener">sox-14.4.1.tar.gz</a></li>
+</ol>
+<p>🌟（不能简单通过pip install 来安装）</p>
+<ol start="2">
+<li>安装sox文件</li>
+</ol>
+<p>　　1）解压　　tar -zxvf sox-14.4.1.tar.gz</p>
+<p>　　2）进入sox14.4.1目录中执行./configure</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/ssd3/other/huangsj/sox_install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 加上prefix，在自定义目录安装，不然机器环境太乱，会找不到</span></span><br></pre></td></tr></table></figure>
+
+<p>　　3）执行 make命令</p>
+<p>　　4）执行make install命令</p>
+<ol start="3">
+<li>添加环境变量</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line">export PATH=/ssd3/other/huangsj/sox_install/bin:$PATH</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>ok，再来运行一下 librispeech  ./run.sh</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>-[kaldi]</category>
+      </categories>
+      <tags>
+        <tag>-[Sox] -[kaldi]</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Shell_find命令备忘小结</title>
     <url>/2020/11/27/Shell_find%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id><a href="#" class="headerlink" title></a></h2><p><a href="https://www.cnblogs.com/huyuanblog/p/10136286.html" target="_blank" rel="noopener">参考文章</a></p>
@@ -1528,58 +1580,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </categories>
       <tags>
         <tag>-[Shell] -[Kaldi]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Pytorch —— tensor 乘法的笔记的副本</title>
-    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0%E7%9A%84%E5%89%AF%E6%9C%AC/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
-<p>参考链接：</p>
-<ul>
-<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
-</li>
-<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
-</li>
-</ul>
-<hr>
-]]></content>
-  </entry>
-  <entry>
-    <title>Sox环境解决办法</title>
-    <url>/2020/11/29/Sox%E7%8E%AF%E5%A2%83%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><a href="https://www.bbsmax.com/A/ZOJPRymxdv/" target="_blank" rel="noopener">参考文章</a></p>
-<ol>
-<li>下载<a href="https://sourceforge.net/projects/sox/" target="_blank" rel="noopener">sox-14.4.1.tar.gz</a></li>
-</ol>
-<p>🌟（不能简单通过pip install 来安装）</p>
-<ol start="2">
-<li>安装sox文件</li>
-</ol>
-<p>　　1）解压　　tar -zxvf sox-14.4.1.tar.gz</p>
-<p>　　2）进入sox14.4.1目录中执行./configure</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/ssd3/other/huangsj/sox_install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 加上prefix，在自定义目录安装，不然机器环境太乱，会找不到</span></span><br></pre></td></tr></table></figure>
-
-<p>　　3）执行 make命令</p>
-<p>　　4）执行make install命令</p>
-<ol start="3">
-<li>添加环境变量</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line">export PATH=/ssd3/other/huangsj/sox_install/bin:$PATH</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>ok，再来运行一下 librispeech  ./run.sh</li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>-[kaldi]</category>
-      </categories>
-      <tags>
-        <tag>-[Sox] -[kaldi]</tag>
       </tags>
   </entry>
   <entry>
@@ -1643,145 +1643,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/06/07/hello-world/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>hexo一些基础指令备忘</title>
-    <url>/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
-<li><h4 id="在hexo下创建一个新的文章"><a href="#在hexo下创建一个新的文章" class="headerlink" title="在hexo下创建一个新的文章"></a>在hexo下创建一个新的文章</h4></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-创建标签"><a href="#2-创建标签" class="headerlink" title="2. 创建标签"></a>2. 创建标签</h2><ul>
-<li>创建分类页面</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>基本设置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: </span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-创建分类"><a href="#3-创建分类" class="headerlink" title="3.创建分类"></a>3.创建分类</h2><ul>
-<li>创建分类页面</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>基本设置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: </span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2020/06/07/test/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
-<p>插入html链接</p>
-<p><a href="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html" target="_blank" rel="noopener">https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html</a></p>
-<p>用iframe插入html链接</p>
-<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html"></iframe>
-
-
-
-<p>插入mp3:</p>
-<p>1.aplayer</p>
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
-			</script>
-
-<p>2.文件直接拖拽，本地存储</p>
-<p> <a href="./30003.wav">30003.wav</a> </p>
-<p>3.aplayer不稳定，还是应该用iframe标签</p>
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
-			</script>
-
-<hr>
-<p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
-
-    <div id="aplayer-ekdEkhSl" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
-
-
-
-<hr>
-<p>5.用iframe插入</p>
-<iframe frameborder="yes" border="1" marginwidth="100" marginheight="100" width="600" height="100" src="http://qbjun0qc6.bkt.clouddn.com/30001.wav">
-</iframe>
-
-<p>插入pdf</p>
-<a id="more"></a>
-
-<p>插入腾讯云pdf测试：</p>
-<div class="pdfobject-container" data-target="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf" data-height="500px"></div>
-
-
-
-<p>用iframe插入：</p>
-<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf"></iframe>
-
-
-
-<p>本地路径插入：pdf ./vc.pdf</p>
-<div class="pdfobject-container" data-target="./vc.pdf" data-height="500px"></div>
-
-
-
-
-
-<p>谷歌网址外链插入</p>
-<div class="pdfobject-container" data-target="https://drive.google.com/file/d/0B6qSwdwPxPRdTEliX0dhQ2JfUEU/preview" data-height="500px"></div>
-
-
-
-<p><img src="/2020/06/07/test/1.png" alt="1"></p>
-<iframe frameborder="yes" border="1" marginwidth="1" marginheight="1" width="330" height="100" src="//music.163.com/outchain/player?type=2&id=444267925 & auto=1 & height=60 "></iframe>
-
-<p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p>
-<p><img src="/2020/06/07/test/stargan/StarGAN-VC2_files/network.png" alt="stargan.png"></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");
-			</script>
-
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");
-			</script>
-
-]]></content>
-      <tags>
-        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -1850,6 +1711,60 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
         <tag>机器学习</tag>
         <tag>语音合成</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>hexo一些基础指令备忘</title>
+    <url>/2020/06/16/hexo%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4%E5%A4%87%E5%BF%98/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-创建文章"><a href="#1-创建文章" class="headerlink" title="1. 创建文章"></a>1. 创建文章</h2><ul>
+<li><h4 id="在hexo下创建一个新的文章"><a href="#在hexo下创建一个新的文章" class="headerlink" title="在hexo下创建一个新的文章"></a>在hexo下创建一个新的文章</h4></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new &quot;文章名称&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-创建标签"><a href="#2-创建标签" class="headerlink" title="2. 创建标签"></a>2. 创建标签</h2><ul>
+<li>创建分类页面</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基本设置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: </span><br><span class="line">type: &quot;tags&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-创建分类"><a href="#3-创建分类" class="headerlink" title="3.创建分类"></a>3.创建分类</h2><ul>
+<li>创建分类页面</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基本设置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: </span><br><span class="line">type: &quot;categories&quot;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/06/07/hello-world/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>《EFFECTIVE WAVENET ADAPTATION FOR VOICE CONVERSION WITH LIMITED DATA》</title>
@@ -2025,6 +1940,312 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>test</title>
+    <url>/2020/06/07/test/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
+<p>插入html链接</p>
+<p><a href="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html" target="_blank" rel="noopener">https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html</a></p>
+<p>用iframe插入html链接</p>
+<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html"></iframe>
+
+
+
+<p>插入mp3:</p>
+<p>1.aplayer</p>
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
+			</script>
+
+<p>2.文件直接拖拽，本地存储</p>
+<p> <a href="./30003.wav">30003.wav</a> </p>
+<p>3.aplayer不稳定，还是应该用iframe标签</p>
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
+			</script>
+
+<hr>
+<p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
+
+    <div id="aplayer-UdUrYmJg" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+
+
+
+<hr>
+<p>5.用iframe插入</p>
+<iframe frameborder="yes" border="1" marginwidth="100" marginheight="100" width="600" height="100" src="http://qbjun0qc6.bkt.clouddn.com/30001.wav">
+</iframe>
+
+<p>插入pdf</p>
+<a id="more"></a>
+
+<p>插入腾讯云pdf测试：</p>
+<div class="pdfobject-container" data-target="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf" data-height="500px"></div>
+
+
+
+<p>用iframe插入：</p>
+<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf"></iframe>
+
+
+
+<p>本地路径插入：pdf ./vc.pdf</p>
+<div class="pdfobject-container" data-target="./vc.pdf" data-height="500px"></div>
+
+
+
+
+
+<p>谷歌网址外链插入</p>
+<div class="pdfobject-container" data-target="https://drive.google.com/file/d/0B6qSwdwPxPRdTEliX0dhQ2JfUEU/preview" data-height="500px"></div>
+
+
+
+<p><img src="/2020/06/07/test/1.png" alt="1"></p>
+<iframe frameborder="yes" border="1" marginwidth="1" marginheight="1" width="330" height="100" src="//music.163.com/outchain/player?type=2&id=444267925 & auto=1 & height=60 "></iframe>
+
+<p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p>
+<p><img src="/2020/06/07/test/stargan/StarGAN-VC2_files/network.png" alt="stargan.png"></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");
+			</script>
+
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");
+			</script>
+
+]]></content>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
+    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
+
+<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
+<ul>
+<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
+<ul>
+<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
+</li>
+<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
+</li>
+<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
+</li>
+</ul>
+<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[语音]</category>
+      </categories>
+      <tags>
+        <tag>语音</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于ssh本地查看Tensorboard记录</title>
+    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
+<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+cd /home/sdb3/home/hsj/taco1_tf/tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+source activate py36
+tensorboard --logdir ./logs-tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+本地浏览器打开 127.0.0.1:16006</code></pre>
+<ul>
+<li>成功实现本地查看 Tensorboard</li>
+<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
+<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
+<li>Distributions</li>
+<li>Histograms</li>
+<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
+]]></content>
+      <categories>
+        <category>Tensorflow</category>
+      </categories>
+      <tags>
+        <tag>Tensorboard，Tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
+    <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
+<li>矢量图（.EPS）格式，不会失真</li>
+<li>参考文章<a href="https://www.zhihu.com/question/58540942" target="_blank" rel="noopener">知乎</a></li>
+<li>需要的工具：<a href="https://www.macwk.com/soft/adobe-acrobat-pro-dc" target="_blank" rel="noopener">Adobe Acrobat Pro DC</a> &amp;&amp; <a href="https://www.macwk.com/article/adobe-zii" target="_blank" rel="noopener">Adobe Zii 激活工具</a></li>
+</ol>
+<hr>
+<a id="more"></a>
+
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
+<li>将画好的 PPT 模板导出成 pdf 文件格式，用 DC 打开</li>
+<li>搜索 DC 功能 <strong>裁剪</strong>，选定图像区域（去掉白边）</li>
+<li>然后打开 DC 侧边栏，选取要到处的图片所在界面，<strong>右击</strong>，<strong>提取页面</strong>，<strong>输入要导出的界面</strong> <em>（这是为了在很庞大的所有ppt页面中，单独拎出需要的页面，方便下一步的导出为 .eps 格式而服务的）</em></li>
+<li>保存这个由新选取的页面们所组成的新 PDF，然后点击：<strong>文件</strong>—&gt;<strong>另存为</strong>—&gt;<strong>内嵌式PostScript</strong> 格式</li>
+<li>Duang！就这样完成了，尽情滴放大她，也不会失真啦！</li>
+<li>Ps.如果是在 LaTex 写作中，插入图片时，可以直接选择使用 PDF 格式哦！就省去了转为 EPS 格式的过程（如果没有 DC 软件的话）</li>
+</ol>
+<hr>
+<p>最后，本博客开始正式运营，相比于之前使用庞杂、臃肿的 WorldPress，我并不需要多么复杂的后台管理功能，能让我安心地在本地快快乐乐写文字输出就ok，还没有了租服务器的额外开销（汇率提升，我的钱包实在扛不住了，太贵了）</p>
+<hr>
+<ul>
+<li>发现的一个小问题就是，插入pdf，在手机端没法查看，所以之后可以尝试用 html 形式专门做成一个界面栏目，像 VC 比赛 demo 界面那样。clone一下大神们的个人主页</li>
+<li>或者再找找看 .md 格式怎么写一个漂亮的简历</li>
+</ul>
+<hr>
+<h1 id="找到了！！！"><a href="#找到了！！！" class="headerlink" title="找到了！！！"></a>找到了！！！</h1><ul>
+<li><a href="http://www.pdfdo.com/pdf-to-html.aspx" target="_blank" rel="noopener">pdf 转 html 文件格式</a></li>
+<li>使用方法：导入 pdf 之后，转换，点击下载（千万别直接右键保存，那样不完整！）</li>
+<li>然后本地 WebStorm 打开，在 body 标签体后面加一对 center 标签，就能全体文字 &amp; 图片居中啦！</li>
+</ul>
+<hr>
+<ul>
+<li>另一个<a href="https://www.aconvert.com/cn/pdf/" target="_blank" rel="noopener"><strong>大全能格式转换工具网站</strong></a></li>
+<li>有一个致命缺点：转出来的 html 文件在 body 中间加入 center 之后，文字和图片会歪，很不理想，不知什么原因；</li>
+</ul>
+<ul>
+<li><del><strong>原因找到了：</strong></del></li>
+<li><del>这个网站没有直接提供下载功能，先点击压缩，然后选择下载压缩文件</del></li>
+<li><del>千万别直接打开htm之后，直接右键保存，注意到直接保存的是 .htm 格式，不是 .html （这个在之前的侧边栏环节也遇到这个问题），查查什么区别。</del></li>
+<li><del>这个网站下载的很慢，还是不如上面那个网站。</del></li>
+<li>这个网站还是垃圾，下载了之后内部语法乱的一笔，只有单一的一个html文件，图片也不知道给👴整哪里去了，center 居中之后又是乱糟糟，别玩了，就用上面那个吧，太漂亮了！</li>
+</ul>
+<p>真的 OK 了，本文结束。</p>
+<p>真的结束了#2</p>
+<p>以上</p>
+<p>June / 14 / 2020</p>
+<p>@PT</p>
+]]></content>
+      <categories>
+        <category>写作</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
+    <url>/2020/07/23/%E5%85%B3%E4%BA%8E%20WORLD%20%E4%B8%AD%20code_spectral_envelope%20%E5%92%8C%20MFCC%20%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
+<li><a href="https://github.com/mmorise/World/issues/90" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/90</a> （有人提问 WORLD 提取得到的 mel spectrum 梅尔谱和传统概念上 经过一系列stft之后还要经过“三角滤波器组”的过程区别？）</li>
+<li><a href="https://github.com/mmorise/World/issues/33" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/33</a> （r9y9 在<a href="https://github.com/mmorise" target="_blank" rel="noopener">mmorise</a>/<strong><a href="https://github.com/mmorise/World" target="_blank" rel="noopener">World</a></strong> 下提问关于 编码/解码后音色变化问题；代码bug已解决；学习一下画图和使用特点）</li>
+</ol>
+<hr>
+<a id="more"></a>
+
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ol>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200723190241.png" alt="image-20200723190240435"></p>
+</li>
+<li><p>简言之，传统论文  <a href="https://www.sp.nitech.ac.jp/~tokuda/selected_pub/pdf/conference/tokuda_icslp1994.pdf" target="_blank" rel="noopener">Mel-cepstral analysis</a> 提到的方法，也就是正常思路的经过 FFT 后再经过三角滤波器组 得到的 mel 谱，之所以需要三角滤波，可以理解为是，因为MFCC是在 <strong>频谱图</strong> 上进行的操作，所以是未经过 <strong>平滑</strong> 操作的，所以需要滤波器；</p>
+</li>
+<li><p>而WORLD，是在频谱包络上进行的操作，本身已经是顺滑过的，所以得到的 sp 特征，看似流程上没有三角滤波，但是它在使用的时候，效果和SPTK、librosa、merlin之类工具得到的 MFCC 来处理的音频效果是差不多的。</p>
+</li>
+<li><p>所以，就可以理解，很多论文的实现上，作者们在遇到：MFCC 这个特征需要时，若非论文着重强调，是可以用 <strong>code_spectral_envelope</strong> ，并取维度参数为 36 等，来表示36维度（bin）的MFCC特征的。</p>
+</li>
+</ol>
+<hr>
+<p>以上，解决了一直没人能帮我说清楚的问题疑惑。</p>
+<p>还是要多看看源码和 issue，和大佬们交流才进步的多。</p>
+<hr>
+<p>这行里，可能大佬很多，但是能真正带领小白入门的系统专家真的少。sigh。我可能适合做老师，喜欢把大家难懂的东西，娓娓道来，教会孩子们。😁</p>
+]]></content>
+      <categories>
+        <category>-[语音]</category>
+      </categories>
+      <tags>
+        <tag>语音</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>散文诗</title>
+    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
+        <div id="aplayer-XIGfHsTP" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-XIGfHsTP"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "父亲写的散文诗",
+              author: "许飞",
+              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
+              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+
+
+<hr>
+<p>不知怎么的，每次听这首歌都会泪目</p>
+<a id="more"></a>
+
+<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
+<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
+<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
+<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
+<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
+<hr>
+<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
+<p>最年少时，希冀能改变一点点世界。</p>
+<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
+<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
+<hr>
+<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
+<p>没必要。</p>
+<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
+<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
+<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
+<p>晚安</p>
+<p>06/17/2020 凌晨</p>
+<p>@PT</p>
+<hr>
+]]></content>
+      <categories>
+        <category>作家计划</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结</title>
     <url>/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
@@ -2113,168 +2334,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
-    <url>/2020/07/23/%E5%85%B3%E4%BA%8E%20WORLD%20%E4%B8%AD%20code_spectral_envelope%20%E5%92%8C%20MFCC%20%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
-<li><a href="https://github.com/mmorise/World/issues/90" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/90</a> （有人提问 WORLD 提取得到的 mel spectrum 梅尔谱和传统概念上 经过一系列stft之后还要经过“三角滤波器组”的过程区别？）</li>
-<li><a href="https://github.com/mmorise/World/issues/33" target="_blank" rel="noopener">https://github.com/mmorise/World/issues/33</a> （r9y9 在<a href="https://github.com/mmorise" target="_blank" rel="noopener">mmorise</a>/<strong><a href="https://github.com/mmorise/World" target="_blank" rel="noopener">World</a></strong> 下提问关于 编码/解码后音色变化问题；代码bug已解决；学习一下画图和使用特点）</li>
-</ol>
-<hr>
-<a id="more"></a>
-
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ol>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200723190241.png" alt="image-20200723190240435"></p>
-</li>
-<li><p>简言之，传统论文  <a href="https://www.sp.nitech.ac.jp/~tokuda/selected_pub/pdf/conference/tokuda_icslp1994.pdf" target="_blank" rel="noopener">Mel-cepstral analysis</a> 提到的方法，也就是正常思路的经过 FFT 后再经过三角滤波器组 得到的 mel 谱，之所以需要三角滤波，可以理解为是，因为MFCC是在 <strong>频谱图</strong> 上进行的操作，所以是未经过 <strong>平滑</strong> 操作的，所以需要滤波器；</p>
-</li>
-<li><p>而WORLD，是在频谱包络上进行的操作，本身已经是顺滑过的，所以得到的 sp 特征，看似流程上没有三角滤波，但是它在使用的时候，效果和SPTK、librosa、merlin之类工具得到的 MFCC 来处理的音频效果是差不多的。</p>
-</li>
-<li><p>所以，就可以理解，很多论文的实现上，作者们在遇到：MFCC 这个特征需要时，若非论文着重强调，是可以用 <strong>code_spectral_envelope</strong> ，并取维度参数为 36 等，来表示36维度（bin）的MFCC特征的。</p>
-</li>
-</ol>
-<hr>
-<p>以上，解决了一直没人能帮我说清楚的问题疑惑。</p>
-<p>还是要多看看源码和 issue，和大佬们交流才进步的多。</p>
-<hr>
-<p>这行里，可能大佬很多，但是能真正带领小白入门的系统专家真的少。sigh。我可能适合做老师，喜欢把大家难懂的东西，娓娓道来，教会孩子们。😁</p>
-]]></content>
-      <categories>
-        <category>-[语音]</category>
-      </categories>
-      <tags>
-        <tag>语音</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于ssh本地查看Tensorboard记录</title>
-    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
-<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-cd /home/sdb3/home/hsj/taco1_tf/tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-source activate py36
-tensorboard --logdir ./logs-tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-本地浏览器打开 127.0.0.1:16006</code></pre>
-<ul>
-<li>成功实现本地查看 Tensorboard</li>
-<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
-<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
-<li>Distributions</li>
-<li>Histograms</li>
-<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
-]]></content>
-      <categories>
-        <category>Tensorflow</category>
-      </categories>
-      <tags>
-        <tag>Tensorboard，Tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
-    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
-
-<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
-<ul>
-<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
-<ul>
-<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
-</li>
-<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
-</li>
-<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
-</li>
-</ul>
-<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>-[语音]</category>
-      </categories>
-      <tags>
-        <tag>语音</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
-    <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
-<li>矢量图（.EPS）格式，不会失真</li>
-<li>参考文章<a href="https://www.zhihu.com/question/58540942" target="_blank" rel="noopener">知乎</a></li>
-<li>需要的工具：<a href="https://www.macwk.com/soft/adobe-acrobat-pro-dc" target="_blank" rel="noopener">Adobe Acrobat Pro DC</a> &amp;&amp; <a href="https://www.macwk.com/article/adobe-zii" target="_blank" rel="noopener">Adobe Zii 激活工具</a></li>
-</ol>
-<hr>
-<a id="more"></a>
-
-<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
-<li>将画好的 PPT 模板导出成 pdf 文件格式，用 DC 打开</li>
-<li>搜索 DC 功能 <strong>裁剪</strong>，选定图像区域（去掉白边）</li>
-<li>然后打开 DC 侧边栏，选取要到处的图片所在界面，<strong>右击</strong>，<strong>提取页面</strong>，<strong>输入要导出的界面</strong> <em>（这是为了在很庞大的所有ppt页面中，单独拎出需要的页面，方便下一步的导出为 .eps 格式而服务的）</em></li>
-<li>保存这个由新选取的页面们所组成的新 PDF，然后点击：<strong>文件</strong>—&gt;<strong>另存为</strong>—&gt;<strong>内嵌式PostScript</strong> 格式</li>
-<li>Duang！就这样完成了，尽情滴放大她，也不会失真啦！</li>
-<li>Ps.如果是在 LaTex 写作中，插入图片时，可以直接选择使用 PDF 格式哦！就省去了转为 EPS 格式的过程（如果没有 DC 软件的话）</li>
-</ol>
-<hr>
-<p>最后，本博客开始正式运营，相比于之前使用庞杂、臃肿的 WorldPress，我并不需要多么复杂的后台管理功能，能让我安心地在本地快快乐乐写文字输出就ok，还没有了租服务器的额外开销（汇率提升，我的钱包实在扛不住了，太贵了）</p>
-<hr>
-<ul>
-<li>发现的一个小问题就是，插入pdf，在手机端没法查看，所以之后可以尝试用 html 形式专门做成一个界面栏目，像 VC 比赛 demo 界面那样。clone一下大神们的个人主页</li>
-<li>或者再找找看 .md 格式怎么写一个漂亮的简历</li>
-</ul>
-<hr>
-<h1 id="找到了！！！"><a href="#找到了！！！" class="headerlink" title="找到了！！！"></a>找到了！！！</h1><ul>
-<li><a href="http://www.pdfdo.com/pdf-to-html.aspx" target="_blank" rel="noopener">pdf 转 html 文件格式</a></li>
-<li>使用方法：导入 pdf 之后，转换，点击下载（千万别直接右键保存，那样不完整！）</li>
-<li>然后本地 WebStorm 打开，在 body 标签体后面加一对 center 标签，就能全体文字 &amp; 图片居中啦！</li>
-</ul>
-<hr>
-<ul>
-<li>另一个<a href="https://www.aconvert.com/cn/pdf/" target="_blank" rel="noopener"><strong>大全能格式转换工具网站</strong></a></li>
-<li>有一个致命缺点：转出来的 html 文件在 body 中间加入 center 之后，文字和图片会歪，很不理想，不知什么原因；</li>
-</ul>
-<ul>
-<li><del><strong>原因找到了：</strong></del></li>
-<li><del>这个网站没有直接提供下载功能，先点击压缩，然后选择下载压缩文件</del></li>
-<li><del>千万别直接打开htm之后，直接右键保存，注意到直接保存的是 .htm 格式，不是 .html （这个在之前的侧边栏环节也遇到这个问题），查查什么区别。</del></li>
-<li><del>这个网站下载的很慢，还是不如上面那个网站。</del></li>
-<li>这个网站还是垃圾，下载了之后内部语法乱的一笔，只有单一的一个html文件，图片也不知道给👴整哪里去了，center 居中之后又是乱糟糟，别玩了，就用上面那个吧，太漂亮了！</li>
-</ul>
-<p>真的 OK 了，本文结束。</p>
-<p>真的结束了#2</p>
-<p>以上</p>
-<p>June / 14 / 2020</p>
-<p>@PT</p>
-]]></content>
-      <categories>
-        <category>写作</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>python 切片的一些混淆点（备忘）</title>
     <url>/2020/07/16/%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-经常混淆的py切片细节"><a href="#1-经常混淆的py切片细节" class="headerlink" title="1.经常混淆的py切片细节"></a>1.经常混淆的py切片细节</h2><a id="more"></a>
@@ -2329,65 +2388,6 @@ print(e)  <span class="comment">#pyth</span>
       </categories>
       <tags>
         <tag>-[python] -[编程]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>散文诗</title>
-    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-WOJeQdpq" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-WOJeQdpq"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-<a id="more"></a>
-
-<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
-<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
-<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
-<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
-<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
-<hr>
-<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
-<p>最年少时，希冀能改变一点点世界。</p>
-<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
-<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
-<hr>
-<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
-<p>没必要。</p>
-<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
-<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
-<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
-<p>晚安</p>
-<p>06/17/2020 凌晨</p>
-<p>@PT</p>
-<hr>
-]]></content>
-      <categories>
-        <category>作家计划</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
