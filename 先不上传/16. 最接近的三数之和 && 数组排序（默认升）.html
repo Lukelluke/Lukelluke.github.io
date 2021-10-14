@@ -28,22 +28,23 @@
 
 
 
-  <meta name="description" content="1213组会汇报 Done： PGAN 训起来了，用的 AiShell所有 train 训练集，测试集没混进去 Deep Voice 的 train1 提取 ppgs 的网络也训起来了，用的Timit，自带 Phonetic 信息 VCTK-Corpus-0.92.zip 还在043下载，速度比较慢   Did &amp; Doing： StarGAN-VC 2 的复现环节， 把 G 和 D 网络">
+  <meta name="description" content="1.知识点： 双指针 数组排序（默认升序）；自定义降序  2.排序代码1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950&#x2F;* * Java 中 实现 数组的排序 * 默认是 上升序列； * 若要 下降，则默认需要 Integer 或者 Float 等 &quot;类&quot;类型，不能">
 <meta property="og:type" content="website">
-<meta property="og:title" content="黄圣杰">
-<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1213%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5.html">
+<meta property="og:title" content="16.最接近的三数之和 &amp;&amp; 数组排序（默认升）">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&&%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89.html">
 <meta property="og:site_name" content="黄圣杰">
-<meta property="og:description" content="1213组会汇报 Done： PGAN 训起来了，用的 AiShell所有 train 训练集，测试集没混进去 Deep Voice 的 train1 提取 ppgs 的网络也训起来了，用的Timit，自带 Phonetic 信息 VCTK-Corpus-0.92.zip 还在043下载，速度比较慢   Did &amp; Doing： StarGAN-VC 2 的复现环节， 把 G 和 D 网络">
+<meta property="og:description" content="1.知识点： 双指针 数组排序（默认升序）；自定义降序  2.排序代码1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950&#x2F;* * Java 中 实现 数组的排序 * 默认是 上升序列； * 若要 下降，则默认需要 Integer 或者 Float 等 &quot;类&quot;类型，不能">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201213171057.png">
-<meta property="article:published_time" content="2021-10-14T09:18:06.390Z">
-<meta property="article:modified_time" content="2020-12-13T12:36:17.976Z">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183440.png">
+<meta property="article:published_time" content="2021-10-14T10:37:38.079Z">
+<meta property="article:modified_time" content="2020-06-26T10:34:44.713Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="双指针">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201213171057.png">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183440.png">
 
-<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1213%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/16.%20%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%20&&%20%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E5%8D%87%EF%BC%89">
 
 
 <script id="page-configurations">
@@ -56,7 +57,7 @@
   };
 </script>
 
-  <title> | 黄圣杰
+  <title>16.最接近的三数之和 && 数组排序（默认升） | 黄圣杰
 </title>
   
 
@@ -227,7 +228,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">
+<h1 class="post-title" itemprop="name headline">16.最接近的三数之和 && 数组排序（默认升）
 </h1>
 
 <div class="post-meta">
@@ -241,73 +242,45 @@
       
       
       <div class="post-body">
-          <h2 id="1213组会汇报"><a href="#1213组会汇报" class="headerlink" title="1213组会汇报"></a>1213组会汇报</h2><hr>
-<h2 id="Done："><a href="#Done：" class="headerlink" title="Done："></a>Done：</h2><ol>
-<li>PGAN 训起来了，用的 AiShell所有 train 训练集，测试集没混进去</li>
-<li>Deep Voice 的 train1 提取 ppgs 的网络也训起来了，用的Timit，自带 Phonetic 信息</li>
-<li>VCTK-Corpus-0.92.zip 还在043下载，速度比较慢</li>
-</ol>
-<hr>
-<h2 id="Did-amp-Doing："><a href="#Did-amp-Doing：" class="headerlink" title="Did &amp; Doing："></a>Did &amp; Doing：</h2><ol>
-<li>StarGAN-VC <strong>2</strong> 的<strong>复现环节</strong>，</li>
-<li>把 G 和 D 网络结构写好了，还差 一个 dataloader 写一下，另外 Solver 部分模仿着写一下就差不多了</li>
-<li>特征用的是 PGAN 处理的方式（整体训练集做 均值&amp;方差 归一化处理），为了和后端配合上，直接用vocoder的训练数据</li>
-<li>🌟<strong>困难点</strong>：<ol>
-<li>跟进了 <strong>CIN</strong> 在图像领域的具体实现，照猫画虎写出来（IN的改进，加上 特征偏置）</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201213171057.png" alt="image-20201213171056728"></li>
-<li>论文中提到的 GSP ，查了别人不同版本代码，挑了一个合适的方式移植进来</li>
-<li>论文的尺寸结构 是【36维，128帧】，和咱们 mel 80 不对等，进行尺寸匹配计算</li>
-</ol>
-</li>
-</ol>
-<hr>
-<h2 id="论文方面："><a href="#论文方面：" class="headerlink" title="论文方面："></a>论文方面：</h2><ol>
-<li><p>近期看到很多围绕</p>
-<ol>
-<li><p>“<strong>Speaker embedding 循环损失</strong>” </p>
+          <h1 id="1-知识点："><a href="#1-知识点：" class="headerlink" title="1.知识点："></a>1.知识点：</h1><ul>
+<li>双指针</li>
+<li>数组排序（默认升序）；自定义降序</li>
+</ul>
+<h1 id="2-排序代码"><a href="#2-排序代码" class="headerlink" title="2.排序代码"></a>2.排序代码</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Java 中 实现 数组的排序</span></span><br><span class="line"><span class="comment"> * 默认是 上升序列；</span></span><br><span class="line"><span class="comment"> * 若要 下降，则默认需要 Integer 或者 Float 等 "类"类型，不能使用基础类型；</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 最接近的三数之和<span class="title">_16</span>  </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//注意，要想改变默认的排列顺序，不能使用基本类型（int,double, char）,而要使用它们对应的类</span></span><br><span class="line">        Integer[] arr = &#123;<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">5</span>&#125;;</span><br><span class="line">        <span class="comment">//定义一个自定义类MyComparator的对象</span></span><br><span class="line">      <span class="comment">//法一：实现降序；需要类型，不能是基础类型</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr,Collections.reverseOrder());</span></span><br><span class="line">      <span class="comment">//法二：实现降序</span></span><br><span class="line"><span class="comment">//        Arrays.sort(arr, (a,b) -&gt; (b - a));         </span></span><br><span class="line"></span><br><span class="line">      <span class="comment">//法三：需要自己重写 Comparator</span></span><br><span class="line">        Comparator cmp = <span class="keyword">new</span> MyComparator();      </span><br><span class="line">        Arrays.sort(arr, cmp);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : arr) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//若得到的是 int ，需要先手动转为 Integer 类型！</span></span><br><span class="line">        <span class="keyword">int</span> scores[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">89</span>,<span class="number">4</span>&#125;;</span><br><span class="line">        Integer newScores[] = <span class="keyword">new</span> Integer [<span class="number">5</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;scores.length;i++)&#123;</span><br><span class="line"><span class="comment">//            newScores[i]= new Integer(scores[i]);</span></span><br><span class="line">            newScores[i] = scores[i];</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        Arrays.sort(newScores,Collections.reverseOrder());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : newScores) &#123;</span><br><span class="line">            System.out.print(x + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现Comparator接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="comment">//作用是检查下面的方法名是不是父类中所有的，也起到注释的作用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Integer a, Integer b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &gt; b ? -<span class="number">1</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>「OPTIMIZING VOICE CONVERSION NETWORK WITH CYCLE CONSISTENCY LOSS OF SPEAKER IDENTITY」</li>
-</ul>
+<li><h2 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h2></li>
+<li><pre><code class="java">Collections.reverseOrder()
+&lt;!--￼<span class="number">1</span>--&gt;
+
+* 道理同上</code></pre>
 </li>
-<li><p>❤️ “<strong>stargan-vc2 进一步改造</strong>”、——（投到了 <strong>2021 icassp</strong>）</p>
+<li><pre><code class="java">自己重写 Comparator
+&lt;!--￼<span class="number">2</span>--&gt;
+
+才可以实现 用 <span class="keyword">int</span> 类型直接排序（默认是升序列）</code></pre>
+</li>
+<li><p>若要降序，基本都需要 Integer 类型；</p>
+</li>
+<li><p>若是 int 基础类型，那么需要手动 转换一下类型；</p>
+</li>
+</ul>
+<hr>
+<h1 id="3-题目："><a href="#3-题目：" class="headerlink" title="3.题目："></a>3.题目：</h1><h2 id="寻找数组中三个数字之和，要求和最接近于目标数值"><a href="#寻找数组中三个数字之和，要求和最接近于目标数值" class="headerlink" title="寻找数组中三个数字之和，要求和最接近于目标数值"></a>寻找数组中三个数字之和，要求和最接近于目标数值</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183440.png" alt="image-20200624135415119"></p>
 <ul>
-<li><p>WEIGHT ADAPTIVE INSTANCE NORMALIZATION（<strong>WAStarGAN-VC</strong>）</p>
+<li><p>法一：暴力：O（$N^3$）</p>
 </li>
-<li><p>「TOWARDS LOW-RESOURCE STARGAN VOICE CONVERSION USING WEIGHT ADAPTIVE INSTANCE NORMALIZATION」</p>
-</li>
+<li><p>```java<br>//法一：暴力 O(n^3)<br> int best = 100000;<br> int diff = 100000;<br> for(int i=0;i&lt;nums.length;i++){</p>
+<pre><code>for(int j = i+1;j&lt;nums.length;j++){
+    for(int k = j+1;k&lt;nums.length;k++){
+        if(Math.abs(nums[i]+nums[j]+nums[k] - target) &lt; diff){
+            diff = Math.abs(nums[i]+nums[j]+nums[k] - target);
+            best = nums[i]+nums[j]+nums[k];
+        }
+    }
+}</code></pre><p> }<br> return best;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* </span><br><span class="line"></span><br><span class="line">* 法二：双指针：第一个元素从头到尾遍历，二、三元素从表头、尾向中间靠拢。</span><br><span class="line"></span><br><span class="line">  * 好处是：省掉了很多没必要的不可能组合；（有点剪枝的意思了）</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class 最接近的三数之和_16 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public int threeSumClosest(int[] nums, int target)&#123;</span><br><span class="line">        Arrays.sort(nums);&#x2F;&#x2F;升序排列</span><br><span class="line">        int n &#x3D; nums.length;</span><br><span class="line">        int best &#x3D; 10001000;</span><br><span class="line"></span><br><span class="line">        for(int i &#x3D; 0;i &lt; n; i++)&#123;</span><br><span class="line">            &#x2F;&#x2F;若下一个元素和当前元素内容一样，则可以跳过；</span><br><span class="line">            &#x2F;&#x2F;continue，直接跳过当前循环，进入下一次循环；</span><br><span class="line">            if(i&gt;0 &amp;&amp; nums[i] &#x3D;&#x3D; nums[i-1])&#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;使用双指针，枚举 b 和 c；</span><br><span class="line">            int j &#x3D; i+1, k &#x3D; n-1;</span><br><span class="line">            while(j &lt; k)&#123;</span><br><span class="line">                int sum &#x3D; nums[i] + nums[j] + nums[k];</span><br><span class="line">                &#x2F;&#x2F;如果直接等于target，那么直接返回，最接近；</span><br><span class="line">                if(sum &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return target;</span><br><span class="line">                &#125;</span><br><span class="line">                if(Math.abs(sum - target) &lt; Math.abs(best - target))&#123;</span><br><span class="line">                    best &#x3D; sum;</span><br><span class="line">                &#125;</span><br><span class="line">                if(sum &gt; target)&#123;</span><br><span class="line">                    int k0 &#x3D; k - 1;</span><br><span class="line">                    &#x2F;&#x2F;开始移动 c 的指针，直到比原本的 c 值要小；</span><br><span class="line">                    &#x2F;&#x2F; 向左移动到下一个不想等的元素；</span><br><span class="line">                    while(j &lt; k0 &amp;&amp; nums[k0] &#x3D;&#x3D; nums[k])&#123;</span><br><span class="line">                        --k0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    k &#x3D; k0;  &#x2F;&#x2F; 如果发生 k &#x3D; k0 &#x3D;&#x3D; j;那么会退出现在的 while(j &lt; k)</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    &#x2F;&#x2F;如果 sum &lt; target，那么就把 b 指针向左移动；</span><br><span class="line">                    int j0 &#x3D; j+1;</span><br><span class="line">                    while(j0 &lt; k &amp;&amp; nums[j0] &#x3D;&#x3D; nums[j])&#123;</span><br><span class="line">                        ++j0;</span><br><span class="line">                    &#125;</span><br><span class="line">                    j &#x3D; j0;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return best;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-</li>
-<li><p>“<strong>PPG实现多对多转换</strong>” 「Phonetic Posteriorgrams based Many-to-Many Singing Voice Conversion via Adversarial Training」<strong>的论文</strong></p>
-</li>
-</ol>
-</li>
-</ol>
-<ol start="2">
-<li><p>主要的创新点都不多，其中 <strong>stargan-vc2改进</strong>，基于的是 其中提到的 <strong>CIN</strong> 结构，再把 <strong>one-hot</strong> 类型改进成 同步训练的 <strong>Speaker Encoder 出来的 Speaker Embedding</strong> 来改；但是声码器还是用的 WORLD</p>
-<ol>
-<li><strong>demo</strong>网址 ： <a href="https://minidemo.dcs.shef.ac.uk/wastarganvc/" target="_blank" rel="noopener">https://minidemo.dcs.shef.ac.uk/wastarganvc/</a></li>
-</ol>
-</li>
-</ol>
-<ol start="3">
-<li>咱们的想法算是<strong>综合上面两篇</strong></li>
-</ol>
-<p>（论文具体细节内容还没全部看完，接下来看一下）</p>
-<hr>
-<h2 id="下周安排"><a href="#下周安排" class="headerlink" title="下周安排"></a>下周安排</h2><ol>
-<li>把 <strong>dataloader</strong> 和 <strong>solver</strong> 尽快写完，让代码先跑通</li>
-<li>先试 one-hot 类型的，再试 AiShell3 的 Speaker encoder 方式提取的【256】维 embedding<ul>
-<li>嵌入 embedding 两个可能的实现方式路线：<ol>
-<li>同样用 CIN；但是感觉不太符合 CIN 本意是针对 one-hot 而设计的初衷</li>
-<li>不用CIN，直接在 通道层 方向上拼接：像一代那样，但是 2 代 这里已经 reshape 成一维卷积层了</li>
-<li>可以分别做实验看效果，或者直接选第二个就好</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>再跟进一下 看近期有没有新的针对 「隐变量」路线的VC论文的代码</li>
-</ol>
-<hr>
 
       </div>
       
@@ -372,7 +345,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1213组会汇报"><span class="nav-number">1.</span> <span class="nav-text">1213组会汇报</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Done："><span class="nav-number">2.</span> <span class="nav-text">Done：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Did-amp-Doing："><span class="nav-number">3.</span> <span class="nav-text">Did &amp; Doing：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#论文方面："><span class="nav-number">4.</span> <span class="nav-text">论文方面：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下周安排"><span class="nav-number">5.</span> <span class="nav-text">下周安排</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-知识点："><span class="nav-number">1.</span> <span class="nav-text">1.知识点：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-排序代码"><span class="nav-number">2.</span> <span class="nav-text">2.排序代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注意点："><span class="nav-number">2.1.</span> <span class="nav-text">注意点：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-题目："><span class="nav-number">3.</span> <span class="nav-text">3.题目：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#寻找数组中三个数字之和，要求和最接近于目标数值"><span class="nav-number">3.1.</span> <span class="nav-text">寻找数组中三个数字之和，要求和最接近于目标数值</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

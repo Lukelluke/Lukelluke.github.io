@@ -28,18 +28,22 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="1.题目： 2.思路： 见过了那么多 子串 系列的题目，这次一起做个总结吧；  最长子序列&amp;最长子串的题型汇总  史上最全最丰富的“最长公共子序列”、“最长公共子串”问题的解法与思路    3.滑动窗口的概念： 利用 双指针 来实现；即左指针 表示窗口左边界，右指针 表示窗口右边界； 然后滑动，即意味着 有序地，左右指针移动  4.判断重复字符： 除了之前学到的 HashMap，还有一个">
+<meta property="og:type" content="website">
+<meta property="og:title" content="3. 无重复字符的 最长子串">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/3.%20%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2.html">
 <meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="1.题目： 2.思路： 见过了那么多 子串 系列的题目，这次一起做个总结吧；  最长子序列&amp;最长子串的题型汇总  史上最全最丰富的“最长公共子序列”、“最长公共子串”问题的解法与思路    3.滑动窗口的概念： 利用 双指针 来实现；即左指针 表示窗口左边界，右指针 表示窗口右边界； 然后滑动，即意味着 有序地，左右指针移动  4.判断重复字符： 除了之前学到的 HashMap，还有一个">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183412.png">
+<meta property="article:published_time" content="2021-10-14T10:37:38.080Z">
+<meta property="article:modified_time" content="2020-06-26T10:34:27.241Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="-[LeetCode] -[最长子串系列] -[滑动窗口]">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183412.png">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/3.%20%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2">
 
 
 <script id="page-configurations">
@@ -52,7 +56,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>3. 无重复字符的 最长子串 | 黄圣杰
 </title>
   
 
@@ -223,7 +227,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">3. 无重复字符的 最长子串
 </h1>
 
 <div class="post-meta">
@@ -237,15 +241,81 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
+          <h1 id="1-题目："><a href="#1-题目：" class="headerlink" title="1.题目："></a>1.题目：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183412.png" alt="image-20200624145409923"></p>
+<h1 id="2-思路："><a href="#2-思路：" class="headerlink" title="2.思路："></a>2.思路：</h1><ul>
+<li><p>见过了那么多 <strong>子串</strong> 系列的题目，这次一起做个总结吧；</p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_19446965/article/details/81668047" target="_blank" rel="noopener">最长子序列&amp;最长子串的题型汇总</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/wangdd_199326/article/details/76464333" target="_blank" rel="noopener">史上最全最丰富的“最长公共子序列”、“最长公共子串”问题的解法与思路</a></p>
+</li>
+<li></li>
+</ul>
+<h1 id="3-滑动窗口的概念："><a href="#3-滑动窗口的概念：" class="headerlink" title="3.滑动窗口的概念："></a>3.滑动窗口的概念：</h1><ul>
+<li>利用 <strong>双指针</strong> 来实现；即左指针 表示窗口左边界，右指针 表示窗口右边界；</li>
+<li>然后滑动，即意味着 <strong>有序地，左右指针移动</strong></li>
+</ul>
+<h1 id="4-判断重复字符："><a href="#4-判断重复字符：" class="headerlink" title="4.判断重复字符："></a>4.判断重复字符：</h1><ul>
+<li>除了之前学到的 HashMap，还有一个 HashSet（集合）</li>
+<li><a href="https://blog.csdn.net/chen213wb/article/details/84647179" target="_blank" rel="noopener">HashMap 和 Hash Set 的差别</a></li>
+</ul>
+<h1 id="5-代码："><a href="#5-代码：" class="headerlink" title="5.代码："></a>5.代码：</h1><h2 id="法一：用HashSet直接查（里面只存一个值对象）"><a href="#法一：用HashSet直接查（里面只存一个值对象）" class="headerlink" title="法一：用HashSet直接查（里面只存一个值对象）"></a>法一：用HashSet直接查（里面只存一个值对象）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 无重复字符的最长子串<span class="title">_3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="comment">//HashSet:记录每个字符是否出现过</span></span><br><span class="line">        Set&lt;Character&gt; occ = <span class="keyword">new</span> HashSet&lt;Character&gt;();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        · set.remove()</span></span><br><span class="line"><span class="comment">        · set.add()</span></span><br><span class="line"><span class="comment">        · srt.contains()</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="comment">//对比：</span></span><br><span class="line"><span class="comment">//        Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</span></span><br><span class="line">        <span class="keyword">int</span> rk = -<span class="number">1</span>,ans = <span class="number">0</span>;<span class="comment">//rk:右指针；</span></span><br><span class="line">        <span class="keyword">int</span> n = s.length();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i != <span class="number">0</span>)&#123;<span class="comment">//左指针右移</span></span><br><span class="line">                occ.remove(s.charAt(i-<span class="number">1</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(rk + <span class="number">1</span> &lt; n &amp;&amp; !occ.contains(s.charAt(rk+<span class="number">1</span>)))&#123;</span><br><span class="line">                occ.add(s.charAt(rk+<span class="number">1</span>));</span><br><span class="line">                ++rk;</span><br><span class="line">            &#125;</span><br><span class="line">            ans = Math.max(ans, rk - i + <span class="number">1</span>);<span class="comment">//返回最长的长度值；</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="法二：，更简洁的滑动"><a href="#法二：，更简洁的滑动" class="headerlink" title="法二：，更简洁的滑动"></a>法二：，<a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/hua-jie-suan-fa-3-wu-zhong-fu-zi-fu-de-zui-chang-z/" target="_blank" rel="noopener">更简洁的滑动</a></h2><h2 id="HashMap（Key，-Value）"><a href="#HashMap（Key，-Value）" class="headerlink" title="HashMap（Key， Value）"></a>HashMap（Key， Value）</h2><ul>
+<li><p>标签：滑动窗口</p>
+</li>
+<li><p>暴力解法时间复杂度较高，会达到 O($N^2$)</p>
+</li>
+<li><p>故而采取滑动窗口的方法降低时间复杂度</p>
+</li>
+<li><p>定义一个 map 数据结构存储 (k, v)，其中 key 值为字符，value 值为字符位置 +1，加 1 表示从字符位置后一个才开始不重复</p>
+</li>
+<li><p>我们定义不重复子串的开始位置为 start，结束位置为 end</p>
+</li>
+<li><p>随着 end 不断遍历向后，会遇到与 [start, end] 区间内字符相同的情况，此时将字符作为 key 值，获取其 value 值，并更新 start，此时 [start, end] 区间内不存在重复字符</p>
+</li>
+<li><p>无论是否更新 start，都会更新其 map 数据结构和结果 ans。</p>
+</li>
+<li><p>时间复杂度：O(n)</p>
+</li>
+<li><pre><code class="java"><span class="keyword">public</span> <span class="keyword">int</span> lengthOfLongestSubstring_滑动窗口(String s){
+  <span class="keyword">int</span> n = s.length(), ans = <span class="number">0</span>;
+  Map&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();
+  <span class="keyword">for</span>(<span class="keyword">int</span> end=<span class="number">0</span>,start=<span class="number">0</span>; end&lt;n; end++){
+    <span class="keyword">char</span> alpha = s.charAt(end);
+    <span class="keyword">if</span>(map.containsKey(alpha)){
+      start = Math.max(map.get(alpha), start);<span class="comment">//这个很重要</span>
+    }
+    <span class="comment">/*</span>
+<span class="comment">    * if(map.containsKey(s.charAt(i)))</span>
+<span class="comment">    * j = Math.max(map.get(s.charAt(i)),j);</span>
+<span class="comment">    * 为什么有这个判断，是因为在滑动过程中会出现当前loop出现的重复元素之间的区间，</span>
+<span class="comment">    * 可能还有其他元素也是重复的。</span>
+<span class="comment">    * 如果仅仅 j =map.get(s.charAt(i)) </span>
+<span class="comment">    * 则你会忽略两个重复元素之间还有的其他元素也是重复的，</span>
+<span class="comment">    * 例如 a bba ，如果没有max，则答案会是3，因为最后一个a和前一个a的间距是3，</span>
+<span class="comment">    * 不加max就考虑不到中间两个b也是重复的。）</span>
+<span class="comment">    * */</span>
+    ans = Math.max(ans, end - start + <span class="number">1</span>);
+    map.put(s.charAt(end), end+<span class="number">1</span>);
+  }
+  <span class="keyword">return</span> ans;
+}
+&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
+</li>
+<li><p>返回从 fromIndex 位置开始查找指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回 -1。</p>
+</li>
+<li><pre><code class="java"><span class="function"><span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String str)</span></span>;
+&lt;!--￼<span class="number">2</span>--&gt;
+</code></pre>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (i &lt; s.length()) &#123;</span><br><span class="line">			<span class="keyword">int</span> pos = s.indexOf(s.charAt(i),flag);</span><br><span class="line">			<span class="keyword">if</span> (pos &lt; i) &#123;</span><br><span class="line">				<span class="keyword">if</span> (length &gt; result) &#123;</span><br><span class="line">					result = length;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (result &gt;= s.length() - pos - <span class="number">1</span>) &#123;</span><br><span class="line">					<span class="keyword">return</span> result;</span><br><span class="line">				&#125;</span><br><span class="line">				length = i - pos - <span class="number">1</span>;</span><br><span class="line">				flag = pos + <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			length++;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> length;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">作者：VioletKiss</span><br><span class="line">链接：https:<span class="comment">//leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/javati-jie-3wu-zhong-fu-zi-fu-de-zui-chang-zi-chua/</span></span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+
+
+
       </div>
       
       
@@ -309,6 +379,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-题目："><span class="nav-number">1.</span> <span class="nav-text">1.题目：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-思路："><span class="nav-number">2.</span> <span class="nav-text">2.思路：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-滑动窗口的概念："><span class="nav-number">3.</span> <span class="nav-text">3.滑动窗口的概念：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-判断重复字符："><span class="nav-number">4.</span> <span class="nav-text">4.判断重复字符：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-代码："><span class="nav-number">5.</span> <span class="nav-text">5.代码：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#法一：用HashSet直接查（里面只存一个值对象）"><span class="nav-number">5.1.</span> <span class="nav-text">法一：用HashSet直接查（里面只存一个值对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法二：，更简洁的滑动"><span class="nav-number">5.2.</span> <span class="nav-text">法二：，更简洁的滑动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap（Key，-Value）"><span class="nav-number">5.3.</span> <span class="nav-text">HashMap（Key， Value）</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -28,18 +28,26 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="WaveNet小结">
+<meta property="og:type" content="website">
+<meta property="og:title" content="1103——WaveNet &amp; 机器学习 考点小结">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/WaveNet%E5%B0%8F%E7%BB%93.html">
 <meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="WaveNet小结">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="og:image" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/WaveNet%E5%B0%8F%E7%BB%93.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20201016164427.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181353.png">
+<meta property="og:image" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/WaveNet%E5%B0%8F%E7%BB%93.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201019005049252.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224719.jpg">
+<meta property="article:published_time" content="2020-11-03T07:20:58.000Z">
+<meta property="article:modified_time" content="2020-11-03T08:01:02.047Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="语音合成">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/WaveNet%E5%B0%8F%E7%BB%93.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20201016164427.png">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/WaveNet%E5%B0%8F%E7%BB%93">
 
 
 <script id="page-configurations">
@@ -52,7 +60,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>1103——WaveNet & 机器学习 考点小结 | 黄圣杰
 </title>
   
 
@@ -223,7 +231,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">1103——WaveNet & 机器学习 考点小结
 </h1>
 
 <div class="post-meta">
@@ -237,15 +245,62 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
+          <h2 id="WaveNet小结"><a href="#WaveNet小结" class="headerlink" title="WaveNet小结"></a>WaveNet小结</h2><a id="more"></a>
+
+<ol>
+<li><h4 id="WaveNet-一种语音合成的模型-https-www-pianshen-com-article-43431455160-image-20201016164508908-https-blog-1301959139-cos-ap-beijing-myqcloud-com-picGo-20201016164510-png"><a href="#WaveNet-一种语音合成的模型-https-www-pianshen-com-article-43431455160-image-20201016164508908-https-blog-1301959139-cos-ap-beijing-myqcloud-com-picGo-20201016164510-png" class="headerlink" title="WaveNet:一种语音合成的模型 https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)"></a>WaveNet:一种语音合成的模型 <a href="https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)" target="_blank" rel="noopener">https://www.pianshen.com/article/43431455160/![image-20201016164508908](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016164510.png)</a></h4></li>
+<li><h3 id="WaveNet，一种端到端的语音合成模型https-zhuanlan-zhihu-com-p-51359150"><a href="#WaveNet，一种端到端的语音合成模型https-zhuanlan-zhihu-com-p-51359150" class="headerlink" title="WaveNet，一种端到端的语音合成模型https://zhuanlan.zhihu.com/p/51359150"></a>WaveNet，一种端到端的语音合成模型<img src="/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/WaveNet%E5%B0%8F%E7%BB%93.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20201016164427.png" alt="image-20201016164426034"><a href="https://zhuanlan.zhihu.com/p/51359150" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/51359150</a></h3></li>
+</ol>
+<hr>
+<h3 id="预测："><a href="#预测：" class="headerlink" title="预测："></a>预测：</h3><ol>
+<li><p>机器学习各种 Loss 总结：</p>
+<ol>
+<li><a href="https://blog.csdn.net/perfect1t/article/details/88199179" target="_blank" rel="noopener">https://blog.csdn.net/perfect1t/article/details/88199179</a></li>
+<li><a href="https://www.cnblogs.com/guoyaohua/p/9217206.html" target="_blank" rel="noopener">https://www.cnblogs.com/guoyaohua/p/9217206.html</a></li>
+<li><a href="https://www.cnblogs.com/lliuye/p/9549881.html" target="_blank" rel="noopener">https://www.cnblogs.com/lliuye/p/9549881.html</a></li>
+</ol>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181353.png" alt="image-20201016181352142"></p>
+</li>
+<li><p><img src="/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/WaveNet%E5%B0%8F%E7%BB%93.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201019005049252.png" alt="image-20201019005049252"><a href="https://zhuanlan.zhihu.com/p/74874291" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74874291</a></p>
+</li>
+<li><p>常见优化算法及其优缺点：</p>
+<ol>
+<li><p><a href="https://blog.csdn.net/qq_19446965/article/details/81591521" target="_blank" rel="noopener">https://blog.csdn.net/qq_19446965/article/details/81591521</a> </p>
+</li>
+<li><p><a href="http://www.julyedu.com/question/big/kp_id/23/ques_id/1524![image-20201016181800596](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181802.png)![image-20201016181557363](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181558.png)" target="_blank" rel="noopener">http://www.julyedu.com/question/big/kp_id/23/ques_id/1524![image-20201016181800596](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181802.png)![image-20201016181557363](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016181558.png)</a></p>
+</li>
+<li><h3 id="深度学习中优化方法——momentum、Nesterov-Momentum、AdaGrad、Adadelta、RMSprop、Adam"><a href="#深度学习中优化方法——momentum、Nesterov-Momentum、AdaGrad、Adadelta、RMSprop、Adam" class="headerlink" title="深度学习中优化方法——momentum、Nesterov Momentum、AdaGrad、Adadelta、RMSprop、Adam"></a>深度学习中优化方法——momentum、Nesterov Momentum、AdaGrad、Adadelta、RMSprop、Adam</h3><ol>
+<li><h3 id="https-blog-csdn-net-u012328159-article-details-80311892-image-20201019162755198-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201019162757-png"><a href="#https-blog-csdn-net-u012328159-article-details-80311892-image-20201019162755198-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201019162757-png" class="headerlink" title="https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)"></a><a href="https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012328159/article/details/80311892![image-20201019162755198](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201019162757.png)</a></h3></li>
+<li><p><a href="https://blog.csdn.net/u012328159/article/details/80252012![image-20201019162915626](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019162916.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012328159/article/details/80252012![image-20201019162915626](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019162916.png)</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/yangmang/p/7477802.html![image-20201019165031144](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019165036.png)" target="_blank" rel="noopener">https://www.cnblogs.com/yangmang/p/7477802.html![image-20201019165031144](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019165036.png)</a></p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>常用激活函数：<a href="https://zhuanlan.zhihu.com/p/32610035![image-20201016224701337](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201016224703.png)" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32610035![image-20201016224701337](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201016224703.png)</a></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224719.jpg" alt="img"></p>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/73214810![image-20201016224906446](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224907.png)" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/73214810![image-20201016224906446](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201016224907.png)</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/itmorn/p/11132494.html![image-20201019170355380](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170356.png)" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/p/11132494.html![image-20201019170355380](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170356.png)</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/itmorn/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%9D%A2%E8%AF%95%E9%A2%98/default.html?page=2![image-20201019170708536](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170710.png)" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%9D%A2%E8%AF%95%E9%A2%98/default.html?page=2![image-20201019170708536](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201019170710.png)</a></p>
+</li>
+</ol>
+<hr>
+<ol>
+<li><h6 id="A率13折线PCM编码的C语言实现-https-blog-csdn-net-u010480899-article-details-51172633-image-20201017001812322-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201017001813-png"><a href="#A率13折线PCM编码的C语言实现-https-blog-csdn-net-u010480899-article-details-51172633-image-20201017001812322-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201017001813-png" class="headerlink" title="A率13折线PCM编码的C语言实现 https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)"></a>A率13折线PCM编码的C语言实现 <a href="https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)" target="_blank" rel="noopener">https://blog.csdn.net/u010480899/article/details/51172633![image-20201017001812322](/Users/huangshengjie/Documents/2020/个人网站hexo测试/Typora博客图片文件夹/20201017001813.png)</a></h6></li>
+<li><p><a href="https://blog.csdn.net/u012323667/article/details/79214336?utm_medium=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecas![image-20201017003241394](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003242.png)" target="_blank" rel="noopener">https://blog.csdn.net/u012323667/article/details/79214336?utm_medium=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-1.nonecas![image-20201017003241394](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003242.png)</a></p>
+</li>
+<li><p>!                              <a href="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003854.png" target="_blank" rel="noopener">image-20201017003852920</a><a href="https://wenku.baidu.com/view/725f75bf1a37f111f1855b3c.html#![image-20201017003821332](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003822.png)" target="_blank" rel="noopener">https://wenku.baidu.com/view/725f75bf1a37f111f1855b3c.html#![image-20201017003821332](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201017003822.png)</a></p>
+</li>
+</ol>
+<p><strong>1</strong></p>
+
       </div>
       
       
@@ -309,6 +364,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#WaveNet小结"><span class="nav-number">1.</span> <span class="nav-text">WaveNet小结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WaveNet-一种语音合成的模型-https-www-pianshen-com-article-43431455160-image-20201016164508908-https-blog-1301959139-cos-ap-beijing-myqcloud-com-picGo-20201016164510-png"><span class="nav-number">1.0.1.</span> <span class="nav-text">WaveNet:一种语音合成的模型 https:&#x2F;&#x2F;www.pianshen.com&#x2F;article&#x2F;43431455160&#x2F;![image-20201016164508908](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20201016164510.png)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WaveNet，一种端到端的语音合成模型https-zhuanlan-zhihu-com-p-51359150"><span class="nav-number">1.1.</span> <span class="nav-text">WaveNet，一种端到端的语音合成模型https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;51359150</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测："><span class="nav-number">1.2.</span> <span class="nav-text">预测：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深度学习中优化方法——momentum、Nesterov-Momentum、AdaGrad、Adadelta、RMSprop、Adam"><span class="nav-number">1.3.</span> <span class="nav-text">深度学习中优化方法——momentum、Nesterov Momentum、AdaGrad、Adadelta、RMSprop、Adam</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#https-blog-csdn-net-u012328159-article-details-80311892-image-20201019162755198-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201019162757-png"><span class="nav-number">1.4.</span> <span class="nav-text">https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012328159&#x2F;article&#x2F;details&#x2F;80311892![image-20201019162755198](&#x2F;Users&#x2F;huangshengjie&#x2F;Documents&#x2F;2020&#x2F;个人网站hexo测试&#x2F;Typora博客图片文件夹&#x2F;20201019162757.png)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#A率13折线PCM编码的C语言实现-https-blog-csdn-net-u010480899-article-details-51172633-image-20201017001812322-Users-huangshengjie-Documents-2020-个人网站hexo测试-Typora博客图片文件夹-20201017001813-png"><span class="nav-number">1.4.0.0.1.</span> <span class="nav-text">A率13折线PCM编码的C语言实现 https:&#x2F;&#x2F;blog.csdn.net&#x2F;u010480899&#x2F;article&#x2F;details&#x2F;51172633![image-20201017001812322](&#x2F;Users&#x2F;huangshengjie&#x2F;Documents&#x2F;2020&#x2F;个人网站hexo测试&#x2F;Typora博客图片文件夹&#x2F;20201017001813.png)</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

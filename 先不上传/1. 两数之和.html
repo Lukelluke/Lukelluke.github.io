@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+      
+  <!--pjax：防止跳转页面音乐暂停-->
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script> 
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-simple.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+  <meta name="description" content="1. HashMap 发现很多接发都用到了map，其中C++的vector容器，java是HashMap 涉及到之前数据结构盲区 红黑树 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;shoulinniao&#x2F;p&#x2F;11966194.html    2.《Java核心技术卷一》P372，chap9.3：映射 映射 MAP 数据结构&#x3D; 「HashMap」&amp;&amp;「TreeMap」 存">
+<meta property="og:type" content="website">
+<meta property="og:title" content="1.两数之和">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C.html">
+<meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="1. HashMap 发现很多接发都用到了map，其中C++的vector容器，java是HashMap 涉及到之前数据结构盲区 红黑树 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;shoulinniao&#x2F;p&#x2F;11966194.html    2.《Java核心技术卷一》P372，chap9.3：映射 映射 MAP 数据结构&#x3D; 「HashMap」&amp;&amp;「TreeMap」 存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183108.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183128.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183135.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183233.png">
+<meta property="article:published_time" content="2021-10-14T10:37:38.081Z">
+<meta property="article:modified_time" content="2020-06-26T10:32:55.234Z">
+<meta property="article:author" content="黄圣杰">
+<meta property="article:tag" content="LeetCode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg">
+
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1.两数之和 | 黄圣杰
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="黄圣杰" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">黄圣杰</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">bjfuhsj.top</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/CV" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about-cat">
+
+    <a href="/ZONE/" rel="section"><i class="fa fa-fw fa-user"></i>about-cat</a>
+
+  </li>
+        <li class="menu-item menu-item-vcc2020-challenge">
+
+    <a href="/stargan" rel="section"><i class="fa fa-fw fa-picture-o"></i>VCC2020-Challenge</a>
+
+  </li>
+        <li class="menu-item menu-item-热榜">
+
+    <a href="/%E7%83%AD%E6%A6%9C" rel="section"><i class="fa fa-fw fa-fighter-jet"></i>热榜</a>
+
+  </li>
+        <li class="menu-item menu-item-随机数游戏工具">
+
+    <a href="/rolling-number-master" rel="section"><i class="fa fa-fw fa-gamepad"></i>随机数游戏工具</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">1.两数之和
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg" alt="img"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183108.png" alt="image-20200621235419362"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183128.png" alt="image-20200621235438971"></p>
+<h1 id="1-HashMap"><a href="#1-HashMap" class="headerlink" title="1. HashMap"></a>1. HashMap</h1><ul>
+<li>发现很多接发都用到了map，其中C++的vector容器，java是HashMap</li>
+<li>涉及到之前数据结构盲区 <strong>红黑树</strong> <a href="https://www.cnblogs.com/shoulinniao/p/11966194.html" target="_blank" rel="noopener">https://www.cnblogs.com/shoulinniao/p/11966194.html</a></li>
+<li></li>
+</ul>
+<hr>
+<h1 id="2-《Java核心技术卷一》P372，chap9-3：映射"><a href="#2-《Java核心技术卷一》P372，chap9-3：映射" class="headerlink" title="2.《Java核心技术卷一》P372，chap9.3：映射"></a>2.《Java核心技术卷一》P372，chap9.3：映射</h1><ul>
+<li>映射 <strong>MAP</strong> 数据结构= 「HashMap」&amp;&amp;「TreeMap」</li>
+<li>存放 {键<strong>KEY</strong>：值<strong>VALUE</strong>}对</li>
+<li>都只对 <strong>键（KEY）</strong>进行处理（ <strong>散列</strong>&amp;&amp; <strong>搜索树排序</strong>  ）</li>
+</ul>
+<h1 id="3-相关方法函数："><a href="#3-相关方法函数：" class="headerlink" title="3.相关方法函数："></a>3.相关方法函数：</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//哈希map初始化，自己定义Key和Value的类型</span></span><br><span class="line">Map&lt;String, Employee&gt; staff = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个employee对象，用作Value</span></span><br><span class="line">Employee harry = <span class="keyword">new</span> Employee(<span class="string">"Harry Hacker"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//1.：map.put（key，value）方法：将 键值对 放进HashMap</span></span><br><span class="line">staff.put(<span class="string">"123456"</span>,harry)<span class="comment">//</span></span><br><span class="line"><span class="comment">//同一个key存两次，会覆盖，并且返回的是上一次存储的 Value值；</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2.：map.get(key) 方法：按照 Key 的值，来从HashMap中获取Value</span></span><br><span class="line">String id = <span class="string">"123456"</span>;</span><br><span class="line">Employee e = staff.get(id);</span><br><span class="line"></span><br><span class="line"><span class="comment">//get()方法还可以人为设置默认值：</span></span><br><span class="line">Map&lt;String, Integer&gt; score = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="keyword">int</span> score = score.get(id,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//放这个Key对应的Value不存在时，返回 0；</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><ol>
+<li><strong>import</strong> java.util.HashMap;//导入</li>
+<li><strong>HashMap&lt;K, V&gt; map = new HashMap&lt;K, V&gt;（）;</strong>//定义map，K和V是类，<strong><em>不允许是基本类型？</em></strong></li>
+<li><strong>put（K， V）</strong></li>
+<li><strong>V get（K）</strong></li>
+<li><strong>V remove（K）</strong>//移除K键的值，返回的是V，可以不接收</li>
+<li><strong>size（）</strong>//返回映射Map中的元素数目</li>
+<li><strong>replace（）</strong>//替换</li>
+</ol>
+</li>
+<li><pre><code class="java"> map.replace( Key,Value );
+&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
+</li>
+<li><p><strong>9. computeIfAbsent（）</strong>//</p>
+</li>
+<li><pre><code class="java"><span class="comment">//如果key键为java的,就添加，并且value为key键的长度</span>
+<span class="comment">//这个算子就是一个和put功能差不多的算子，都是往map里面添加数据。</span>
+
+map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).length());
+&lt;!--￼<span class="number">2</span>--&gt;</code></pre>
+</li>
+<li></li>
+</ul>
+<hr>
+<h1 id="4-关于遍历方法："><a href="#4-关于遍历方法：" class="headerlink" title="4.关于遍历方法："></a>4.关于遍历方法：</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回所有 Key-Value 对：</span></span><br><span class="line"><span class="keyword">for</span>(Map.Entry n: map.entrySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有 Key：</span></span><br><span class="line"><span class="keyword">for</span>(String n : map.keySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有Value：</span></span><br><span class="line"><span class="keyword">for</span>(Integer n: map.values())&#123;</span><br><span class="line">		System.out.println(n);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h1 id="5-其他："><a href="#5-其他：" class="headerlink" title="5.其他："></a>5.其他：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183135.png" alt="image-20200622181415228"></p>
+<ul>
+<li><h2 id="HashMap中链表转换成红黑树的操作——treeifyBin"><a href="#HashMap中链表转换成红黑树的操作——treeifyBin" class="headerlink" title="HashMap中链表转换成红黑树的操作——treeifyBin()"></a>HashMap中链表转换成红黑树的操作——treeifyBin()</h2></li>
+<li><p><a href="https://www.jianshu.com/p/309ea054cbc9" target="_blank" rel="noopener">https://www.jianshu.com/p/309ea054cbc9</a></p>
+</li>
+</ul>
+<hr>
+<h1 id="6-整理下HashMap里面的常见面试考点："><a href="#6-整理下HashMap里面的常见面试考点：" class="headerlink" title="6.整理下HashMap里面的常见面试考点："></a>6.整理下HashMap里面的常见面试考点：</h1><ol>
+<li><h2 id="HashMap-默认容量："><a href="#HashMap-默认容量：" class="headerlink" title="HashMap 默认容量："></a>HashMap 默认容量：</h2><ul>
+<li><strong>默认容量是：16 = 1 &lt;&lt; 4（位移动 = $1000_2$ =  $16_{10}$）；</strong></li>
+<li><strong>默认负载因子是：0.75（根据）</strong>（服从泊松分布）：红黑树部分也是这个原理：</li>
+<li>桶中的节点个数服从泊松分布；</li>
+<li>取 $\lambda = 0.5$ ，此时 ，每个捅中元素个数为 【0，8】个的概率分别如图所示，大于八个，基本已经到达百万分之一的级别，所以 <strong>Java8</strong> 中选择以 <strong>8</strong> 作为一个临界数字，来决定是否将链表转化为 <strong>红黑树</strong>；</li>
+<li>其中，在 最大桶元素个数 = 7 时，不变，作为缓冲，以防止过于频繁的转换消耗；  </li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183233.png" alt="image-20200622234017327"></p>
+</li>
+<li><h2 id="如何扩容？"><a href="#如何扩容？" class="headerlink" title="如何扩容？"></a>如何扩容？</h2><ul>
+<li>$2^n$ 的形式，每次翻两倍；（这和 Hash 的工作机制有关：（n - 1）&amp; hash）</li>
+<li>这样子的好处是，（$2^n$-1）= 一个全为1 的二进制树，计算更快；</li>
+</ul>
+</li>
+<li><h2 id="为什么HashMap的数组大小一定要是-2-的幂？"><a href="#为什么HashMap的数组大小一定要是-2-的幂？" class="headerlink" title="为什么HashMap的数组大小一定要是 2 的幂？"></a>为什么<strong>HashMap</strong>的数组大小一定要是 2 的幂？</h2><ul>
+<li><p>和 Hash 的工作机制有关；HashMap求索引时用&amp;运算,index=(n-1)&amp;hash</p>
+</li>
+<li><p>n = length : 表长度 = $2^n$ </p>
+</li>
+<li><p>（HashTable求索引用模运算，index = (hash &amp; 0x7FFFFFFF) % n）</p>
+</li>
+<li></li>
+<li><p>：只有这样才能保证 经过 ( $2^n $ ) 操作后得到全是1 的值；</p>
+</li>
+<li><p>然后这样才能经过非常快速的位运算，快速拿到数组下标，并且能保证分布均匀</p>
+</li>
+<li><p>若不是 $2^n$, 则运算过后，会有0存在，那么就会导致，不管 和他进行按位与 运算的数字是多少，都会出现某些位永远是 0，那么就会导致，某些 <strong>桶</strong> 里的元素永远都是 <strong>0个</strong>，不均匀且不合理； </p>
+</li>
+</ul>
+</li>
+<li><h2 id="HashMap-为什么是线程不安全的？"><a href="#HashMap-为什么是线程不安全的？" class="headerlink" title="HashMap 为什么是线程不安全的？"></a>HashMap 为什么是线程不安全的？</h2><ul>
+<li>在接近临界点时，若此时两个或者多个线程进行put操作，都会进行resize（扩容）和reHash（为key重新计算所在位置），而reHash在并发的情况下可能会形成<code>链表环</code>。</li>
+<li>总结来说就是在多线程环境下，使用HashMap进行put操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使用HashMap。</li>
+<li>为什么在并发执行put操作会引起死循环？是因为多线程会导致HashMap的Entry链表形成环形数据结构，一旦形成环形数据结构，Entry的next节点永远不为空，就会产生死循环获取Entry。</li>
+<li>jdk1.7的情况下，并发扩容时容易形成链表环，此情况在1.8时就好太多太多了。</li>
+<li>因为在1.8中当链表长度达到阈值（默认长度为8）时，链表会被改成树形（红黑树）结构。如果删剩节点变成7个并不会退回链表，而是保持不变，删剩6个时就会变回链表，7不变是缓冲，防止频繁变换。</li>
+<li>在JDK1.7中，当并发执行扩容操作时会造成环形链和数据丢失的情况。</li>
+<li>在JDK1.8中，在并发执行put操作时会发生数据覆盖的情况。</li>
+</ul>
+</li>
+<li><h2 id="Java-7-到-8-做了哪些改进？为什么？"><a href="#Java-7-到-8-做了哪些改进？为什么？" class="headerlink" title="Java 7 到 8 做了哪些改进？为什么？"></a>Java 7 到 8 做了哪些改进？为什么？</h2><ul>
+<li>如上题所述：</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="7-拓展"><a href="#7-拓展" class="headerlink" title="7.拓展"></a>7.拓展</h1><ol>
+<li><p>你能想到的做 HashMap 匹配的方法？ </p>
+<ul>
+<li><ol>
+<li>直接取模：（$-2^{31}$ ~ $2^{31} -1$ ）% n = （0 , $n-1$）</li>
+</ol>
+</li>
+<li>缺点：两个：<ul>
+<li>负数对 n求余，答案是负数；（所以需要额外把 负数 变为 正数 ）</li>
+<li>速度较慢（相比于位运算）：因为硬件中“求余”的本质是“除法”</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常考的“坑”：扩容：<strong>resize（）</strong></p>
+<ol>
+<li>扩容 <strong>resize( )</strong>包括 <strong>rehash ( )</strong></li>
+<li>机制是，当原来的容器中，容量达到了 <strong>0.75 * capacity</strong>， 再创建一个 <strong>2 * capacity</strong> 的新的桶；</li>
+<li>然后会把旧的桶中的数据 <strong>迁移</strong> 过去，迁移的时候，伴随着重新地对原始数据进行 <strong>rehash</strong> 计算；</li>
+<li><strong>resize（）</strong>里面的 <strong>transfer（）</strong>是一切问题的根源！！</li>
+</ol>
+</li>
+<li><ul>
+<li><strong>死锁问题：</strong>：本身是线程不安全的；完全是用户的问题；</li>
+</ul>
+</li>
+<li><ul>
+<li><strong>哈希表最致命的缺陷：哈希碰撞——&gt;</strong>最差情况下，会变成单链表；链表性能退化</li>
+</ul>
+</li>
+<li><ul>
+<li>所以在java7时代的 <strong>Tomcat（2011）</strong> 中引起了问题——&gt;可以通过一组精心设计的 恶意请求，造成 <strong>DoS（Deny of serveice）</strong></li>
+</ul>
+</li>
+<li><pre><code>&quot;Aa&quot;,&quot;BB&quot;,&quot;C#&quot; 的哈希值是相同的！
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7. ![image-20200622231322114](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183234.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 8. Java8的改进点 &amp;&amp; 新API</span><br><span class="line"></span><br><span class="line">1. 从 **数组 + 链表**——&gt;**数组 + 链表 &#x2F; 红黑树**</span><br><span class="line"></span><br><span class="line">2. 扩容时，插入顺序的改进：（原来是，从旧的头先取，然后按照“头插法”插入新的桶，导致顺序不稳定）</span><br><span class="line"></span><br><span class="line">3. 函数方法：（java 8 引入了 Lamda 表达式）</span><br><span class="line"></span><br><span class="line">   1. forEach</span><br><span class="line">   2. compute 系列</span><br><span class="line"></span><br><span class="line">4.  Map 的新 API</span><br><span class="line"></span><br><span class="line">   1. Merge</span><br><span class="line">   2. replace</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   # 9.补充</span><br><span class="line"></span><br><span class="line">   1. **抑或运算**：可以更简单地理解为 **不进位的 加法 ！**</span><br><span class="line">   2. 红黑树转换，并不是要把整张表都从链表改成红黑树，而是只要 超过 8 个元素的 那个桶，改一下形式，就行了：</span><br><span class="line">   3. ![image-20200623000116947](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183235.png)</span><br><span class="line">   4. 二叉平衡树，平均查找时间：O（$log N$）</span><br><span class="line">   5. 单纯的二叉树，有个极端情况：插入顺序是有序的，那么就会造成演化成 **单链表**</span><br><span class="line">   6. 而红黑树，经过一定的旋转，保证了查找的效率（具体再仔细看看书）</span><br><span class="line">   7. **新的 Java8 中的 resize（）函数**：改进成了 **扩容时** 能保持原来的顺序，但是仍然不能保证 **线程安全**，只能说是大搭建撒后了线程冲突的概率。</span><br><span class="line">   8. 所以未来可能不会再多线程情况下遇到问题，但是还是不能放心地在多线程环境下使用它！（**Linux中的任务调度 是多线程的，有用到 HashMap**）</span><br><span class="line">   9. **HashCode** ： 默认使用 **32位** 的 **Int** 的**HashCode**；</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   # 10.面试题常见：</span><br><span class="line"></span><br><span class="line">   1. 为什么用 数组 +链表：经典的学院派操作</span><br><span class="line">   2. Hash 冲突你还知道哪些解决办法：可以在冲突的桶里面，再套一层 Hash 表；即，冲突的进行二次分流；（表中再有个表）</span><br><span class="line">   3. 用Lin课的Li身体代替数组结构可以吗？：不可以，数组的随机访问是 O（1）的，不受数组长度的影响，二链表的顺序访问速度是 O（n），不能起到随机访问的效果；</span><br><span class="line">   4. get（）的操作？：如果第一个元素就是要求的话，那么就直接返回它；不是的话，那么，先判断该桶是什么结构，如果是红黑树，那么就用树的查找方法 查找；否则若是链表结构，就采用链表的顺序访问形式访问</span><br><span class="line">   5. 为什么 String 、Integer 这样的 wrapper 类 适合作为键？：因为String是final，具有不变性，而且已经重写了 equals（）和hashcode（）方法了。不变性是必要的！因为 为了要计算 hashcode（），就要防止键改变，如果键再嵌入时和获取时返回不同的 hashcode 的话，就不能从 HashMap 中找到你想要的对象。</span><br><span class="line">   6. 如果HashMap的大小超过了负载因子（load factor）定义的容量怎么办？：扩容：resize（） &amp; rehash（）「注意，resize（）的效率非常低！！！」所以如果预先知道有一个很大的表要创建，那么可以预先再创建时，就指定一个较大的空间，相当于时 **空间换时间**；避免未来的频繁resize（）花费很多时间。</span><br><span class="line"></span><br><span class="line">   ## </span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 11.红黑树：自己补充</span><br><span class="line"></span><br><span class="line">![截屏2020-06-23上午12.50.42](&#x2F;Users&#x2F;huangshengjie&#x2F;Desktop&#x2F;截屏2020-06-23上午12.50.42.png)</span><br><span class="line"></span><br><span class="line">* [B站课程](https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1tE411f7tP?from&#x3D;search&amp;seid&#x3D;2421763921920035607)：</span><br><span class="line">* [一份链接文章](https:&#x2F;&#x2F;blog.csdn.net&#x2F;Mr_Helloworld_&#x2F;article&#x2F;details&#x2F;106694724)</span><br><span class="line">* ![image-20200624005349275](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183236.png)</span><br><span class="line">* ![image-20200624005402070](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183237.png)</span><br><span class="line">* ![image-20200624005251467](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183238.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"># 12.正题：001:两数之和：Java版</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class twoSum_001 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;暴力法</span><br><span class="line">    public int[] twoSum_force(int[] nums, int target)&#123;</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            for(int j&#x3D;i+1;j&lt; nums.length;j++)&#123;</span><br><span class="line">                if(nums[j] &#x3D;&#x3D; target - nums[i])&#123;</span><br><span class="line">                    return new int[] &#123;i, j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum soluition&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;两遍 Hash，一遍存，一遍查取；</span><br><span class="line">    public int[] twoSum_HashTwice(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            map.put(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i&#x3D;0; i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complement &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complement) &amp;&amp; map.get(complement) !&#x3D; i)&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complement)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;一遍 Hash，先查，查不到就接着存；</span><br><span class="line">    public int[] twoSum_HashOnce(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complemenmt &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complemenmt))&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complemenmt)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+</code></pre></li>
+</ol>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+    
+    
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=444267925&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-HashMap"><span class="nav-number">1.</span> <span class="nav-text">1. HashMap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-《Java核心技术卷一》P372，chap9-3：映射"><span class="nav-number">2.</span> <span class="nav-text">2.《Java核心技术卷一》P372，chap9.3：映射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-相关方法函数："><span class="nav-number">3.</span> <span class="nav-text">3.相关方法函数：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-关于遍历方法："><span class="nav-number">4.</span> <span class="nav-text">4.关于遍历方法：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-其他："><span class="nav-number">5.</span> <span class="nav-text">5.其他：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap中链表转换成红黑树的操作——treeifyBin"><span class="nav-number">5.1.</span> <span class="nav-text">HashMap中链表转换成红黑树的操作——treeifyBin()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-整理下HashMap里面的常见面试考点："><span class="nav-number">6.</span> <span class="nav-text">6.整理下HashMap里面的常见面试考点：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap-默认容量："><span class="nav-number">6.1.</span> <span class="nav-text">HashMap 默认容量：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何扩容？"><span class="nav-number">6.2.</span> <span class="nav-text">如何扩容？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap的数组大小一定要是-2-的幂？"><span class="nav-number">6.3.</span> <span class="nav-text">为什么HashMap的数组大小一定要是 2 的幂？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap-为什么是线程不安全的？"><span class="nav-number">6.4.</span> <span class="nav-text">HashMap 为什么是线程不安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-7-到-8-做了哪些改进？为什么？"><span class="nav-number">6.5.</span> <span class="nav-text">Java 7 到 8 做了哪些改进？为什么？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-拓展"><span class="nav-number">7.</span> <span class="nav-text">7.拓展</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="黄圣杰"
+      src="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+  <p class="site-author-name" itemprop="name">黄圣杰</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Lukelluke" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Lukelluke" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:huangshengjie@bjfu.edu.cn" title="E-Mail → mailto:huangshengjie@bjfu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+
+          
+    
+
+    <aside class="sidebar">
+
+
+
+
+    </div>
+
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备20024435号 测试</a>
+  
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄圣杰</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">0k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1 分钟</span>
+</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  All is well.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("06/09/2020 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+
+        
+
+
+        document.getElementById("timeDate").innerHTML = "🌟本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'hsjptyz21',
+      projectId: 'AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

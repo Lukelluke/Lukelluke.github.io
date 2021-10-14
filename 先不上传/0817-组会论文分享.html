@@ -28,18 +28,37 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="展示demo：https:&#x2F;&#x2F;liusongxiang.github.io&#x2F;end2endAC&#x2F;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="《END-TO-END ACCENT CONVERSION WITHOUT USING NATIVE UTTERANCES》论文总结">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/0817-%E7%BB%84%E4%BC%9A%E8%AE%BA%E6%96%87%E5%88%86%E4%BA%AB.html">
 <meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="展示demo：https:&#x2F;&#x2F;liusongxiang.github.io&#x2F;end2endAC&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200816133725.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200816222235.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817111542.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817114458.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817114716.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817143548.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817143604.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817143645.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817144039.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817144505.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817145536.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817145554.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817145627.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817153318.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817161213.png">
+<meta property="article:published_time" content="2020-08-17T11:20:58.000Z">
+<meta property="article:modified_time" content="2020-08-17T11:44:00.124Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="VC">
+<meta property="article:tag" content="论文阅读笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200816133725.png">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/0817-%E7%BB%84%E4%BC%9A%E8%AE%BA%E6%96%87%E5%88%86%E4%BA%AB">
 
 
 <script id="page-configurations">
@@ -52,7 +71,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>《END-TO-END ACCENT CONVERSION WITHOUT USING NATIVE UTTERANCES》论文总结 | 黄圣杰
 </title>
   
 
@@ -223,7 +242,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">《END-TO-END ACCENT CONVERSION WITHOUT USING NATIVE UTTERANCES》论文总结
 </h1>
 
 <div class="post-meta">
@@ -237,15 +256,151 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
+          <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200816133725.png" alt="image-20200816133724321"></p>
+<p>展示demo：<a href="https://liusongxiang.github.io/end2endAC/" target="_blank" rel="noopener">https://liusongxiang.github.io/end2endAC/</a></p>
+<a id="more"></a>
+
+<ul>
+<li>是在 VC 之上，再做的进一步 口音修正：</li>
+<li>source 语音在带有口音（e.g. 咖喱味的英语）的前提下，做VC，但是 我们除了想要 target 的身份，还要 <strong>目标说话人口音</strong>（e.g. 纯正的母语英语）</li>
+<li>所提到的整个网络模型，综合了 TTS 、VC、ASR 的方法，也有一种采众家之长的意思，但是麻烦的是，四个模型部分，需要分别训练</li>
+</ul>
+<hr>
+<h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><ol>
+<li>传统的口音转换：<ol>
+<li>内容（content）、发音（pronounciation） 不变</li>
+<li>把 本地source说话人 的口音（accent），转换成 非本地target说话人 的口音</li>
+</ol>
+</li>
+<li>本文尝试source非母语：北印度人说的英语口音—&gt;北美正统英语口音</li>
+<li>传统的局限：做转换时，需要具备的条件：<ol>
+<li>需要有 印度人说的英语 作为source</li>
+<li>需要有美国人说的英语作为 target</li>
+<li>这导致了，在实际上也用途时，很臃肿难用</li>
+</ol>
+</li>
+<li>本文想法：<ol>
+<li>在转换阶段，提出 端到端 方法，使得不需要 美国人英语target 也能做正确的 AC （accent conversion）</li>
+</ol>
+</li>
+<li>贡献点：<ol>
+<li>说是目前为止第一家实现在 转换阶段 不需要目标（美国target英语语音）就能实现转换的方案</li>
+<li>细化实现了对 <strong>韵律特征</strong> 的建模：（例如说话速度和持续时间）</li>
+<li>non-parallel</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="网络结构：（四部分）"><a href="#网络结构：（四部分）" class="headerlink" title="网络结构：（四部分）"></a>网络结构：（四部分）</h2><ol>
+<li>a speaker encoder</li>
+<li>a multi-speaker TTS model</li>
+<li>an accented ASR model</li>
+<li>a neural vocoder</li>
+</ol>
+<hr>
+<ol>
+<li>encoder 部分作用：生成speaker-embedding</li>
+<li>TTS 部分 用的是tacotron2（音素 + embedding 预测 mel）</li>
+<li></li>
+</ol>
+<hr>
+<h2 id="Speaker-encoder"><a href="#Speaker-encoder" class="headerlink" title="Speaker encoder"></a>Speaker encoder</h2><ol>
+<li>引用的模型：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200816222235.png" alt="image-20200816222233997"></li>
+<li>作用是：生成 <strong>speaker-embedding</strong>，用来和 TTS 结合，保证了生成语音 和 target 说话人 身份一致（类似VC和TTS结合？）</li>
+<li>GE2E（generalized end-to-end）speaker veriﬁcation loss</li>
+<li><strong>Baseline训练过程</strong>：</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817111542.png" alt="image-20200817111540876"></li>
+<li><strong>训练阶段训练两个转换模型</strong>：（DTW）<ol>
+<li>Trans 1 : 将 <strong>印度英语</strong> 的ppg 和 <strong>美式英语</strong> 的ppg 利用 DTW 做对齐</li>
+<li>Trans 2 ：将 <strong>印度英语</strong> 的 ppg 和 mel谱 做对应匹配</li>
+<li>转换阶段：<ol>
+<li>输入 <strong>印度英语</strong>到 Trans1</li>
+<li>得到 <strong>美式英语</strong>ppg</li>
+<li>将ppg 继续送入 Trans2，得到对应的 mel谱</li>
+<li>用wave-Net 生成语音波形</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="Multi-speaker-TTS-model-amp-amp-Multi-task-accented-ASR-model"><a href="#Multi-speaker-TTS-model-amp-amp-Multi-task-accented-ASR-model" class="headerlink" title="Multi-speaker TTS model  &amp;&amp;  Multi-task accented ASR model"></a>Multi-speaker TTS model  &amp;&amp;  Multi-task accented ASR model</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817114458.png" alt="image-20200817114456342"></p>
+<ol>
+<li>其中的TTS网络，摘用的这篇：（<strong>attention-based</strong> encoder-decoder model）<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817114716.png" alt="image-20200817114714573"></li>
+<li><strong>text transcripts</strong> into <strong>phoneme sequences</strong>：TTS 中用phone 序列，加速收敛过程；</li>
+</ol>
+<h3 id="口音识别：Multi-task-accented-ASR-model"><a href="#口音识别：Multi-task-accented-ASR-model" class="headerlink" title="口音识别：Multi-task accented ASR model"></a>口音识别：Multi-task accented ASR model</h3><p>训练思路：</p>
+<ol>
+<li>前面有，用单说话人（美式英语）训练好的 <strong>speaker encoder</strong></li>
+<li>接着有 用全部都是（美式英语）训练的 多说话人 <strong>TTS</strong> <strong>模型</strong>（TTS-loss）</li>
+<li>在上面两个步骤基础上，本环节 用多个 <strong>美式英语</strong> &amp;&amp; 一个 <strong>印度英语</strong> 一起进行 <strong>多说话人</strong> 预训练</li>
+<li>完成之后，再 <strong>全部</strong> 换成 <strong>印度口音英语多说话人</strong> 进行调整</li>
+</ol>
+<p>实践中的细节：</p>
+<ol>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817143548.png" alt="image-20200817143546689">)<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817143604.png" alt="image-20200817143601305"></li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817143645.png" alt="image-20200817140608795"></li>
+</ol>
+<p><strong>结构上</strong>：</p>
+<ul>
+<li>E2E attentioned encoder-decoder 结构：如上图（引用以前的文章思路）</li>
+</ul>
+<p><strong>改进 1 ：</strong></p>
+<ul>
+<li>为了增加 <strong>训练稳定性</strong>，参考了文献：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817144039.png" alt="image-20200817144038371"></li>
+<li>在 Encoder 之前，增加了一个 <strong>全连接</strong>，并增加了一个 <strong>CTC loss</strong></li>
+</ul>
+<p><strong>改进 2 ：</strong></p>
+<ul>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817144505.png" alt="image-20200817144503756"></li>
+<li>在口音问题的思路上， 借鉴这篇论文：</li>
+<li>在送给 ASR 之前，<strong>每帧</strong> 都concate上一个 <strong>accent embedding</strong>（这是由第一个步骤 <strong>speaker encoder</strong> 里面产生的 <strong>speaker-embedding</strong> 做一个 对单人所有语音的embedding整体均值 的结果）</li>
+<li>并且在ASR的encoder最开始，再增加一个 <strong>accent classifier 口音分类器</strong>（上一步已经加过一次 FC 了）；这也能使面对口音时，有更好的健壮性</li>
+</ul>
+<hr>
+<h2 id="🌟-Loss-环节"><a href="#🌟-Loss-环节" class="headerlink" title="🌟 Loss 环节"></a>🌟 Loss 环节</h2><ul>
+<li><p>λ 1= <strong>0.5</strong>, λ 2= 0.1, λ 3= <strong>0.5</strong> and λ 4= 0.1</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817145536.png" alt="image-20200817145535742"></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817145554.png" alt="image-20200817145553156"></p>
+</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817145627.png" alt="image-20200817145626236"></p>
+<ol>
+<li><strong>TTSE-loss</strong>：<strong>MSE损失</strong>，对象是：1⃣️上一步已训好的 TTS 产生的声学序列（美式英语） &amp;&amp; ASR识别出的声学序列 做一个 <strong>均方差损失</strong></li>
+<li><strong>CE-loss</strong>：phoneme label prediction （phone音素 的标签预测损失）</li>
+<li><strong>ACC-loss</strong>：口音分类器的损失（类似stargan-vc里面的 speaker-classifier）</li>
+</ol>
+<hr>
+<h2 id="4-后端声码器"><a href="#4-后端声码器" class="headerlink" title="4. 后端声码器"></a>4. 后端声码器</h2><ul>
+<li>本文直接采用开源的 <a href="https://github.com/fatchord/WaveRNN" target="_blank" rel="noopener">WaveRNN</a> </li>
+<li>没有额外加任何的embedding信息，觉得说 mel频谱已经能包含所有需要的声学细节了</li>
+<li>语料：全部采用 <strong>美式英语</strong> 数据来训</li>
+</ul>
+<hr>
+<h2 id="5-转换阶段"><a href="#5-转换阶段" class="headerlink" title="5. 转换阶段"></a>5. 转换阶段</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817153318.png" alt="image-20200817153317898"></p>
+<ol>
+<li>hs：一段语音，经过 speaker-encoder之后得到的 speaker-embedding</li>
+<li>accent-embedding：针对同一个人的所有语音，做所有的 <strong>speaker-embedding</strong>的 <strong>均值</strong>（多个语音理解为多个通道计算）</li>
+<li>（Accent embedding is the averaged speaker embeddings of the non-native-accented speaker.）</li>
+<li>注：accnet-embedding 是 <strong>逐帧都要插入</strong>，speaker-embedding 是最后再concate上</li>
+</ol>
+<hr>
+<h2 id="一些实现参数细节"><a href="#一些实现参数细节" class="headerlink" title="一些实现参数细节"></a>一些实现参数细节</h2><p>5.1部分（不复赘述）</p>
+<hr>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>（笑容满面实验，是去掉 <strong>accent embedding</strong> 和 <strong>accent classiﬁer</strong>）</p>
+<ul>
+<li><p>MOS得分很高</p>
+</li>
+<li><p>相似性上，比baseline差很多（作者猜测是数据量还是不够大的缘故）</p>
+</li>
+<li><p>（但他们用的VCTK 比 VCC 的几十条还是多很多的）</p>
+</li>
+<li></li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200817161213.png" alt="image-20200817161212167"></p>
+
       </div>
       
       
@@ -309,6 +464,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#综述"><span class="nav-number">1.</span> <span class="nav-text">综述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络结构：（四部分）"><span class="nav-number">2.</span> <span class="nav-text">网络结构：（四部分）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Speaker-encoder"><span class="nav-number">3.</span> <span class="nav-text">Speaker encoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-speaker-TTS-model-amp-amp-Multi-task-accented-ASR-model"><span class="nav-number">4.</span> <span class="nav-text">Multi-speaker TTS model  &amp;&amp;  Multi-task accented ASR model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#口音识别：Multi-task-accented-ASR-model"><span class="nav-number">4.1.</span> <span class="nav-text">口音识别：Multi-task accented ASR model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#🌟-Loss-环节"><span class="nav-number">5.</span> <span class="nav-text">🌟 Loss 环节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-后端声码器"><span class="nav-number">6.</span> <span class="nav-text">4. 后端声码器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-转换阶段"><span class="nav-number">7.</span> <span class="nav-text">5. 转换阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些实现参数细节"><span class="nav-number">8.</span> <span class="nav-text">一些实现参数细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">9.</span> <span class="nav-text">结果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

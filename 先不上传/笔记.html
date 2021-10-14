@@ -28,18 +28,26 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="1.经常混淆的py切片细节">
+<meta property="og:type" content="website">
+<meta property="og:title" content="python 切片的一些混淆点（备忘）">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/%E7%AC%94%E8%AE%B0.html">
 <meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="1.经常混淆的py切片细节">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200716200314.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801174740.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801184750.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801193707.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801194743.png">
+<meta property="article:published_time" content="2021-10-14T10:37:38.069Z">
+<meta property="article:modified_time" content="2020-08-17T11:50:24.850Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="-[python] -[编程]">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200716200314.png">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/%E7%AC%94%E8%AE%B0">
 
 
 <script id="page-configurations">
@@ -52,7 +60,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>python 切片的一些混淆点（备忘） | 黄圣杰
 </title>
   
 
@@ -223,7 +231,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">python 切片的一些混淆点（备忘）
 </h1>
 
 <div class="post-meta">
@@ -237,15 +245,53 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
+          <h2 id="1-经常混淆的py切片细节"><a href="#1-经常混淆的py切片细节" class="headerlink" title="1.经常混淆的py切片细节"></a>1.经常混淆的py切片细节</h2><a id="more"></a>
+
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200716200314.png" alt="image-20200716200313100"></p>
+<h1 id="python-中的-1-和-1"><a href="#python-中的-1-和-1" class="headerlink" title="python 中的 [:-1] 和 [::-1]"></a>python 中的 [:-1] 和 [::-1]</h1><ul>
+<li><p><a href="https://www.runoob.com/note/51257" target="_blank" rel="noopener">https://www.runoob.com/note/51257</a></p>
+</li>
+<li><pre><code class="python">a=<span class="string">'python'</span>
+b=a[::<span class="number">-1</span>]
+print(b) <span class="comment">#nohtyp</span>
+c=a[::<span class="number">-2</span>]
+print(c) <span class="comment">#nhy</span>
+<span class="comment">#从后往前数的话，最后一个位置为-1</span>
+d=a[:<span class="number">-1</span>]  <span class="comment">#从位置0到位置-1之前的数</span>
+print(d)  <span class="comment">#pytho</span>
+e=a[:<span class="number">-2</span>]  <span class="comment">#从位置0到位置-2之前的数</span>
+print(e)  <span class="comment">#pyth</span>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* &#96;&#96;&#96;python</span><br><span class="line">  b &#x3D; a[i:j]   # 表示复制a[i]到a[j-1]，以生成新的list对象</span><br><span class="line">  </span><br><span class="line">  a &#x3D; [0,1,2,3,4,5,6,7,8,9]</span><br><span class="line">  b &#x3D; a[1:3]   # [1,2]</span><br><span class="line">  </span><br><span class="line">  # 当i缺省时，默认为0，即 a[:3]相当于 a[0:3]</span><br><span class="line">  # 当j缺省时，默认为len(alist), 即a[1:]相当于a[1:10]</span><br><span class="line">  # 当i,j都缺省时，a[:]就相当于完整复制一份a</span><br><span class="line">  </span><br><span class="line">  b &#x3D; a[i:j:s]    # 表示：i,j与上面的一样，但s表示步进，缺省为1.</span><br><span class="line">  # 所以a[i:j:1]相当于a[i:j]</span><br><span class="line">  </span><br><span class="line">  # 当s&lt;0时，i缺省时，默认为-1. j缺省时，默认为-len(a)-1</span><br><span class="line">  # 所以a[::-1]相当于 a[-1:-len(a)-1:-1]，也就是从最后一个元素到第一个元素复制一遍，即倒序。</span><br></pre></td></tr></table></figure>
+
+
+</code></pre>
+</li>
+</ul>
+<hr>
+<h2 id="2-关于-torch-的pad：full模式（相对于tf中的same模式）"><a href="#2-关于-torch-的pad：full模式（相对于tf中的same模式）" class="headerlink" title="2.关于 torch 的pad：full模式（相对于tf中的same模式）"></a>2.关于 torch 的pad：full模式（相对于tf中的same模式）</h2><p>$$<br>              H_{out} = \left\lfloor\frac{H_{in}  + 2 \times \text{padding}[0] - \text{dilation}[0]<br>                        \times (\text{kernel_size}[0] - 1) - 1}{\text{stride}[0]} + 1\right\rfloor</p>
+<pre><code>W_{out} = \left\lfloor\frac{W_{in}  + 2 \times \text{padding}[1] - \text{dilation}[1]
+          \times (\text{kernel_size}[1] - 1) - 1}{\text{stride}[1]} + 1\right\rfloor</code></pre><p>$$</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801174740.png" alt="image-20200801174738560"></p>
+<h2 id="相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。"><a href="#相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。" class="headerlink" title="相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。"></a>相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。</h2><ul>
+<li><strong>简单一点</strong>：先只看 t = kernel【0】// 2；</li>
+<li>Kernel【0】为奇数，那么padding就等于 t;</li>
+<li>否则，kernel【0】为偶数，那么padding就等于 【t - 1】</li>
+</ul>
+<hr>
+<h2 id="3-反卷积"><a href="#3-反卷积" class="headerlink" title="3.反卷积"></a>3.反卷积</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801184750.png" alt="image-20200801184748828"></p>
+<p><a href="https://blog.csdn.net/g11d111/article/details/82665265" target="_blank" rel="noopener">https://blog.csdn.net/g11d111/article/details/82665265</a></p>
+<ul>
+<li>反卷积这部分用的少，公式其实就是正卷积中，in 和 out 对调；</li>
+<li>只不过 反卷积没有了 正卷积 中 的 <strong>向下取整</strong> 的操作</li>
+<li>所以在反卷积中， 需要按规矩公式，简单计算一下padding 尺寸参数；</li>
+<li>最简单就是用局部代码输出看一下结果，看是否符合输入输出尺寸要求</li>
+</ul>
+<hr>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801193707.png" alt="image-20200801193706275"></p>
+<p><a href="https://blog.csdn.net/m0_37586991/article/details/87855342" target="_blank" rel="noopener">https://blog.csdn.net/m0_37586991/article/details/87855342</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200801194743.png" alt="image-20200801194739307"></p>
+<hr>
+
       </div>
       
       
@@ -309,6 +355,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-经常混淆的py切片细节"><span class="nav-number">1.</span> <span class="nav-text">1.经常混淆的py切片细节</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-中的-1-和-1"><span class="nav-number"></span> <span class="nav-text">python 中的 [:-1] 和 [::-1]</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-关于-torch-的pad：full模式（相对于tf中的same模式）"><span class="nav-number">1.</span> <span class="nav-text">2.关于 torch 的pad：full模式（相对于tf中的same模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。"><span class="nav-number">2.</span> <span class="nav-text">相比tensorflow，PyTorch需要用户清楚的知道的自己的卷积核选取对结果的影响。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-反卷积"><span class="nav-number">3.</span> <span class="nav-text">3.反卷积</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -29,17 +29,30 @@
 
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+<meta property="og:title" content="《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B.html">
 <meta property="og:site_name" content="黄圣杰">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712162828.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164238.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164302.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165144.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165232.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712172438.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712171700.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713175103.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712181558.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713132212.png">
+<meta property="article:published_time" content="2020-07-14T12:20:58.000Z">
+<meta property="article:modified_time" content="2020-07-14T12:14:57.275Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="VC">
+<meta property="article:tag" content="论文阅读笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B">
 
 
 <script id="page-configurations">
@@ -52,7 +65,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结 | 黄圣杰
 </title>
   
 
@@ -223,7 +236,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结
 </h1>
 
 <div class="post-meta">
@@ -237,15 +250,83 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
+          <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
+<a id="more"></a>
+
+<ol>
+<li><h2 id="解决的问题："><a href="#解决的问题：" class="headerlink" title="解决的问题："></a>解决的问题：</h2><ol>
+<li>在原本的StarGan-VC中，实现了“<strong>未知speaker：source/target 都未知</strong>”的转换。称作“<strong>One-Shot</strong>”</li>
+<li>其他文章其实也有做过类似功能：基于“<strong>超大数据集的  VC 模型</strong>”做自适应adaption调整：比如之前谢磊团队那篇 <strong>对WaveNet的改进模型</strong>，在处理未知说话人时，采用的是 额外20到50条数据的进一步收敛；</li>
+</ol>
+</li>
+<li><h2 id="采用的主要方法："><a href="#采用的主要方法：" class="headerlink" title="采用的主要方法："></a>采用的主要方法：</h2><ol>
+<li>把说话人信息看作 embedding。</li>
+<li>但是不同于原本 StarGan-VC 代码实现中（非官方）用 One-Hot来做embedding。</li>
+<li>也不是用的后来咱们讨论中，改用 embedding_lookup（）的方式（虽然已经比One-Hot concate 方式要好很多了）</li>
+<li>而是采用2018年google的一篇文章，提取embedding的单独网络；（<strong>Global Style Token (GST)</strong>），用这个网络提取出来的embedding信息，可以表征说话人身份信息。</li>
+<li>具体细节接下来说：</li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712162828.png" alt="image-20200712162827085"></p>
+</li>
+<li><h2 id="有价值的细节："><a href="#有价值的细节：" class="headerlink" title="有价值的细节："></a>有价值的细节：</h2><ol>
+<li>这个GST 训练时，先有一堆说话人，每个人有很多数据（1⃣️）；</li>
+<li>然后这个网络的功能就是：能把一个新来的 集合外数据（人/内容），扔进去，照样得到一个 speaker_embedding 信息；</li>
+<li>这个embedding信息怎么来的呢？原来是由模型（1⃣️）训练集中的说话人embedding 融合出来的；所以最终的效果上，会是：新说话人声音特征，由训练集说话人特征组合而成；</li>
+<li>这个GST当中， speaker ID 实现上，同样采用 one-hot 形式。</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li><h2 id="以上三点，其实都只是前人的工作，本文拿来创新性应用。"><a href="#以上三点，其实都只是前人的工作，本文拿来创新性应用。" class="headerlink" title="以上三点，其实都只是前人的工作，本文拿来创新性应用。"></a>以上三点，其实都只是前人的工作，本文拿来创新性应用。</h2><ol>
+<li>本文的细节创新：</li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164238.png" alt="image-20200712164236074"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164302.png" alt="image-20200712164301003"></p>
+<ol>
+<li>原本的 StarGan-VC 中，在Generator部分 的BottelNect部分，采用正常的 【Conv，Norm，GLU】结构，其中的Conv采用 <strong>5 个channel</strong>；</li>
+<li>本文作者实验证明，这个 5 channel 太小了，影响了 reconstruction 音频质量；</li>
+<li>但是尝试放大这个channel数，会发现有“<strong>信息泄露：information leakage</strong>”，有点像信号处理中的“<strong>频率泄漏：frequency leak</strong>”（后者采用加窗的方式规避这个问题）；</li>
+<li>所谓的泄漏，就是出现了无关的信息：Generator 没能把source中的身份信息过滤干净，最后的声音四不像；（频率泄漏则是，在没加窗函数之前，做FFT会出现 本没有的 频率）<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165144.png" alt="image-20200712165142509"></li>
+<li>最后的效果上：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165232.png" alt="image-20200712165230066"></li>
+<li>作者说，用了这种方式（SoftMax 代替 conv-2d 做 BottleNeck），在转换结果上，<strong>共振峰频率</strong>（<strong>frequencies of formants</strong>）会低一点：显示在能量图上，就是高频部分（上面）颜色会浅一点。</li>
+<li><strong>🌟疑问点</strong>：这个 <strong>共振峰频率</strong> 低一点，<strong>能说明什么</strong>？？？？这样就能说明 说话内容信息泄漏会少一点吗？没搞懂；</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-另一个操作改进点："><a href="#5-另一个操作改进点：" class="headerlink" title="5.  另一个操作改进点："></a>5.  另一个操作改进点：</h2><ol>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712172438.png" alt="image-20200712172437528"></p>
+</li>
+<li><p>在Generator的修改上如图：</p>
+</li>
+<li><p>对比原型：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712171700.png" alt="image-20200712171657257"></p>
+</li>
+<li><p>小细节：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713175103.png" alt="image-20200713175101061"></p>
+<ul>
+<li><p>偶数：同时更新 D &amp;&amp; G</p>
+</li>
+<li><p>奇数：只更新 D</p>
+</li>
+<li><p>特征选用上：由实验经验，<strong>由36维 MFCC</strong> 改为用 <strong>96维 sp 谱包络（96-bin Mel spectral envelope）</strong></p>
+</li>
+<li><p>（这个和合成的应用上也有呼应， Mel 的训练合成，比MFCC reconstrruction 效果要好，更深原理 <strong>模糊</strong>）</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="6-结果上："><a href="#6-结果上：" class="headerlink" title="6. 结果上："></a>6. 结果上：</h2><p>其实就是 VC 领域两个主观评价指标：Reconstruction 质量 和 Conversion 质量。</p>
+<ol>
+<li>这份Demo里，Reconstruction 的效果也不怎么好，在Conversion 转换效果上还凑合；这个和StarGan-VC 差不多；</li>
+<li>Reconstruction 上，target 已知或 “增量式训练”过，数据效果上，提升不少；Conversion 效果也大差不差；<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712181558.png" alt="image-20200712181557111"></li>
+</ol>
+<h2 id="7-VC改进思路小结："><a href="#7-VC改进思路小结：" class="headerlink" title="7. VC改进思路小结："></a>7. VC改进思路小结：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713132212.png" alt="image-20200713132210312"></p>
+<ul>
+<li>在想能否写<strong>WorkShop</strong>论文</li>
+<li>不知还有什么可改进的点，咱们可以接<strong>上WaveNet后端</strong>，类似谢磊上篇用的；</li>
+<li>然后<strong>重构损失</strong>上，模型结构学习一下网易这篇。</li>
+<li><strong>embedding</strong> 上，为的是实现 <strong>one-shot</strong>，再考虑是否有其他方法；</li>
+</ul>
+
       </div>
       
       
@@ -309,6 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决的问题："><span class="nav-number">1.</span> <span class="nav-text">解决的问题：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#采用的主要方法："><span class="nav-number">2.</span> <span class="nav-text">采用的主要方法：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有价值的细节："><span class="nav-number">3.</span> <span class="nav-text">有价值的细节：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以上三点，其实都只是前人的工作，本文拿来创新性应用。"><span class="nav-number">4.</span> <span class="nav-text">以上三点，其实都只是前人的工作，本文拿来创新性应用。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-另一个操作改进点："><span class="nav-number">5.</span> <span class="nav-text">5.  另一个操作改进点：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-结果上："><span class="nav-number">6.</span> <span class="nav-text">6. 结果上：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-VC改进思路小结："><span class="nav-number">7.</span> <span class="nav-text">7. VC改进思路小结：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

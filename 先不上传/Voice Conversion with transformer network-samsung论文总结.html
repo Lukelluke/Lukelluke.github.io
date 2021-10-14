@@ -28,18 +28,21 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="![image-20200617224333150](.&#x2F;Voice Conversion with transformer network-samsung论文总结&#x2F;image-20200617224333150.png)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="《Voice Conversion with transformer network-samsung》论文总结">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/Voice%20Conversion%20with%20transformer%20network-samsung%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93.html">
 <meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="![image-20200617224333150](.&#x2F;Voice Conversion with transformer network-samsung论文总结&#x2F;image-20200617224333150.png)">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="article:published_time" content="2020-06-14T12:20:58.000Z">
+<meta property="article:modified_time" content="2020-09-20T15:34:11.798Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="VC">
+<meta property="article:tag" content="论文阅读笔记">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/Voice%20Conversion%20with%20transformer%20network-samsung%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93">
 
 
 <script id="page-configurations">
@@ -52,7 +55,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>《Voice Conversion with transformer network-samsung》论文总结 | 黄圣杰
 </title>
   
 
@@ -223,7 +226,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">《Voice Conversion with transformer network-samsung》论文总结
 </h1>
 
 <div class="post-meta">
@@ -237,15 +240,57 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
+          <p>![image-20200617224333150](./Voice Conversion with transformer network-samsung论文总结/image-20200617224333150.png)</p>
+<hr>
+<a id="more"></a>
+
+<h1 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h1><ol>
+<li>应用场景是： 一对一、平行数据</li>
+<li>不需要文本辅助</li>
+<li>适用的场景，类似于小爱同学，用于在已有的预训练的 <strong>TTS</strong> 语音合成系统，实现音色转换。</li>
+<li>技术上，以 LSTM-RNN 作为 base line 。</li>
+<li>实现上，动用了 <strong>Transformer Architecture &amp;&amp; Context Preservation and Model Adaptation in an Attentional Seq2seq VC.</strong></li>
+<li>闪光点：训练速度快了 2.72 倍（每个 step） &amp;&amp; 流畅度、相似度 比 base line 好一点</li>
+</ol>
+<hr>
+<h1 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h1><ol>
+<li>提到了一篇 2017 年的 <strong>VC 综述文章</strong>，之前没见到过，再过一遍；</li>
+<li>![image-20200617225134062](./Voice Conversion with transformer network-samsung论文总结/image-20200617225134062.png)</li>
+</ol>
+<hr>
+<h1 id="模型："><a href="#模型：" class="headerlink" title="模型："></a>模型：</h1><p>![image-20200617231000814](./Voice Conversion with transformer network-samsung论文总结/image-20200617231000814.png)</p>
+<hr>
+<ol>
+<li>介绍了一些 Attention 和 Transformer 相关背景信息，以及在语音场景的常见应用</li>
+<li>本文 用 Transformer 来进行 基于 sp 特征的 句到句的 音色转换</li>
+</ol>
+<hr>
+<h1 id="三个Loss"><a href="#三个Loss" class="headerlink" title="三个Loss"></a>三个Loss</h1><ol>
+<li>类似Transformer 的Loss</li>
+<li>额外的：在Transformer 上进行的 MultiHead 数目的调整（以此加快训练速度）</li>
+<li>![image-20200621184615655](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184615655.png)</li>
+<li>目标真实 &amp; 转换出来的目标</li>
+<li>![image-20200621184636954](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184636954.png)</li>
+<li>Attention 的损失（Guided attention）：</li>
+<li>![image-20200621184700921](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621184700921.png)</li>
+<li>内容保存程度 损失： source 和 恢复预测的 source  &amp;&amp; target 和恢复预测的 target </li>
+</ol>
+<hr>
+<h1 id="学到的："><a href="#学到的：" class="headerlink" title="学到的："></a>学到的：</h1><ul>
+<li><strong>消融实验</strong>：更换单一变量：观察指标是 <strong>固定训练步数，以 正确转换的语句数目 作为衡量指标</strong></li>
+</ul>
+<hr>
+<h1 id="另一篇"><a href="#另一篇" class="headerlink" title="另一篇"></a>另一篇</h1><p><strong>（未看完）</strong></p>
+<p>![image-20200621182450382](/Users/huangshengjie/Library/Application Support/typora-user-images/image-20200621182450382.png)</p>
+<ul>
+<li>谈到 WaveNet 的自适应改进，对她不够熟悉</li>
+<li></li>
+<li>另外看招聘需求大都是要做<strong>合成</strong>的，<strong>转换</strong>没有需求；</li>
+<li>所以 花点时间 跑了一下 Tacotron（源码后端是用griff-Lim），花时间 再弄懂一下代码</li>
+<li>接下来再弄懂一下 <strong>r9y9</strong> 的 <strong>WaveNET</strong> 代码</li>
+</ul>
+<hr>
+
       </div>
       
       
@@ -309,6 +354,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#特点："><span class="nav-number">1.</span> <span class="nav-text">特点：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意点："><span class="nav-number">2.</span> <span class="nav-text">注意点：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型："><span class="nav-number">3.</span> <span class="nav-text">模型：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三个Loss"><span class="nav-number">4.</span> <span class="nav-text">三个Loss</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#学到的："><span class="nav-number">5.</span> <span class="nav-text">学到的：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#另一篇"><span class="nav-number">6.</span> <span class="nav-text">另一篇</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

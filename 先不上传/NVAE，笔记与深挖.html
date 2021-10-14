@@ -28,18 +28,31 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="NVAE 先大致搞清楚 VAE">
+<meta property="og:type" content="website">
+<meta property="og:title" content="《Voice Conversion with transformer network-samsung》论文总结">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/NVAE%EF%BC%8C%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%B7%B1%E6%8C%96.html">
 <meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="NVAE 先大致搞清楚 VAE">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T13:09:27.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:08:53.113Z">
+<meta property="og:image" content="https://spaces.ac.cn/usr/uploads/2018/03/4168876662.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810171034.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810171405.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810162409.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810162445.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810170403.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810171818.png">
+<meta property="og:image" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/NVAE%EF%BC%8C%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%B7%B1%E6%8C%96.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20200810172007.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810172258.png">
+<meta property="article:published_time" content="2020-08-15T12:20:58.000Z">
+<meta property="article:modified_time" content="2020-08-17T11:52:30.177Z">
 <meta property="article:author" content="黄圣杰">
-<meta property="article:tag" content="keywords">
+<meta property="article:tag" content="VC">
+<meta property="article:tag" content="论文阅读笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spaces.ac.cn/usr/uploads/2018/03/4168876662.png">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/NVAE%EF%BC%8C%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%B7%B1%E6%8C%96">
 
 
 <script id="page-configurations">
@@ -52,7 +65,7 @@
   };
 </script>
 
-  <title>categories | 黄圣杰
+  <title>《Voice Conversion with transformer network-samsung》论文总结 | 黄圣杰
 </title>
   
 
@@ -223,7 +236,7 @@
     <div class="post-block" lang="zh-CN">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">categories
+<h1 class="post-title" itemprop="name headline">《Voice Conversion with transformer network-samsung》论文总结
 </h1>
 
 <div class="post-meta">
@@ -237,15 +250,58 @@
       
       
       <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
+          <h1 id="NVAE"><a href="#NVAE" class="headerlink" title="NVAE"></a>NVAE</h1><ol>
+<li><p>先大致搞清楚 VAE<img src="https://spaces.ac.cn/usr/uploads/2018/03/4168876662.png" alt="为了使模型具有生成能力，vae要求每个p(https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810181426.png)都向正态分布看齐"></p>
+<a id="more"></a>
+</li>
+<li><p>有两个 <strong>Encoder</strong>，一个求 $\mu$， 一个求 $\sigma$<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810171034.png" alt="img"></p>
+</li>
+<li><p>说一下 VAE 中的「正态分布拟合」以及「从拟合的正态分布中采样」（Box-Muller 等等方法）<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810171405.png" alt="image-20200810171404665"></p>
+</li>
+<li><p>VAE的名字中“变分”，是因为它的推导过程用到了<strong>KL散度及其性质</strong></p>
+</li>
+<li><p>说一说 <strong>VAE中的噪声</strong>（方差）</p>
+<ol>
+<li>增加重构难度，所以想减小它，让生成的数据更清晰</li>
+<li>但是正是这个噪声，才是VAE精髓，增加了随机性</li>
+</ol>
+</li>
+<li><p>噪声的好处（增加随机性） 和 坏处（导致采样结果成为确定性结果——均值 u ）</p>
+</li>
+<li><p>对噪声的处理：</p>
+<ol>
+<li>不直接让 方差 变为0（导致退化成 <strong>AE</strong> ）</li>
+<li>而是配合着，让每段语音数据的 <strong>后验分布</strong> 朝着正态分布区靠近</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810162409.png" alt="image-20200810162407100"></li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810162445.png" alt="image-20200810162443056"></li>
+</ol>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810170403.png" alt="image-20200810170401384"></p>
+</li>
+<li><p><strong>关于 后验分布 &amp;&amp; 先验分布 的理解</strong>（公式（2））</p>
+<ol>
+<li>后：单独的一段语音的高斯分布（标准正态）</li>
+<li>先：某个说话人，所有语音的高斯分布集合（也是符合标准正态）</li>
+</ol>
+</li>
+<li><p>VAE 中的 KL-loss <img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810171818.png" alt="image-20200810171816918"></p>
+</li>
+<li><p>CVAE中的KL-loss（一类方法：实现标签的加入，从 <strong>无监督</strong> 转为 <strong>有监督</strong>）<img src="/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/NVAE%EF%BC%8C%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%B7%B1%E6%8C%96.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/20200810172007.png" alt="image-20200810172006118"><strong>我们可以希望同一个类的样本都有一个专属的均值 $μ^Y$， （方差不变，还是单位方差），这个$μ^Y$让模型自己训练出来</strong></p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200810172258.png" alt="img">【CVAE结构图】</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py --resample_rate 16000 \</span><br><span class="line">                     --origin_wavpath .&#x2F;data&#x2F;VCTK-Data&#x2F;VCTK-Corpus&#x2F;wav48 \</span><br><span class="line">                     --target_wavpath .&#x2F;data&#x2F;VCTK-Data&#x2F;VCTK-Corpus&#x2F;wav16 \</span><br><span class="line">                     --mc_dir_train .&#x2F;data&#x2F;VCTK-Data&#x2F;mc&#x2F;train \</span><br><span class="line">                     --mc_dir_test .&#x2F;data&#x2F;VCTK-Data&#x2F;mc&#x2F;test \</span><br><span class="line">                     --speaker_dirs p262 p272 p229 p232 p292 p293 p360 p361 p248 p251</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">python main.py --train_data_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;mc&#x2F;train \</span><br><span class="line">               --test_data_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;mc&#x2F;test \</span><br><span class="line">               --use_tensorboard False \</span><br><span class="line">               --wav_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;VCTK-Corpus&#x2F;wav16 \</span><br><span class="line">               --model_save_dir .&#x2F;data&#x2F;aca16sjb&#x2F;VCTK-Data&#x2F;models \</span><br><span class="line">               --sample_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;samples \</span><br><span class="line">               --num_iters 200000 \</span><br><span class="line">               --batch_size 8 \</span><br><span class="line">               --speakers p262 p272 p229 p232 \</span><br><span class="line">               --num_speakers 4</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">python convert.py --resume_model 120000 \</span><br><span class="line">                  --num_speakers 4 \</span><br><span class="line">                  --speakers p262 p272 p229 p232 \</span><br><span class="line">                  --train_data_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;mc&#x2F;train&#x2F; \</span><br><span class="line">                  --test_data_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;mc&#x2F;test&#x2F; \</span><br><span class="line">                  --wav_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;VCTK-Corpus&#x2F;wav16 \</span><br><span class="line">                  --model_save_dir .&#x2F;data&#x2F;aca16sjb&#x2F;VCTK-Data&#x2F;models \</span><br><span class="line">                  --convert_dir .&#x2F;data&#x2F;VCTK-Data&#x2F;converted</span><br></pre></td></tr></table></figure>
       </div>
       
       
@@ -309,6 +365,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NVAE"><span class="nav-number">1.</span> <span class="nav-text">NVAE</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
