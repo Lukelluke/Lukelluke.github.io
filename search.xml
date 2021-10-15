@@ -1531,6 +1531,40 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>Sox环境解决办法</title>
+    <url>/2020/11/29/Sox%E7%8E%AF%E5%A2%83%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><a href="https://www.bbsmax.com/A/ZOJPRymxdv/" target="_blank" rel="noopener">参考文章</a></p>
+<ol>
+<li>下载<a href="https://sourceforge.net/projects/sox/" target="_blank" rel="noopener">sox-14.4.1.tar.gz</a></li>
+</ol>
+<p>🌟（不能简单通过pip install 来安装）</p>
+<ol start="2">
+<li>安装sox文件</li>
+</ol>
+<p>　　1）解压　　tar -zxvf sox-14.4.1.tar.gz</p>
+<p>　　2）进入sox14.4.1目录中执行./configure</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/ssd3/other/huangsj/sox_install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 加上prefix，在自定义目录安装，不然机器环境太乱，会找不到</span></span><br></pre></td></tr></table></figure>
+
+<p>　　3）执行 make命令</p>
+<p>　　4）执行make install命令</p>
+<ol start="3">
+<li>添加环境变量</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line">export PATH=/ssd3/other/huangsj/sox_install/bin:$PATH</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>ok，再来运行一下 librispeech  ./run.sh</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>-[kaldi]</category>
+      </categories>
+      <tags>
+        <tag>-[Sox] -[kaldi]</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《Voice Conversion with transformer network-samsung》论文总结</title>
     <url>/2020/06/14/Voice%20Conversion%20with%20transformer%20network-samsung%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>![image-20200617224333150](./Voice Conversion with transformer network-samsung论文总结/image-20200617224333150.png)</p>
@@ -1591,40 +1625,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Sox环境解决办法</title>
-    <url>/2020/11/29/Sox%E7%8E%AF%E5%A2%83%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><a href="https://www.bbsmax.com/A/ZOJPRymxdv/" target="_blank" rel="noopener">参考文章</a></p>
-<ol>
-<li>下载<a href="https://sourceforge.net/projects/sox/" target="_blank" rel="noopener">sox-14.4.1.tar.gz</a></li>
-</ol>
-<p>🌟（不能简单通过pip install 来安装）</p>
-<ol start="2">
-<li>安装sox文件</li>
-</ol>
-<p>　　1）解压　　tar -zxvf sox-14.4.1.tar.gz</p>
-<p>　　2）进入sox14.4.1目录中执行./configure</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/ssd3/other/huangsj/sox_install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 加上prefix，在自定义目录安装，不然机器环境太乱，会找不到</span></span><br></pre></td></tr></table></figure>
-
-<p>　　3）执行 make命令</p>
-<p>　　4）执行make install命令</p>
-<ol start="3">
-<li>添加环境变量</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line">export PATH=/ssd3/other/huangsj/sox_install/bin:$PATH</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>ok，再来运行一下 librispeech  ./run.sh</li>
-</ol>
-<hr>
-]]></content>
-      <categories>
-        <category>-[kaldi]</category>
-      </categories>
-      <tags>
-        <tag>-[Sox] -[kaldi]</tag>
       </tags>
   </entry>
   <entry>
@@ -1791,91 +1791,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 为了更通用，写了个代码来转换文件格式：</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
 ]]></content>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2020/06/07/test/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
-<p>插入html链接</p>
-<p><a href="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html" target="_blank" rel="noopener">https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html</a></p>
-<p>用iframe插入html链接</p>
-<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html"></iframe>
-
-
-
-<p>插入mp3:</p>
-<p>1.aplayer</p>
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
-			</script>
-
-<p>2.文件直接拖拽，本地存储</p>
-<p> <a href="./30003.wav">30003.wav</a> </p>
-<p>3.aplayer不稳定，还是应该用iframe标签</p>
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
-			</script>
-
-<hr>
-<p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
-
-    <div id="aplayer-NqvMtyDz" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
-
-
-
-<hr>
-<p>5.用iframe插入</p>
-<iframe frameborder="yes" border="1" marginwidth="100" marginheight="100" width="600" height="100" src="http://qbjun0qc6.bkt.clouddn.com/30001.wav">
-</iframe>
-
-<p>插入pdf</p>
-<a id="more"></a>
-
-<p>插入腾讯云pdf测试：</p>
-<div class="pdfobject-container" data-target="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf" data-height="500px"></div>
-
-
-
-<p>用iframe插入：</p>
-<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf"></iframe>
-
-
-
-<p>本地路径插入：pdf ./vc.pdf</p>
-<div class="pdfobject-container" data-target="./vc.pdf" data-height="500px"></div>
-
-
-
-
-
-<p>谷歌网址外链插入</p>
-<div class="pdfobject-container" data-target="https://drive.google.com/file/d/0B6qSwdwPxPRdTEliX0dhQ2JfUEU/preview" data-height="500px"></div>
-
-
-
-<p><img src="/2020/06/07/test/1.png" alt="1"></p>
-<iframe frameborder="yes" border="1" marginwidth="1" marginheight="1" width="330" height="100" src="//music.163.com/outchain/player?type=2&id=444267925 & auto=1 & height=60 "></iframe>
-
-<p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p>
-<p><img src="/2020/06/07/test/stargan/StarGAN-VC2_files/network.png" alt="stargan.png"></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");
-			</script>
-
-
-			<script>
-				console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");
-			</script>
-
-]]></content>
-      <tags>
-        <tag>测试</tag>
-      </tags>
   </entry>
   <entry>
     <title>《EFFECTIVE WAVENET ADAPTATION FOR VOICE CONVERSION WITH LIMITED DATA》</title>
@@ -2051,6 +1966,91 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>test</title>
+    <url>/2020/06/07/test/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
+<p>插入html链接</p>
+<p><a href="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html" target="_blank" rel="noopener">https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html</a></p>
+<p>用iframe插入html链接</p>
+<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/061421180327/061421180327.html"></iframe>
+
+
+
+<p>插入mp3:</p>
+<p>1.aplayer</p>
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
+			</script>
+
+<p>2.文件直接拖拽，本地存储</p>
+<p> <a href="./30003.wav">30003.wav</a> </p>
+<p>3.aplayer不稳定，还是应该用iframe标签</p>
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Unrecognized tag argument(2): autoplay=false");
+			</script>
+
+<hr>
+<p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
+
+    <div id="aplayer-tbkfgLqn" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+
+
+
+<hr>
+<p>5.用iframe插入</p>
+<iframe frameborder="yes" border="1" marginwidth="100" marginheight="100" width="600" height="100" src="http://qbjun0qc6.bkt.clouddn.com/30001.wav">
+</iframe>
+
+<p>插入pdf</p>
+<a id="more"></a>
+
+<p>插入腾讯云pdf测试：</p>
+<div class="pdfobject-container" data-target="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf" data-height="500px"></div>
+
+
+
+<p>用iframe插入：</p>
+<iframe width="86%" height="460" scrolling="auto" frameborder="0" src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/VC%E8%AE%BA%E6%96%87202005.pdf"></iframe>
+
+
+
+<p>本地路径插入：pdf ./vc.pdf</p>
+<div class="pdfobject-container" data-target="./vc.pdf" data-height="500px"></div>
+
+
+
+
+
+<p>谷歌网址外链插入</p>
+<div class="pdfobject-container" data-target="https://drive.google.com/file/d/0B6qSwdwPxPRdTEliX0dhQ2JfUEU/preview" data-height="500px"></div>
+
+
+
+<p><img src="/2020/06/07/test/1.png" alt="1"></p>
+<iframe frameborder="yes" border="1" marginwidth="1" marginheight="1" width="330" height="100" src="//music.163.com/outchain/player?type=2&id=444267925 & auto=1 & height=60 "></iframe>
+
+<p><img src="https://s1.ax1x.com/2020/06/07/t2bJ56.png" alt="t2bJ56.png"></p>
+<p><img src="/2020/06/07/test/stargan/StarGAN-VC2_files/network.png" alt="stargan.png"></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"//music.163.com/outchain/player?type=3&amp;id=2066166810&amp;auto=1&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Specified asset file not found (picture.jpg)");
+			</script>
+
+
+			<script>
+				console.error("Error: [hexo-tag-aplayer] Specified asset file not found ([picture_url,)");
+			</script>
+
+]]></content>
+      <tags>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结</title>
     <url>/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
@@ -2172,40 +2172,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
-    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
-
-<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
-<ul>
-<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
-<ul>
-<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
-</li>
-<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
-</li>
-<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
-</li>
-</ul>
-<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>-[语音]</category>
-      </categories>
-      <tags>
-        <tag>语音</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于ssh本地查看Tensorboard记录</title>
     <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
@@ -2241,6 +2207,40 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>Tensorboard，Tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
+    <url>/2020/07/29/%E5%85%B3%E4%BA%8Epyworld.load%20%E8%AF%BB%E5%8F%96%E9%9F%B3%E9%A2%91%E5%92%8Csoundfile.read%20%E5%B7%AE%E5%88%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
+
+<h1 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h1><p>在pyworld使用前，一般需要读取音频文件：</p>
+<ul>
+<li><p>librosa.load() 默认得到的是float32类型的数据，所以一般会再跟上 x.astype(np.float64)</p>
+<ul>
+<li>而恰恰是这么一个Numpy类型转换，会导致得到的 ap 特征中会含有 Nan 数据，这会导致最终的计算出现不必要的偏差；</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)  <span class="comment"># 返回True</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#统计nan个数</span></span><br><span class="line">t = ap</span><br><span class="line">t = t[np.isnan(t)]  <span class="comment"># 用切片法 + 条件限制，来得到 nan 值的切片</span></span><br><span class="line"><span class="comment"># t = t[np.where(np.isnan(t))]</span></span><br><span class="line">print(t.shape)  <span class="comment"># （4k+, ）</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>（这个问题和怎么计算得到ap无关：尝试了 world.wav2worl（）和 pyworld.harvest + cheaptrick + d4c路径，结果都一样）</p>
+</li>
+<li><p>Soundfile.read()  # 默认的数据返回值是 float64，所以可以直接得到所要求的数据格式</p>
+</li>
+<li><p>其中，对应的函数参数调整：sr 变为 samplerate ， mono 的单通道 改用 channels=1</p>
+</li>
+</ul>
+<h2 id="Ps-附上代码和-issue网址"><a href="#Ps-附上代码和-issue网址" class="headerlink" title="Ps.附上代码和 issue网址"></a>Ps.附上代码和 issue网址</h2><p>[issue][<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]" target="_blank" rel="noopener">https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/issues/50]</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pyworld <span class="keyword">as</span> world</span><br><span class="line"><span class="keyword">import</span> pyworld</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> librosa.display</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> soundfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># wav,fs = librosa.load(os.getcwd()+"/bed (537).wav")</span></span><br><span class="line">wav, fs = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float64)</span></span><br><span class="line"><span class="comment"># print(wav[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">frame_period = <span class="number">5.0</span></span><br><span class="line">hop_length = int(fs * frame_period * <span class="number">0.001</span>)</span><br><span class="line">fftlen = world.get_cheaptrick_fft_size(fs)</span><br><span class="line"></span><br><span class="line">f0, timeaxis = pyworld.harvest(wav, fs, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp = pyworld.cheaptrick(wav, f0, timeaxis, fs)</span><br><span class="line">ap = pyworld.d4c(wav, f0, timeaxis, fs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># f0, sp, ap = world.wav2world(x,sr,fftlen,frame_period)</span></span><br><span class="line">print(ap.shape)</span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">wav = pyworld.synthesize(f0, sp, ap, fs, frame_period)</span><br><span class="line"><span class="comment"># wav = wav.astype(np.float32)</span></span><br><span class="line">soundfile.write(<span class="string">'test.wav'</span>, wav, fs)</span><br><span class="line"></span><br><span class="line">x, sr = soundfile.read(os.getcwd()+<span class="string">"/bed (537).wav"</span>)</span><br><span class="line"><span class="comment"># print(x[0].type)  # 'numpy.float64' object has no attribute 'type'</span></span><br><span class="line">f01, timeaxis1 = pyworld.harvest(x, sr, frame_period=frame_period, f0_floor=<span class="number">71.0</span>, f0_ceil=<span class="number">800.0</span>)</span><br><span class="line">sp1 = pyworld.cheaptrick(x, f01, timeaxis1, fs)</span><br><span class="line">ap1 = pyworld.d4c(x, f01, timeaxis1, fs)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以上这样，直接用soundfile 读取成float64 数据，</span></span><br><span class="line"><span class="string">然后再直接用 soundfile.write 保存float64的文件 或者是 先转化成float32 再保存成文件， </span></span><br><span class="line"><span class="string">保存出来的文件再次用soundfile 读取出来，</span></span><br><span class="line"><span class="string">再次用测试ap是否有 nan值，都没有问题。</span></span><br><span class="line"><span class="string">综上，能用soundfile就避免用librosa，读取和写入文件都是这个道理；ßå</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'************'</span>)</span><br><span class="line">print(ap1.shape)</span><br><span class="line">print(<span class="string">f"ap1 <span class="subst">&#123;np.isnan(ap1).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"ap <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # print(np.isnan(ap))</span></span><br><span class="line"><span class="comment"># t = ap</span></span><br><span class="line"><span class="comment"># t = t[np.isnan(t)]</span></span><br><span class="line"><span class="comment"># # t = t[np.where(np.isnan(t))]</span></span><br><span class="line"><span class="comment"># print(t.shape)</span></span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ap:</span><br><span class="line">    <span class="comment"># if np.isnan(x):</span></span><br><span class="line">    count = count+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> np.isnan(ap).any():</span><br><span class="line"></span><br><span class="line">    f0, sp, ap = world.wav2world(np.absolute(x),fs,fftlen,frame_period)</span><br><span class="line">    print(<span class="string">f"ap abs <span class="subst">&#123;np.isnan(ap).any()&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">exit()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[语音]</category>
+      </categories>
+      <tags>
+        <tag>语音</tag>
       </tags>
   </entry>
   <entry>
@@ -2304,12 +2304,12 @@ tensorboard --logdir ./logs-tacotron
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-LQxRMrJc" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-amWkZEcM" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-LQxRMrJc"),
+            element: document.getElementById("aplayer-amWkZEcM"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -2358,6 +2358,35 @@ tensorboard --logdir ./logs-tacotron
       <tags>
         <tag>随笔</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>未上传-1122组会汇报</title>
+    <url>/2020/11/22/%E6%9C%AA%E4%B8%8A%E4%BC%A0-1122%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="11-22组会"><a href="#11-22组会" class="headerlink" title="11.22组会"></a>11.22组会</h2><hr>
+<ol>
+<li>身体好多了，这两周都在校内休息</li>
+<li>mentor让做 <strong>NER</strong>，没兴趣不想做，直接请一段时间假</li>
+</ol>
+<hr>
+<ol>
+<li>琢磨使用 <strong>Kaldi</strong> 来提取<strong>PPGs</strong>，先尝试了跑 demo Librispeech，遇到各种问题，还没全部跑通</li>
+<li>NVAE256 官方给了一份 ckpt，可能是因为比较大，在做 Evaluete 的时候，load model 后就出现显存不足，后面再琢磨一下怎么载入</li>
+<li>开题材料 <strong>修改完成</strong>了，还剩<strong>两张图</strong>还没重新画，明天搞定</li>
+<li>AiShell3 环境配起来还有点问题，晚上再折腾一下</li>
+</ol>
+<ul>
+<li>论文《Generative adversarial interpolative autoencoding》还没看完，争取这两天看完</li>
+</ul>
+<hr>
+<ul>
+<li>软著三个月</li>
+<li>HDFS：存储音频视频 的数据库</li>
+</ul>
+<ul>
+<li>PPT：少文字，多图</li>
+<li></li>
+</ul>
+]]></content>
   </entry>
   <entry>
     <title>python 切片的一些混淆点（备忘）</title>
@@ -2415,35 +2444,6 @@ print(e)  <span class="comment">#pyth</span>
       <tags>
         <tag>-[python] -[编程]</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>未上传-1122组会汇报</title>
-    <url>/2020/11/22/%E6%9C%AA%E4%B8%8A%E4%BC%A0-1122%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="11-22组会"><a href="#11-22组会" class="headerlink" title="11.22组会"></a>11.22组会</h2><hr>
-<ol>
-<li>身体好多了，这两周都在校内休息</li>
-<li>mentor让做 <strong>NER</strong>，没兴趣不想做，直接请一段时间假</li>
-</ol>
-<hr>
-<ol>
-<li>琢磨使用 <strong>Kaldi</strong> 来提取<strong>PPGs</strong>，先尝试了跑 demo Librispeech，遇到各种问题，还没全部跑通</li>
-<li>NVAE256 官方给了一份 ckpt，可能是因为比较大，在做 Evaluete 的时候，load model 后就出现显存不足，后面再琢磨一下怎么载入</li>
-<li>开题材料 <strong>修改完成</strong>了，还剩<strong>两张图</strong>还没重新画，明天搞定</li>
-<li>AiShell3 环境配起来还有点问题，晚上再折腾一下</li>
-</ol>
-<ul>
-<li>论文《Generative adversarial interpolative autoencoding》还没看完，争取这两天看完</li>
-</ul>
-<hr>
-<ul>
-<li>软著三个月</li>
-<li>HDFS：存储音频视频 的数据库</li>
-</ul>
-<ul>
-<li>PPT：少文字，多图</li>
-<li></li>
-</ul>
-]]></content>
   </entry>
   <entry>
     <title>第一篇</title>
