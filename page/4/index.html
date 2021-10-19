@@ -217,107 +217,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/" class="post-title-link" itemprop="url">139. 单词拆分</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-26 00:15:41 / 修改时间：13:46:49" itemprop="dateCreated datePublished" datetime="2020-06-26T00:15:41+08:00">2020-06-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java-%E7%AE%97%E6%B3%95-LeetCode/" itemprop="url" rel="index"><span itemprop="name">-[Java, 算法] -[LeetCode]</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1238,6 +1137,113 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+      <meta itemprop="name" content="黄圣杰">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黄圣杰">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/" class="post-title-link" itemprop="url">Clion中的EOF</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-21 15:49:20 / 修改时间：16:01:29" itemprop="dateCreated datePublished" datetime="2020-06-21T15:49:20+08:00">2020-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>449</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
+<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
+<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
+</li>
+<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
+</li>
+</ul>
+<hr>
+<p>以上，谨此纪念C++修习结束。</p>
+<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
+<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
+<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
+<p>再把合成相关的东西学学吧，没啥学不会的。</p>
+<hr>
+<p>06_21_2020 Sunday</p>
+<p>@PT</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1312,7 +1318,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1397,7 +1403,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">64k</span>
+    <span title="站点总字数">63k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
