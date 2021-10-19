@@ -1244,36 +1244,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>Clion中的EOF</title>
-    <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
-<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
-<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
-</li>
-<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
-</li>
-</ul>
-<hr>
-<p>以上，谨此纪念C++修习结束。</p>
-<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
-<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
-<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
-<p>再把合成相关的东西学学吧，没啥学不会的。</p>
-<hr>
-<p>06_21_2020 Sunday</p>
-<p>@PT</p>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>67. 二进制求和</title>
     <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
@@ -1369,6 +1339,36 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Clion中的EOF</title>
+    <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
+<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
+<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
+</li>
+<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
+</li>
+</ul>
+<hr>
+<p>以上，谨此纪念C++修习结束。</p>
+<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
+<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
+<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
+<p>再把合成相关的东西学学吧，没啥学不会的。</p>
+<hr>
+<p>06_21_2020 Sunday</p>
+<p>@PT</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -1827,7 +1827,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-KqYOdkpE" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-qvQmphDP" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -2212,44 +2212,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>关于ssh本地查看Tensorboard记录</title>
-    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
-<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-cd /home/sdb3/home/hsj/taco1_tf/tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-source activate py36
-tensorboard --logdir ./logs-tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-本地浏览器打开 127.0.0.1:16006</code></pre>
-<ul>
-<li>成功实现本地查看 Tensorboard</li>
-<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
-<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
-<li>Distributions</li>
-<li>Histograms</li>
-<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
-]]></content>
-      <categories>
-        <category>Tensorflow</category>
-      </categories>
-      <tags>
-        <tag>Tensorboard，Tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
     <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
@@ -2310,12 +2272,12 @@ tensorboard --logdir ./logs-tacotron
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-DfzvBXFV" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-MVKXbBeX" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-DfzvBXFV"),
+            element: document.getElementById("aplayer-MVKXbBeX"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -2363,6 +2325,44 @@ tensorboard --logdir ./logs-tacotron
       </categories>
       <tags>
         <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于ssh本地查看Tensorboard记录</title>
+    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
+<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+cd /home/sdb3/home/hsj/taco1_tf/tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+source activate py36
+tensorboard --logdir ./logs-tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+本地浏览器打开 127.0.0.1:16006</code></pre>
+<ul>
+<li>成功实现本地查看 Tensorboard</li>
+<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
+<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
+<li>Distributions</li>
+<li>Histograms</li>
+<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
+]]></content>
+      <categories>
+        <category>Tensorflow</category>
+      </categories>
+      <tags>
+        <tag>Tensorboard，Tensorflow</tag>
       </tags>
   </entry>
   <entry>
@@ -2436,7 +2436,9 @@ print(e)  <span class="comment">#pyth</span>
   <entry>
     <title>跑Kaldi-libspeech遇到的问题</title>
     <url>/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>run.pl: job failed, log is in exp/chain_cleaned/tdnn_1d_sp/log/train.0.3.log</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
+
+<p>run.pl: job failed, log is in exp/chain_cleaned/tdnn_1d_sp/log/train.0.3.log</p>
 <p>kaldi cudaError_t 46 : “all CUDA-capable devices are busy or unavailable” returned from ‘cudaGetLastError()’</p>
 <p><img src="/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201130104204647.png" alt="image-20201130104204647"></p>
 ]]></content>
