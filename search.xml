@@ -1279,6 +1279,36 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>Clion中的EOF</title>
+    <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
+<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
+<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
+</li>
+<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
+</li>
+</ul>
+<hr>
+<p>以上，谨此纪念C++修习结束。</p>
+<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
+<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
+<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
+<p>再把合成相关的东西学学吧，没啥学不会的。</p>
+<hr>
+<p>06_21_2020 Sunday</p>
+<p>@PT</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《Voice Conversion with transformer network-samsung》论文总结</title>
     <url>/2020/08/15/NVAE%EF%BC%8C%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%B7%B1%E6%8C%96/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="NVAE"><a href="#NVAE" class="headerlink" title="NVAE"></a>NVAE</h1><ol>
@@ -1339,36 +1369,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Clion中的EOF</title>
-    <url>/2020/06/21/Clion%E4%B8%AD%E7%9A%84EOF/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-问题："><a href="#1-问题：" class="headerlink" title="1.问题："></a>1.问题：</h1><p>在Mac &amp; Clion 中尝试使用 </p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; varient)&#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>来作为输入结束判断时，由于判断的是“流”结束与否（具体不钻牛角尖），即在win环境下，一般是使用 <strong>CTRL+C</strong>结束，而在Clion中这个方法不行。</p>
-<h1 id="2-解决："><a href="#2-解决：" class="headerlink" title="2.解决："></a>2.解决：</h1><ul>
-<li><p>有很多博客说使用 <strong>CTRL+D</strong> /<strong>Command + D</strong>，均失败</p>
-</li>
-<li><p>有效方法：以 <strong>Debug模式</strong> 运行程序，正确输入数据之后—&gt;回车—&gt; command +D</p>
-</li>
-</ul>
-<hr>
-<p>以上，谨此纪念C++修习结束。</p>
-<p>很多人说Python 比Cpp好学，我觉得不然。这句话可能只能仅限于 使用单纯语言自身特性上；若是要再加上语言的各种外载功能包，还指不定孰优孰劣呢。</p>
-<p>在学习TF、Torch的路上，被各种乱七八糟的工具包整的落花流水。</p>
-<p>实习实习找的不顺，想来也是自己基础实在没有打扎实，虽说自己是反抗成为上班族的，但是在发觉自己在想衡量自己的市场价值的时候竟然这么不值钱，就心里不爽万分。</p>
-<p>再把合成相关的东西学学吧，没啥学不会的。</p>
-<hr>
-<p>06_21_2020 Sunday</p>
-<p>@PT</p>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -1757,6 +1757,8 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
     <url>/2020/11/29/ppg-ac%20&amp;%20Deep-Voice%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
 
+<!--more--><!--more-->
+
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
 
 
@@ -1827,7 +1829,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-qvQmphDP" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-BoQtgtqN" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -2212,6 +2214,44 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>关于ssh本地查看Tensorboard记录</title>
+    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
+<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+cd /home/sdb3/home/hsj/taco1_tf/tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+source activate py36
+tensorboard --logdir ./logs-tacotron
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+本地浏览器打开 127.0.0.1:16006</code></pre>
+<ul>
+<li>成功实现本地查看 Tensorboard</li>
+<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
+<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
+<li>Distributions</li>
+<li>Histograms</li>
+<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
+]]></content>
+      <categories>
+        <category>Tensorflow</category>
+      </categories>
+      <tags>
+        <tag>Tensorboard，Tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于深度学习中模型矢量图的绘制、剪裁、保存 小结</title>
     <url>/2020/06/14/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E6%A8%A1%E5%9E%8B%E7%9F%A2%E9%87%8F%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6%E3%80%81%E5%89%AA%E8%A3%81%E3%80%81%E4%BF%9D%E5%AD%98-%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h1><ol>
@@ -2266,103 +2306,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </categories>
       <tags>
         <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>散文诗</title>
-    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-MVKXbBeX" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-MVKXbBeX"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-<a id="more"></a>
-
-<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
-<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
-<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
-<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
-<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
-<hr>
-<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
-<p>最年少时，希冀能改变一点点世界。</p>
-<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
-<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
-<hr>
-<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
-<p>没必要。</p>
-<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
-<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
-<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
-<p>晚安</p>
-<p>06/17/2020 凌晨</p>
-<p>@PT</p>
-<hr>
-]]></content>
-      <categories>
-        <category>作家计划</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于ssh本地查看Tensorboard记录</title>
-    <url>/2020/06/21/%E5%85%B3%E4%BA%8Essh%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BTensorboard%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-需求：在本地查看Tensorboard"><a href="#1-需求：在本地查看Tensorboard" class="headerlink" title="1.需求：在本地查看Tensorboard"></a>1.需求：在本地查看Tensorboard</h1><ul>
-<li><pre><code class="ssh">ssh -L 16006:127.0.0.1:6006 hsj@student.is99kdf.xyz -p 15203
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：将远程的服务器**6006**端口转发到本地的 **16006**端口</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-cd /home/sdb3/home/hsj/taco1_tf/tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 作用：进入所要运行的 logs 文件夹所在路径</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-source activate py36
-tensorboard --logdir ./logs-tacotron
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  * 开启有 Tensorboard 的环境</span><br><span class="line">  * 运行 ，打开logs文件</span><br><span class="line"></span><br><span class="line">*</span><br></pre></td></tr></table></figure>
-本地浏览器打开 127.0.0.1:16006</code></pre>
-<ul>
-<li>成功实现本地查看 Tensorboard</li>
-<li>再也不用像之前那样傻傻滴每次要手动下载 log 文件到本地之后才执行</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="2-待解决："><a href="#2-待解决：" class="headerlink" title="2.待解决："></a>2.待解决：</h1><ul>
-<li>再进一步了解一下 Tensorboard 上方的各种功能：<ul>
-<li>Distributions</li>
-<li>Histograms</li>
-<li>Projector ：这个很有意思啊，貌似是吧训练过程中数据点的变化，以动图的形式表现出来；</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h1><p>tensorflow 和 Numpy 对应关系：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183013.png" alt="image-20200626175304169"></p>
-]]></content>
-      <categories>
-        <category>Tensorflow</category>
-      </categories>
-      <tags>
-        <tag>Tensorboard，Tensorflow</tag>
       </tags>
   </entry>
   <entry>
@@ -2423,6 +2366,65 @@ print(e)  <span class="comment">#pyth</span>
       </tags>
   </entry>
   <entry>
+    <title>散文诗</title>
+    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
+        <div id="aplayer-rQeZAjeJ" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-rQeZAjeJ"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "父亲写的散文诗",
+              author: "许飞",
+              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
+              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+
+
+<hr>
+<p>不知怎么的，每次听这首歌都会泪目</p>
+<a id="more"></a>
+
+<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
+<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
+<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
+<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
+<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
+<hr>
+<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
+<p>最年少时，希冀能改变一点点世界。</p>
+<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
+<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
+<hr>
+<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
+<p>没必要。</p>
+<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
+<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
+<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
+<p>晚安</p>
+<p>06/17/2020 凌晨</p>
+<p>@PT</p>
+<hr>
+]]></content>
+      <categories>
+        <category>作家计划</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>第一篇</title>
     <url>/2020/06/07/%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>]]></content>
@@ -2432,15 +2434,5 @@ print(e)  <span class="comment">#pyth</span>
       <tags>
         <tag>测试tags</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>跑Kaldi-libspeech遇到的问题</title>
-    <url>/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
-
-<p>run.pl: job failed, log is in exp/chain_cleaned/tdnn_1d_sp/log/train.0.3.log</p>
-<p>kaldi cudaError_t 46 : “all CUDA-capable devices are busy or unavailable” returned from ‘cudaGetLastError()’</p>
-<p><img src="/2020/11/30/%E8%B7%91Kaldi-libspeech%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201130104204647.png" alt="image-20201130104204647"></p>
-]]></content>
   </entry>
 </search>
