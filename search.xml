@@ -1,124 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>《PITCHNET —— UNSUPERVISED SINGING VOICE CONVERSION WITH PITCH ADVERSARIAL NETWORK》</title>
-    <url>/2020/09/07/0906%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB%EF%BC%9A%E6%AD%8C%E5%94%B1%E8%BD%AC%E6%8D%A2/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>0906组会分享</p>
-<h2 id="0906组会分享：歌唱转换-singing-voice-conversion"><a href="#0906组会分享：歌唱转换-singing-voice-conversion" class="headerlink" title="0906组会分享：歌唱转换 singing voice conversion"></a>0906组会分享：<strong>歌唱转换 singing voice conversion</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905170752.png" alt="image-20200905170750870"></p>
-<ul>
-<li><p>效果概览：<a href="https://tencent-ailab.github.io/pitch-net/" target="_blank" rel="noopener">https://tencent-ailab.github.io/pitch-net/</a></p>
-</li>
-<li><p>MOS评分：</p>
-<ul>
-<li>Baseline ：2.92</li>
-<li>PitchNet：3.75</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-
-
-
-<ul>
-<li><h2 id="论文的-baseline-对象："><a href="#论文的-baseline-对象：" class="headerlink" title="论文的 baseline 对象："></a>论文的 <strong>baseline</strong> 对象：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905171530.png" alt="image-20200905171528462"></h2></li>
-<li><h2 id="BaseLine-的贡献和缺点"><a href="#BaseLine-的贡献和缺点" class="headerlink" title="BaseLine 的贡献和缺点"></a><strong>BaseLine 的贡献和缺点</strong></h2></li>
-</ul>
-<p>贡献：</p>
-<ol>
-<li>利用 AE 模式下的无监督方式，解决了 平行语料的问题</li>
-<li>组成模块：<strong>WaveNetlike Encoder</strong> &amp;&amp;  <strong>WaveNet  autoregressive Decoder</strong> &amp;&amp; <strong>Speaker-Embedding Table</strong>（leanable）</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>和StarGan-VC之类的 单纯说话VC 任务不同，歌唱转换的效果重点是：说话人相似性 &amp;&amp; 音调合理性</li>
-<li>BaseLine 在音调处理上差强人意，总而言之，“<strong>语音和音调的联合表示</strong>”是难点</li>
-</ol>
-<hr>
-<ul>
-<li><h2 id="解决的问题："><a href="#解决的问题：" class="headerlink" title="解决的问题："></a><strong>解决的问题</strong>：</h2></li>
-</ul>
-<ol>
-<li>走调（音高 Pitch 失控现象）问题的缓解<ol>
-<li>在 Baseline 的 <strong>AE无监督</strong> 模式下，附带一个额外的<strong>音调回归网络（GAN）</strong>可以将音调信息从潜在空间中分离出来</li>
-<li><strong>目的是</strong>：让原本的<strong>Encoder</strong>在单纯学习 <strong>说话人无关的语言信息</strong> 基础上，再额外剥离掉 <strong>音高信息</strong> （<strong>not only singer-invariant but also pitch-invariant representation</strong>）</li>
-</ol>
-</li>
-<li>至于音高信息，当成一个独立问题来解决：设立独立模块来提取 <strong>source</strong> 的<strong>音高信息</strong>，以此配合 <strong>Decoder</strong> ，来<strong>操控</strong> <strong>生成语音</strong> 的<strong>音高</strong> <ol>
-<li>（根据作者相关 Git 项目下的 issue 讨论，这部分工作借用 Kaldi 来完成）</li>
-<li>【实现 <strong>音高可控性</strong> 】</li>
-</ol>
-</li>
-</ol>
-<hr>
-<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a><strong>模型</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223846.png" alt="image-20200905223845590"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223859.png" alt="image-20200905223857883"></p>
-<ul>
-<li><strong>Singer Classiﬁcation Network</strong> <strong>Pitch Regression Network</strong> 是为了使得 <strong>Encoder</strong> 能够在抽取特征向量 <strong>z</strong> 时，把 说话人信息 &amp;&amp; 音调信息 都剥离掉</li>
-<li></li>
-<li></li>
-</ul>
-<hr>
-<h2 id="Training-Loss：三个Loss"><a href="#Training-Loss：三个Loss" class="headerlink" title="Training Loss：三个Loss"></a><strong>Training Loss：三个Loss</strong></h2><ol>
-<li><strong>singer classiﬁcation loss</strong></li>
-<li><strong>pitch regression loss</strong></li>
-<li><strong>reconstruction loss</strong></li>
-</ol>
-<h2 id="几个公式的清晰理解："><a href="#几个公式的清晰理解：" class="headerlink" title="几个公式的清晰理解："></a>几个公式的清晰理解：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141104.png" alt="image-20200906141103220"></p>
-<ol>
-<li>说明了AE网络的Decoder产生结果 所需要的输入元素（Encoder结果+Kaldi抽取的音高+Embedding信息）</li>
-<li>介绍重构损失：在Decoder时配合<strong>source</strong>的embedding，和<strong>source</strong>语音做<strong>Loss</strong></li>
-</ol>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141139.png" alt="image-20200906141138234"></p>
-<ol start="3">
-<li>一个 <strong>说话人分类器</strong>，同理为 StarGan-VC 的Domain-Classification，分类对象，是<strong>Encoder</strong>结果&amp;&amp;<strong>Embedding</strong></li>
-<li>另一个<strong>音高分类器</strong>，Pitch信息由 Kaldi 提取</li>
-<li>总的<strong>Loss</strong>结构：因为重构损失⬇️越好，另一方面，对于两个分类器，我们希望我们的 <strong>Encoder</strong>提取出来的隐变量 能彻底剥离 说话人信息 &amp;&amp; Pitch信息，所以这两个的误差，对于结果来说，应该越大越好。（所以这两个部分是配合 负号）</li>
-<li>上述两个 C分类器的损失，对于<strong>Encoder</strong>和<strong>Classifier</strong>来说，是完全相反的，【<strong>就是典型的GAN对抗思路</strong>】，所以他们的训练，采取“你一次我一次的过程”<ul>
-<li>训练中，缩小 $$L_{total}$$ 时，促进的是 <strong>Encoder</strong> 将两个元素剥离</li>
-<li>缩小 $L_{ad}$ 时，促进的是 <strong>Classifier</strong> 具有更强的分类能力，能看透隐变量 <strong>z</strong> 的实质和归属</li>
-</ul>
-</li>
-</ol>
-<p>Ps.整体思路比较清晰，就是<strong>自回归</strong>那个部分不知道是怎么具体实现的</p>
-<hr>
-<p>Quantitative and Qualitative Experiments**【定量 和 定性 实验】</p>
-<hr>
-<p>Tencent :LPCNet, </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;train</span><br><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;validation</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export EXPR_ID&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID</span><br><span class="line">export DATA_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb</span><br><span class="line">export CHECKPOINT_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR</span><br><span class="line">export CODE_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">cd &#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">CUDA_VISIBLE_DEVICES&#x3D;1  </span><br><span class="line">python train.py --data &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --root &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR --save &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CelebA64 数据预处理</span><br><span class="line"></span><br><span class="line">cd $CODE_DIR&#x2F;scripts</span><br><span class="line">python create_celeba64_lmdb.py --split train --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split valid --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split test  --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python create_celeba64_lmdb.py --split train --img_path ..&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path ..&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --split&#x3D;validation</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train.py --data $DATA_DIR&#x2F;celeba64_lmdb --root $CHECKPOINT_DIR --save $EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
-
-<p>/Users/huangshengjie/Desktop/NVAE/scripts/data1/datasets/imagenet-oord</p>
-]]></content>
-      <categories>
-        <category>论文阅读笔记</category>
-      </categories>
-      <tags>
-        <tag>VC</tag>
-        <tag>论文阅读笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《END-TO-END ACCENT CONVERSION WITHOUT USING NATIVE UTTERANCES》论文总结</title>
     <url>/2020/08/17/0817-%E7%BB%84%E4%BC%9A%E8%AE%BA%E6%96%87%E5%88%86%E4%BA%AB/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200816133725.png" alt="image-20200816133724321"></p>
@@ -379,6 +261,124 @@ Estimated Total Size (MB): 1.25
       </tags>
   </entry>
   <entry>
+    <title>《PITCHNET —— UNSUPERVISED SINGING VOICE CONVERSION WITH PITCH ADVERSARIAL NETWORK》</title>
+    <url>/2020/09/07/0906%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB%EF%BC%9A%E6%AD%8C%E5%94%B1%E8%BD%AC%E6%8D%A2/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>0906组会分享</p>
+<h2 id="0906组会分享：歌唱转换-singing-voice-conversion"><a href="#0906组会分享：歌唱转换-singing-voice-conversion" class="headerlink" title="0906组会分享：歌唱转换 singing voice conversion"></a>0906组会分享：<strong>歌唱转换 singing voice conversion</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905170752.png" alt="image-20200905170750870"></p>
+<ul>
+<li><p>效果概览：<a href="https://tencent-ailab.github.io/pitch-net/" target="_blank" rel="noopener">https://tencent-ailab.github.io/pitch-net/</a></p>
+</li>
+<li><p>MOS评分：</p>
+<ul>
+<li>Baseline ：2.92</li>
+<li>PitchNet：3.75</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+
+
+<ul>
+<li><h2 id="论文的-baseline-对象："><a href="#论文的-baseline-对象：" class="headerlink" title="论文的 baseline 对象："></a>论文的 <strong>baseline</strong> 对象：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905171530.png" alt="image-20200905171528462"></h2></li>
+<li><h2 id="BaseLine-的贡献和缺点"><a href="#BaseLine-的贡献和缺点" class="headerlink" title="BaseLine 的贡献和缺点"></a><strong>BaseLine 的贡献和缺点</strong></h2></li>
+</ul>
+<p>贡献：</p>
+<ol>
+<li>利用 AE 模式下的无监督方式，解决了 平行语料的问题</li>
+<li>组成模块：<strong>WaveNetlike Encoder</strong> &amp;&amp;  <strong>WaveNet  autoregressive Decoder</strong> &amp;&amp; <strong>Speaker-Embedding Table</strong>（leanable）</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>和StarGan-VC之类的 单纯说话VC 任务不同，歌唱转换的效果重点是：说话人相似性 &amp;&amp; 音调合理性</li>
+<li>BaseLine 在音调处理上差强人意，总而言之，“<strong>语音和音调的联合表示</strong>”是难点</li>
+</ol>
+<hr>
+<ul>
+<li><h2 id="解决的问题："><a href="#解决的问题：" class="headerlink" title="解决的问题："></a><strong>解决的问题</strong>：</h2></li>
+</ul>
+<ol>
+<li>走调（音高 Pitch 失控现象）问题的缓解<ol>
+<li>在 Baseline 的 <strong>AE无监督</strong> 模式下，附带一个额外的<strong>音调回归网络（GAN）</strong>可以将音调信息从潜在空间中分离出来</li>
+<li><strong>目的是</strong>：让原本的<strong>Encoder</strong>在单纯学习 <strong>说话人无关的语言信息</strong> 基础上，再额外剥离掉 <strong>音高信息</strong> （<strong>not only singer-invariant but also pitch-invariant representation</strong>）</li>
+</ol>
+</li>
+<li>至于音高信息，当成一个独立问题来解决：设立独立模块来提取 <strong>source</strong> 的<strong>音高信息</strong>，以此配合 <strong>Decoder</strong> ，来<strong>操控</strong> <strong>生成语音</strong> 的<strong>音高</strong> <ol>
+<li>（根据作者相关 Git 项目下的 issue 讨论，这部分工作借用 Kaldi 来完成）</li>
+<li>【实现 <strong>音高可控性</strong> 】</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a><strong>模型</strong></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223846.png" alt="image-20200905223845590"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200905223859.png" alt="image-20200905223857883"></p>
+<ul>
+<li><strong>Singer Classiﬁcation Network</strong> <strong>Pitch Regression Network</strong> 是为了使得 <strong>Encoder</strong> 能够在抽取特征向量 <strong>z</strong> 时，把 说话人信息 &amp;&amp; 音调信息 都剥离掉</li>
+<li></li>
+<li></li>
+</ul>
+<hr>
+<h2 id="Training-Loss：三个Loss"><a href="#Training-Loss：三个Loss" class="headerlink" title="Training Loss：三个Loss"></a><strong>Training Loss：三个Loss</strong></h2><ol>
+<li><strong>singer classiﬁcation loss</strong></li>
+<li><strong>pitch regression loss</strong></li>
+<li><strong>reconstruction loss</strong></li>
+</ol>
+<h2 id="几个公式的清晰理解："><a href="#几个公式的清晰理解：" class="headerlink" title="几个公式的清晰理解："></a>几个公式的清晰理解：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141104.png" alt="image-20200906141103220"></p>
+<ol>
+<li>说明了AE网络的Decoder产生结果 所需要的输入元素（Encoder结果+Kaldi抽取的音高+Embedding信息）</li>
+<li>介绍重构损失：在Decoder时配合<strong>source</strong>的embedding，和<strong>source</strong>语音做<strong>Loss</strong></li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200906141139.png" alt="image-20200906141138234"></p>
+<ol start="3">
+<li>一个 <strong>说话人分类器</strong>，同理为 StarGan-VC 的Domain-Classification，分类对象，是<strong>Encoder</strong>结果&amp;&amp;<strong>Embedding</strong></li>
+<li>另一个<strong>音高分类器</strong>，Pitch信息由 Kaldi 提取</li>
+<li>总的<strong>Loss</strong>结构：因为重构损失⬇️越好，另一方面，对于两个分类器，我们希望我们的 <strong>Encoder</strong>提取出来的隐变量 能彻底剥离 说话人信息 &amp;&amp; Pitch信息，所以这两个的误差，对于结果来说，应该越大越好。（所以这两个部分是配合 负号）</li>
+<li>上述两个 C分类器的损失，对于<strong>Encoder</strong>和<strong>Classifier</strong>来说，是完全相反的，【<strong>就是典型的GAN对抗思路</strong>】，所以他们的训练，采取“你一次我一次的过程”<ul>
+<li>训练中，缩小 $$L_{total}$$ 时，促进的是 <strong>Encoder</strong> 将两个元素剥离</li>
+<li>缩小 $L_{ad}$ 时，促进的是 <strong>Classifier</strong> 具有更强的分类能力，能看透隐变量 <strong>z</strong> 的实质和归属</li>
+</ul>
+</li>
+</ol>
+<p>Ps.整体思路比较清晰，就是<strong>自回归</strong>那个部分不知道是怎么具体实现的</p>
+<hr>
+<p>Quantitative and Qualitative Experiments**【定量 和 定性 实验】</p>
+<hr>
+<p>Tencent :LPCNet, </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;train</span><br><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --tfr_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-tfr --lmdb_path&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --split&#x3D;validation</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export EXPR_ID&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID</span><br><span class="line">export DATA_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb</span><br><span class="line">export CHECKPOINT_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR</span><br><span class="line">export CODE_DIR&#x3D;&#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">cd &#x2F;data&#x2F;hsj&#x2F;NVAE</span><br><span class="line">CUDA_VISIBLE_DEVICES&#x3D;1  </span><br><span class="line">python train.py --data &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;DATA_DIR&#x2F;celeba&#x2F;celeba-lmdb --root &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;CHECKPOINT_DIR --save &#x2F;data&#x2F;hsj&#x2F;NVAE&#x2F;EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CelebA64 数据预处理</span><br><span class="line"></span><br><span class="line">cd $CODE_DIR&#x2F;scripts</span><br><span class="line">python create_celeba64_lmdb.py --split train --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split valid --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br><span class="line">python create_celeba64_lmdb.py --split test  --img_path .&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path  .&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python create_celeba64_lmdb.py --split train --img_path ..&#x2F;DATA_DIR&#x2F;celeba_org&#x2F;celeba --lmdb_path ..&#x2F;DATA_DIR&#x2F;celeba64_lmdb</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python convert_tfrecord_to_lmdb.py --dataset&#x3D;celeba --split&#x3D;validation</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train.py --data $DATA_DIR&#x2F;celeba64_lmdb --root $CHECKPOINT_DIR --save $EXPR_ID --dataset celeba_64 \</span><br><span class="line">        --num_channels_enc 64 --num_channels_dec 64 --epochs 90 --num_postprocess_cells 2 --num_preprocess_cells 2 \</span><br><span class="line">        --num_latent_scales 3 --num_latent_per_group 20 --num_cell_per_cond_enc 2 --num_cell_per_cond_dec 2 \</span><br><span class="line">        --num_preprocess_blocks 1 --num_postprocess_blocks 1 --weight_decay_norm 1e-1 --num_groups_per_scale 20 \</span><br><span class="line">        --batch_size 16 --num_nf 1 --ada_groups --num_process_per_node 8 --use_se --res_dist --fast_adamax</span><br></pre></td></tr></table></figure>
+
+<p>/Users/huangshengjie/Desktop/NVAE/scripts/data1/datasets/imagenet-oord</p>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+      </categories>
+      <tags>
+        <tag>VC</tag>
+        <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《EMOTIONAL VOICE CONVERSION USING MULTITASK LEARNING WITH TEXT-TO-SPEECH》</title>
     <url>/2020/09/20/0920-EMOTIONAL%20VOICE%20CONVERSION%20USING%20MULTITASK%20LEARNING%20WITH%20TEXT-TO-SPEECH/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>0920-论文总结</p>
@@ -531,6 +531,163 @@ Estimated Total Size (MB): 1.25
       <tags>
         <tag>VC</tag>
         <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1.两数之和</title>
+    <url>/2020/06/21/1.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg" alt="img"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183108.png" alt="image-20200621235419362"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183128.png" alt="image-20200621235438971"></p>
+<h1 id="1-HashMap"><a href="#1-HashMap" class="headerlink" title="1. HashMap"></a>1. HashMap</h1><ul>
+<li>发现很多接发都用到了map，其中C++的vector容器，java是HashMap</li>
+<li>涉及到之前数据结构盲区 <strong>红黑树</strong> <a href="https://www.cnblogs.com/shoulinniao/p/11966194.html" target="_blank" rel="noopener">https://www.cnblogs.com/shoulinniao/p/11966194.html</a></li>
+<li></li>
+</ul>
+<hr>
+<h1 id="2-《Java核心技术卷一》P372，chap9-3：映射"><a href="#2-《Java核心技术卷一》P372，chap9-3：映射" class="headerlink" title="2.《Java核心技术卷一》P372，chap9.3：映射"></a>2.《Java核心技术卷一》P372，chap9.3：映射</h1><ul>
+<li>映射 <strong>MAP</strong> 数据结构= 「HashMap」&amp;&amp;「TreeMap」</li>
+<li>存放 {键<strong>KEY</strong>：值<strong>VALUE</strong>}对</li>
+<li>都只对 <strong>键（KEY）</strong>进行处理（ <strong>散列</strong>&amp;&amp; <strong>搜索树排序</strong>  ）</li>
+</ul>
+<h1 id="3-相关方法函数："><a href="#3-相关方法函数：" class="headerlink" title="3.相关方法函数："></a>3.相关方法函数：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//哈希map初始化，自己定义Key和Value的类型</span></span><br><span class="line">Map&lt;String, Employee&gt; staff = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个employee对象，用作Value</span></span><br><span class="line">Employee harry = <span class="keyword">new</span> Employee(<span class="string">"Harry Hacker"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//1.：map.put（key，value）方法：将 键值对 放进HashMap</span></span><br><span class="line">staff.put(<span class="string">"123456"</span>,harry)<span class="comment">//</span></span><br><span class="line"><span class="comment">//同一个key存两次，会覆盖，并且返回的是上一次存储的 Value值；</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2.：map.get(key) 方法：按照 Key 的值，来从HashMap中获取Value</span></span><br><span class="line">String id = <span class="string">"123456"</span>;</span><br><span class="line">Employee e = staff.get(id);</span><br><span class="line"></span><br><span class="line"><span class="comment">//get()方法还可以人为设置默认值：</span></span><br><span class="line">Map&lt;String, Integer&gt; score = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="keyword">int</span> score = score.get(id,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//放这个Key对应的Value不存在时，返回 0；</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><ol>
+<li><strong>import</strong> java.util.HashMap;//导入</li>
+<li><strong>HashMap&lt;K, V&gt; map = new HashMap&lt;K, V&gt;（）;</strong>//定义map，K和V是类，<strong><em>不允许是基本类型？</em></strong></li>
+<li><strong>put（K， V）</strong></li>
+<li><strong>V get（K）</strong></li>
+<li><strong>V remove（K）</strong>//移除K键的值，返回的是V，可以不接收</li>
+<li><strong>size（）</strong>//返回映射Map中的元素数目</li>
+<li><strong>replace（）</strong>//替换</li>
+</ol>
+</li>
+<li><pre><code class="java"> map.replace( Key,Value );
+&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
+</li>
+<li><p><strong>9. computeIfAbsent（）</strong>//</p>
+</li>
+<li><pre><code class="java"><span class="comment">//如果key键为java的,就添加，并且value为key键的长度</span>
+<span class="comment">//这个算子就是一个和put功能差不多的算子，都是往map里面添加数据。</span>
+
+map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).length());
+&lt;!--￼<span class="number">2</span>--&gt;</code></pre>
+</li>
+<li></li>
+</ul>
+<hr>
+<h1 id="4-关于遍历方法："><a href="#4-关于遍历方法：" class="headerlink" title="4.关于遍历方法："></a>4.关于遍历方法：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回所有 Key-Value 对：</span></span><br><span class="line"><span class="keyword">for</span>(Map.Entry n: map.entrySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有 Key：</span></span><br><span class="line"><span class="keyword">for</span>(String n : map.keySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有Value：</span></span><br><span class="line"><span class="keyword">for</span>(Integer n: map.values())&#123;</span><br><span class="line">		System.out.println(n);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h1 id="5-其他："><a href="#5-其他：" class="headerlink" title="5.其他："></a>5.其他：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183135.png" alt="image-20200622181415228"></p>
+<ul>
+<li><h2 id="HashMap中链表转换成红黑树的操作——treeifyBin"><a href="#HashMap中链表转换成红黑树的操作——treeifyBin" class="headerlink" title="HashMap中链表转换成红黑树的操作——treeifyBin()"></a>HashMap中链表转换成红黑树的操作——treeifyBin()</h2></li>
+<li><p><a href="https://www.jianshu.com/p/309ea054cbc9" target="_blank" rel="noopener">https://www.jianshu.com/p/309ea054cbc9</a></p>
+</li>
+</ul>
+<hr>
+<h1 id="6-整理下HashMap里面的常见面试考点："><a href="#6-整理下HashMap里面的常见面试考点：" class="headerlink" title="6.整理下HashMap里面的常见面试考点："></a>6.整理下HashMap里面的常见面试考点：</h1><ol>
+<li><h2 id="HashMap-默认容量："><a href="#HashMap-默认容量：" class="headerlink" title="HashMap 默认容量："></a>HashMap 默认容量：</h2><ul>
+<li><strong>默认容量是：16 = 1 &lt;&lt; 4（位移动 = $1000_2$ =  $16_{10}$）；</strong></li>
+<li><strong>默认负载因子是：0.75（根据）</strong>（服从泊松分布）：红黑树部分也是这个原理：</li>
+<li>桶中的节点个数服从泊松分布；</li>
+<li>取 $\lambda = 0.5$ ，此时 ，每个捅中元素个数为 【0，8】个的概率分别如图所示，大于八个，基本已经到达百万分之一的级别，所以 <strong>Java8</strong> 中选择以 <strong>8</strong> 作为一个临界数字，来决定是否将链表转化为 <strong>红黑树</strong>；</li>
+<li>其中，在 最大桶元素个数 = 7 时，不变，作为缓冲，以防止过于频繁的转换消耗；  </li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183233.png" alt="image-20200622234017327"></p>
+</li>
+<li><h2 id="如何扩容？"><a href="#如何扩容？" class="headerlink" title="如何扩容？"></a>如何扩容？</h2><ul>
+<li>$2^n$ 的形式，每次翻两倍；（这和 Hash 的工作机制有关：（n - 1）&amp; hash）</li>
+<li>这样子的好处是，（$2^n$-1）= 一个全为1 的二进制树，计算更快；</li>
+</ul>
+</li>
+<li><h2 id="为什么HashMap的数组大小一定要是-2-的幂？"><a href="#为什么HashMap的数组大小一定要是-2-的幂？" class="headerlink" title="为什么HashMap的数组大小一定要是 2 的幂？"></a>为什么<strong>HashMap</strong>的数组大小一定要是 2 的幂？</h2><ul>
+<li><p>和 Hash 的工作机制有关；HashMap求索引时用&amp;运算,index=(n-1)&amp;hash</p>
+</li>
+<li><p>n = length : 表长度 = $2^n$ </p>
+</li>
+<li><p>（HashTable求索引用模运算，index = (hash &amp; 0x7FFFFFFF) % n）</p>
+</li>
+<li></li>
+<li><p>：只有这样才能保证 经过 ( $2^n $ ) 操作后得到全是1 的值；</p>
+</li>
+<li><p>然后这样才能经过非常快速的位运算，快速拿到数组下标，并且能保证分布均匀</p>
+</li>
+<li><p>若不是 $2^n$, 则运算过后，会有0存在，那么就会导致，不管 和他进行按位与 运算的数字是多少，都会出现某些位永远是 0，那么就会导致，某些 <strong>桶</strong> 里的元素永远都是 <strong>0个</strong>，不均匀且不合理； </p>
+</li>
+</ul>
+</li>
+<li><h2 id="HashMap-为什么是线程不安全的？"><a href="#HashMap-为什么是线程不安全的？" class="headerlink" title="HashMap 为什么是线程不安全的？"></a>HashMap 为什么是线程不安全的？</h2><ul>
+<li>在接近临界点时，若此时两个或者多个线程进行put操作，都会进行resize（扩容）和reHash（为key重新计算所在位置），而reHash在并发的情况下可能会形成<code>链表环</code>。</li>
+<li>总结来说就是在多线程环境下，使用HashMap进行put操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使用HashMap。</li>
+<li>为什么在并发执行put操作会引起死循环？是因为多线程会导致HashMap的Entry链表形成环形数据结构，一旦形成环形数据结构，Entry的next节点永远不为空，就会产生死循环获取Entry。</li>
+<li>jdk1.7的情况下，并发扩容时容易形成链表环，此情况在1.8时就好太多太多了。</li>
+<li>因为在1.8中当链表长度达到阈值（默认长度为8）时，链表会被改成树形（红黑树）结构。如果删剩节点变成7个并不会退回链表，而是保持不变，删剩6个时就会变回链表，7不变是缓冲，防止频繁变换。</li>
+<li>在JDK1.7中，当并发执行扩容操作时会造成环形链和数据丢失的情况。</li>
+<li>在JDK1.8中，在并发执行put操作时会发生数据覆盖的情况。</li>
+</ul>
+</li>
+<li><h2 id="Java-7-到-8-做了哪些改进？为什么？"><a href="#Java-7-到-8-做了哪些改进？为什么？" class="headerlink" title="Java 7 到 8 做了哪些改进？为什么？"></a>Java 7 到 8 做了哪些改进？为什么？</h2><ul>
+<li>如上题所述：</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="7-拓展"><a href="#7-拓展" class="headerlink" title="7.拓展"></a>7.拓展</h1><ol>
+<li><p>你能想到的做 HashMap 匹配的方法？ </p>
+<ul>
+<li><ol>
+<li>直接取模：（$-2^{31}$ ~ $2^{31} -1$ ）% n = （0 , $n-1$）</li>
+</ol>
+</li>
+<li>缺点：两个：<ul>
+<li>负数对 n求余，答案是负数；（所以需要额外把 负数 变为 正数 ）</li>
+<li>速度较慢（相比于位运算）：因为硬件中“求余”的本质是“除法”</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常考的“坑”：扩容：<strong>resize（）</strong></p>
+<ol>
+<li>扩容 <strong>resize( )</strong>包括 <strong>rehash ( )</strong></li>
+<li>机制是，当原来的容器中，容量达到了 <strong>0.75 * capacity</strong>， 再创建一个 <strong>2 * capacity</strong> 的新的桶；</li>
+<li>然后会把旧的桶中的数据 <strong>迁移</strong> 过去，迁移的时候，伴随着重新地对原始数据进行 <strong>rehash</strong> 计算；</li>
+<li><strong>resize（）</strong>里面的 <strong>transfer（）</strong>是一切问题的根源！！</li>
+</ol>
+</li>
+<li><ul>
+<li><strong>死锁问题：</strong>：本身是线程不安全的；完全是用户的问题；</li>
+</ul>
+</li>
+<li><ul>
+<li><strong>哈希表最致命的缺陷：哈希碰撞——&gt;</strong>最差情况下，会变成单链表；链表性能退化</li>
+</ul>
+</li>
+<li><ul>
+<li>所以在java7时代的 <strong>Tomcat（2011）</strong> 中引起了问题——&gt;可以通过一组精心设计的 恶意请求，造成 <strong>DoS（Deny of serveice）</strong></li>
+</ul>
+</li>
+<li><pre><code>&quot;Aa&quot;,&quot;BB&quot;,&quot;C#&quot; 的哈希值是相同的！
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">7. ![image-20200622231322114](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183234.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 8. Java8的改进点 &amp;&amp; 新API</span><br><span class="line"></span><br><span class="line">1. 从 **数组 + 链表**——&gt;**数组 + 链表 &#x2F; 红黑树**</span><br><span class="line"></span><br><span class="line">2. 扩容时，插入顺序的改进：（原来是，从旧的头先取，然后按照“头插法”插入新的桶，导致顺序不稳定）</span><br><span class="line"></span><br><span class="line">3. 函数方法：（java 8 引入了 Lamda 表达式）</span><br><span class="line"></span><br><span class="line">   1. forEach</span><br><span class="line">   2. compute 系列</span><br><span class="line"></span><br><span class="line">4.  Map 的新 API</span><br><span class="line"></span><br><span class="line">   1. Merge</span><br><span class="line">   2. replace</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   # 9.补充</span><br><span class="line"></span><br><span class="line">   1. **抑或运算**：可以更简单地理解为 **不进位的 加法 ！**</span><br><span class="line">   2. 红黑树转换，并不是要把整张表都从链表改成红黑树，而是只要 超过 8 个元素的 那个桶，改一下形式，就行了：</span><br><span class="line">   3. ![image-20200623000116947](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183235.png)</span><br><span class="line">   4. 二叉平衡树，平均查找时间：O（$log N$）</span><br><span class="line">   5. 单纯的二叉树，有个极端情况：插入顺序是有序的，那么就会造成演化成 **单链表**</span><br><span class="line">   6. 而红黑树，经过一定的旋转，保证了查找的效率（具体再仔细看看书）</span><br><span class="line">   7. **新的 Java8 中的 resize（）函数**：改进成了 **扩容时** 能保持原来的顺序，但是仍然不能保证 **线程安全**，只能说是大搭建撒后了线程冲突的概率。</span><br><span class="line">   8. 所以未来可能不会再多线程情况下遇到问题，但是还是不能放心地在多线程环境下使用它！（**Linux中的任务调度 是多线程的，有用到 HashMap**）</span><br><span class="line">   9. **HashCode** ： 默认使用 **32位** 的 **Int** 的**HashCode**；</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   # 10.面试题常见：</span><br><span class="line"></span><br><span class="line">   1. 为什么用 数组 +链表：经典的学院派操作</span><br><span class="line">   2. Hash 冲突你还知道哪些解决办法：可以在冲突的桶里面，再套一层 Hash 表；即，冲突的进行二次分流；（表中再有个表）</span><br><span class="line">   3. 用Lin课的Li身体代替数组结构可以吗？：不可以，数组的随机访问是 O（1）的，不受数组长度的影响，二链表的顺序访问速度是 O（n），不能起到随机访问的效果；</span><br><span class="line">   4. get（）的操作？：如果第一个元素就是要求的话，那么就直接返回它；不是的话，那么，先判断该桶是什么结构，如果是红黑树，那么就用树的查找方法 查找；否则若是链表结构，就采用链表的顺序访问形式访问</span><br><span class="line">   5. 为什么 String 、Integer 这样的 wrapper 类 适合作为键？：因为String是final，具有不变性，而且已经重写了 equals（）和hashcode（）方法了。不变性是必要的！因为 为了要计算 hashcode（），就要防止键改变，如果键再嵌入时和获取时返回不同的 hashcode 的话，就不能从 HashMap 中找到你想要的对象。</span><br><span class="line">   6. 如果HashMap的大小超过了负载因子（load factor）定义的容量怎么办？：扩容：resize（） &amp; rehash（）「注意，resize（）的效率非常低！！！」所以如果预先知道有一个很大的表要创建，那么可以预先再创建时，就指定一个较大的空间，相当于时 **空间换时间**；避免未来的频繁resize（）花费很多时间。</span><br><span class="line"></span><br><span class="line">   ## </span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 11.红黑树：自己补充</span><br><span class="line"></span><br><span class="line">![截屏2020-06-23上午12.50.42](&#x2F;Users&#x2F;huangshengjie&#x2F;Desktop&#x2F;截屏2020-06-23上午12.50.42.png)</span><br><span class="line"></span><br><span class="line">* [B站课程](https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1tE411f7tP?from&#x3D;search&amp;seid&#x3D;2421763921920035607)：</span><br><span class="line">* [一份链接文章](https:&#x2F;&#x2F;blog.csdn.net&#x2F;Mr_Helloworld_&#x2F;article&#x2F;details&#x2F;106694724)</span><br><span class="line">* ![image-20200624005349275](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183236.png)</span><br><span class="line">* ![image-20200624005402070](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183237.png)</span><br><span class="line">* ![image-20200624005251467](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183238.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"># 12.正题：001:两数之和：Java版</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class twoSum_001 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;暴力法</span><br><span class="line">    public int[] twoSum_force(int[] nums, int target)&#123;</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            for(int j&#x3D;i+1;j&lt; nums.length;j++)&#123;</span><br><span class="line">                if(nums[j] &#x3D;&#x3D; target - nums[i])&#123;</span><br><span class="line">                    return new int[] &#123;i, j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum soluition&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;两遍 Hash，一遍存，一遍查取；</span><br><span class="line">    public int[] twoSum_HashTwice(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            map.put(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i&#x3D;0; i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complement &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complement) &amp;&amp; map.get(complement) !&#x3D; i)&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complement)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;一遍 Hash，先查，查不到就接着存；</span><br><span class="line">    public int[] twoSum_HashOnce(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complemenmt &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complemenmt))&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complemenmt)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+</code></pre></li>
+</ol>
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
       </tags>
   </entry>
   <entry>
@@ -822,160 +979,105 @@ Estimated Total Size (MB): 1.25
       </tags>
   </entry>
   <entry>
-    <title>1.两数之和</title>
-    <url>/2020/06/21/1.%20%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183100.jpg" alt="img"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183108.png" alt="image-20200621235419362"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183128.png" alt="image-20200621235438971"></p>
-<h1 id="1-HashMap"><a href="#1-HashMap" class="headerlink" title="1. HashMap"></a>1. HashMap</h1><ul>
-<li>发现很多接发都用到了map，其中C++的vector容器，java是HashMap</li>
-<li>涉及到之前数据结构盲区 <strong>红黑树</strong> <a href="https://www.cnblogs.com/shoulinniao/p/11966194.html" target="_blank" rel="noopener">https://www.cnblogs.com/shoulinniao/p/11966194.html</a></li>
-<li></li>
-</ul>
-<hr>
-<h1 id="2-《Java核心技术卷一》P372，chap9-3：映射"><a href="#2-《Java核心技术卷一》P372，chap9-3：映射" class="headerlink" title="2.《Java核心技术卷一》P372，chap9.3：映射"></a>2.《Java核心技术卷一》P372，chap9.3：映射</h1><ul>
-<li>映射 <strong>MAP</strong> 数据结构= 「HashMap」&amp;&amp;「TreeMap」</li>
-<li>存放 {键<strong>KEY</strong>：值<strong>VALUE</strong>}对</li>
-<li>都只对 <strong>键（KEY）</strong>进行处理（ <strong>散列</strong>&amp;&amp; <strong>搜索树排序</strong>  ）</li>
-</ul>
-<h1 id="3-相关方法函数："><a href="#3-相关方法函数：" class="headerlink" title="3.相关方法函数："></a>3.相关方法函数：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//哈希map初始化，自己定义Key和Value的类型</span></span><br><span class="line">Map&lt;String, Employee&gt; staff = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个employee对象，用作Value</span></span><br><span class="line">Employee harry = <span class="keyword">new</span> Employee(<span class="string">"Harry Hacker"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//1.：map.put（key，value）方法：将 键值对 放进HashMap</span></span><br><span class="line">staff.put(<span class="string">"123456"</span>,harry)<span class="comment">//</span></span><br><span class="line"><span class="comment">//同一个key存两次，会覆盖，并且返回的是上一次存储的 Value值；</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2.：map.get(key) 方法：按照 Key 的值，来从HashMap中获取Value</span></span><br><span class="line">String id = <span class="string">"123456"</span>;</span><br><span class="line">Employee e = staff.get(id);</span><br><span class="line"></span><br><span class="line"><span class="comment">//get()方法还可以人为设置默认值：</span></span><br><span class="line">Map&lt;String, Integer&gt; score = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="keyword">int</span> score = score.get(id,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//放这个Key对应的Value不存在时，返回 0；</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><ol>
-<li><strong>import</strong> java.util.HashMap;//导入</li>
-<li><strong>HashMap&lt;K, V&gt; map = new HashMap&lt;K, V&gt;（）;</strong>//定义map，K和V是类，<strong><em>不允许是基本类型？</em></strong></li>
-<li><strong>put（K， V）</strong></li>
-<li><strong>V get（K）</strong></li>
-<li><strong>V remove（K）</strong>//移除K键的值，返回的是V，可以不接收</li>
-<li><strong>size（）</strong>//返回映射Map中的元素数目</li>
-<li><strong>replace（）</strong>//替换</li>
-</ol>
+    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
+    <url>/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-最长公共子序列："><a href="#1-最长公共子序列：" class="headerlink" title="1.最长公共子序列："></a>1.最长公共子序列：</h1><h2 id="最长公共子序列-LCS-Longest-Common-Subsequence"><a href="#最长公共子序列-LCS-Longest-Common-Subsequence" class="headerlink" title="最长公共子序列(LCS):Longest Common Subsequence"></a>最长公共子序列(LCS):<code>Longest Common Subsequence</code></h2><ul>
+<li><p>对于两个子序列 S1 和 S2，找出它们最长的公共子序列。</p>
 </li>
-<li><pre><code class="java"> map.replace( Key,Value );
-&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
-</li>
-<li><p><strong>9. computeIfAbsent（）</strong>//</p>
-</li>
-<li><pre><code class="java"><span class="comment">//如果key键为java的,就添加，并且value为key键的长度</span>
-<span class="comment">//这个算子就是一个和put功能差不多的算子，都是往map里面添加数据。</span>
-
-map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).length());
-&lt;!--￼<span class="number">2</span>--&gt;</code></pre>
-</li>
-<li></li>
-</ul>
-<hr>
-<h1 id="4-关于遍历方法："><a href="#4-关于遍历方法：" class="headerlink" title="4.关于遍历方法："></a>4.关于遍历方法：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回所有 Key-Value 对：</span></span><br><span class="line"><span class="keyword">for</span>(Map.Entry n: map.entrySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有 Key：</span></span><br><span class="line"><span class="keyword">for</span>(String n : map.keySet())&#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回所有Value：</span></span><br><span class="line"><span class="keyword">for</span>(Integer n: map.values())&#123;</span><br><span class="line">		System.out.println(n);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<hr>
-<h1 id="5-其他："><a href="#5-其他：" class="headerlink" title="5.其他："></a>5.其他：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183135.png" alt="image-20200622181415228"></p>
-<ul>
-<li><h2 id="HashMap中链表转换成红黑树的操作——treeifyBin"><a href="#HashMap中链表转换成红黑树的操作——treeifyBin" class="headerlink" title="HashMap中链表转换成红黑树的操作——treeifyBin()"></a>HashMap中链表转换成红黑树的操作——treeifyBin()</h2></li>
-<li><p><a href="https://www.jianshu.com/p/309ea054cbc9" target="_blank" rel="noopener">https://www.jianshu.com/p/309ea054cbc9</a></p>
+<li><p>定义一个二维数组 dp 用来存储最长公共子序列的长度，其中 dp[i][j] 表示 S1 的前 i 个字符与 S2 的前 j 个字符最长公共子序列的长度。考虑 S1i 与 S2j 值是否相等，分为两种情况：</p>
 </li>
 </ul>
-<hr>
-<h1 id="6-整理下HashMap里面的常见面试考点："><a href="#6-整理下HashMap里面的常见面试考点：" class="headerlink" title="6.整理下HashMap里面的常见面试考点："></a>6.整理下HashMap里面的常见面试考点：</h1><ol>
-<li><h2 id="HashMap-默认容量："><a href="#HashMap-默认容量：" class="headerlink" title="HashMap 默认容量："></a>HashMap 默认容量：</h2><ul>
-<li><strong>默认容量是：16 = 1 &lt;&lt; 4（位移动 = $1000_2$ =  $16_{10}$）；</strong></li>
-<li><strong>默认负载因子是：0.75（根据）</strong>（服从泊松分布）：红黑树部分也是这个原理：</li>
-<li>桶中的节点个数服从泊松分布；</li>
-<li>取 $\lambda = 0.5$ ，此时 ，每个捅中元素个数为 【0，8】个的概率分别如图所示，大于八个，基本已经到达百万分之一的级别，所以 <strong>Java8</strong> 中选择以 <strong>8</strong> 作为一个临界数字，来决定是否将链表转化为 <strong>红黑树</strong>；</li>
-<li>其中，在 最大桶元素个数 = 7 时，不变，作为缓冲，以防止过于频繁的转换消耗；  </li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183233.png" alt="image-20200622234017327"></p>
-</li>
-<li><h2 id="如何扩容？"><a href="#如何扩容？" class="headerlink" title="如何扩容？"></a>如何扩容？</h2><ul>
-<li>$2^n$ 的形式，每次翻两倍；（这和 Hash 的工作机制有关：（n - 1）&amp; hash）</li>
-<li>这样子的好处是，（$2^n$-1）= 一个全为1 的二进制树，计算更快；</li>
-</ul>
-</li>
-<li><h2 id="为什么HashMap的数组大小一定要是-2-的幂？"><a href="#为什么HashMap的数组大小一定要是-2-的幂？" class="headerlink" title="为什么HashMap的数组大小一定要是 2 的幂？"></a>为什么<strong>HashMap</strong>的数组大小一定要是 2 的幂？</h2><ul>
-<li><p>和 Hash 的工作机制有关；HashMap求索引时用&amp;运算,index=(n-1)&amp;hash</p>
-</li>
-<li><p>n = length : 表长度 = $2^n$ </p>
-</li>
-<li><p>（HashTable求索引用模运算，index = (hash &amp; 0x7FFFFFFF) % n）</p>
-</li>
-<li></li>
-<li><p>：只有这样才能保证 经过 ( $2^n $ ) 操作后得到全是1 的值；</p>
-</li>
-<li><p>然后这样才能经过非常快速的位运算，快速拿到数组下标，并且能保证分布均匀</p>
-</li>
-<li><p>若不是 $2^n$, 则运算过后，会有0存在，那么就会导致，不管 和他进行按位与 运算的数字是多少，都会出现某些位永远是 0，那么就会导致，某些 <strong>桶</strong> 里的元素永远都是 <strong>0个</strong>，不均匀且不合理； </p>
-</li>
-</ul>
-</li>
-<li><h2 id="HashMap-为什么是线程不安全的？"><a href="#HashMap-为什么是线程不安全的？" class="headerlink" title="HashMap 为什么是线程不安全的？"></a>HashMap 为什么是线程不安全的？</h2><ul>
-<li>在接近临界点时，若此时两个或者多个线程进行put操作，都会进行resize（扩容）和reHash（为key重新计算所在位置），而reHash在并发的情况下可能会形成<code>链表环</code>。</li>
-<li>总结来说就是在多线程环境下，使用HashMap进行put操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使用HashMap。</li>
-<li>为什么在并发执行put操作会引起死循环？是因为多线程会导致HashMap的Entry链表形成环形数据结构，一旦形成环形数据结构，Entry的next节点永远不为空，就会产生死循环获取Entry。</li>
-<li>jdk1.7的情况下，并发扩容时容易形成链表环，此情况在1.8时就好太多太多了。</li>
-<li>因为在1.8中当链表长度达到阈值（默认长度为8）时，链表会被改成树形（红黑树）结构。如果删剩节点变成7个并不会退回链表，而是保持不变，删剩6个时就会变回链表，7不变是缓冲，防止频繁变换。</li>
-<li>在JDK1.7中，当并发执行扩容操作时会造成环形链和数据丢失的情况。</li>
-<li>在JDK1.8中，在并发执行put操作时会发生数据覆盖的情况。</li>
-</ul>
-</li>
-<li><h2 id="Java-7-到-8-做了哪些改进？为什么？"><a href="#Java-7-到-8-做了哪些改进？为什么？" class="headerlink" title="Java 7 到 8 做了哪些改进？为什么？"></a>Java 7 到 8 做了哪些改进？为什么？</h2><ul>
-<li>如上题所述：</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h1 id="7-拓展"><a href="#7-拓展" class="headerlink" title="7.拓展"></a>7.拓展</h1><ol>
-<li><p>你能想到的做 HashMap 匹配的方法？ </p>
-<ul>
-<li><ol>
-<li>直接取模：（$-2^{31}$ ~ $2^{31} -1$ ）% n = （0 , $n-1$）</li>
-</ol>
-</li>
-<li>缺点：两个：<ul>
-<li>负数对 n求余，答案是负数；（所以需要额外把 负数 变为 正数 ）</li>
-<li>速度较慢（相比于位运算）：因为硬件中“求余”的本质是“除法”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>常考的“坑”：扩容：<strong>resize（）</strong></p>
 <ol>
-<li>扩容 <strong>resize( )</strong>包括 <strong>rehash ( )</strong></li>
-<li>机制是，当原来的容器中，容量达到了 <strong>0.75 * capacity</strong>， 再创建一个 <strong>2 * capacity</strong> 的新的桶；</li>
-<li>然后会把旧的桶中的数据 <strong>迁移</strong> 过去，迁移的时候，伴随着重新地对原始数据进行 <strong>rehash</strong> 计算；</li>
-<li><strong>resize（）</strong>里面的 <strong>transfer（）</strong>是一切问题的根源！！</li>
+<li>当 S1i==S2j 时，那么就能在 S1 的前 i-1 个字符与 S2 的前 j-1 个字符最长公共子序列的基础上再加上 S1i 这个值，最长公共子序列长度加 1，即 dp[i][j] = dp[i-1][j-1] + 1。</li>
+<li>当 S1i != S2j 时，此时最长公共子序列为 S1 的前 i-1 个字符和 S2 的前 j 个字符最长公共子序列，或者 S1 的前 i 个字符和 S2 的前 j-1 个字符最长公共子序列，取它们的最大者，即 dp[i][j] = max{ dp[i-1][j], dp[i][j-1] }。</li>
+<li>综上，最长公共子序列的状态转移方程为：</li>
+</ol>
+<p><img src="https://pic.leetcode-cn.com/d8555d9231c57efc399b47af4c358d43df0e45d71bc65a235479d9fb091d4af9-4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg" alt="4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg"></p>
+<ul>
+<li>对于长度为 N 的序列 S1 和长度为 M 的序列 S2，dp[N][M] 就是序列 S1 和序列 S2 的最长公共子序列长度。</li>
+</ul>
+<p>作者：bryank-3<br>链接：<a href="https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/</a><br>来源：力扣（LeetCode）<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h1 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(String text1, String text2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = text1.length(), n2 = text2.length();</span><br><span class="line">    <span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[n1 + <span class="number">1</span>][n2 + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n1; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n2; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (text1.charAt(i - <span class="number">1</span>) == text2.charAt(j - <span class="number">1</span>)) &#123;</span><br><span class="line">              dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              dp[i][j] = Math.max(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n1][n2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-几种解法："><a href="#3-几种解法：" class="headerlink" title="3.几种解法："></a>3.几种解法：</h1><ol>
+<li><h2 id="暴力递归（不用DP-Table）"><a href="#暴力递归（不用DP-Table）" class="headerlink" title="暴力递归（不用DP Table）"></a>暴力递归（不用DP Table）</h2></li>
+</ol>
+<ul>
+<li>是 <strong>从后往前</strong> 比较计数的；</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dp</span><span class="params">(i, j)</span>:</span></span><br><span class="line">        <span class="comment"># 空串的 base case</span></span><br><span class="line">        <span class="keyword">if</span> i == <span class="number">-1</span> <span class="keyword">or</span> j == <span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> str1[i] == str2[j]:</span><br><span class="line">            <span class="comment"># 这边找到一个 lcs 的元素，继续往前找</span></span><br><span class="line">            <span class="keyword">return</span> dp(i - <span class="number">1</span>, j - <span class="number">1</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 谁能让 lcs 最长，就听谁的</span></span><br><span class="line">            <span class="keyword">return</span> max(dp(i<span class="number">-1</span>, j), dp(i, j<span class="number">-1</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># i 和 j 初始化为最后一个索引</span></span><br><span class="line">    <span class="keyword">return</span> dp(len(str1)<span class="number">-1</span>, len(str2)<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-法二，借用DP-Table来记录（也可用备忘录）"><a href="#2-法二，借用DP-Table来记录（也可用备忘录）" class="headerlink" title="2. 法二，借用DP Table来记录（也可用备忘录）"></a>2. 法二，借用DP Table来记录（也可用备忘录）</h2><ul>
+<li>双层遍历：</li>
+<li>判断：当前两个字符一样吗？<ul>
+<li>一样：左斜上角空格数字（dp[i-1][i-1]） 加1;</li>
+<li>不一样：比较 <strong>上</strong> &amp;&amp; <strong>下</strong> 的最大值，取大的那一个来填充当前dp[ i ][ j ]</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    m, n = len(str1), len(str2)</span><br><span class="line">    <span class="comment"># 构建 DP table 和 base case</span></span><br><span class="line">    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(m + <span class="number">1</span>)]</span><br><span class="line">    <span class="comment"># 进行状态转移</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, m + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> str1[i - <span class="number">1</span>] == str2[j - <span class="number">1</span>]:</span><br><span class="line">                <span class="comment"># 找到一个 lcs 中的字符</span></span><br><span class="line">                dp[i][j] = <span class="number">1</span> + dp[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][j] = max(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>])</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> dp[<span class="number">-1</span>][<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-优化：用动态数组（一维数组）来解决："><a href="#3-优化：用动态数组（一维数组）来解决：" class="headerlink" title="3. 优化：用动态数组（一维数组）来解决："></a>3. 优化：用动态数组（一维数组）来解决：</h2><ol>
+<li>在利用二维dp数组记录dp[ i ][ j ]时，需要用到dp[ i-1 ][ j-1 ] (左上方),dp[ i-1 ][ j ] (上边),dp[ i ][ j-1 ] (左边)。</li>
+<li>优化为滚动数组记录dp[ j ] (dp[ i ][ j ]) 时，dp[ j-1 ] ( i-1 ) 已被更新为dp[ j-1 ]（ i ），所以需定义变量last去记录未被更新前的dp[ j-1 ]（ i-1 ）;</li>
+<li>所以计算dp[j]的当前值时，会用到last（dp[ i-1 ][ j-1 ]）、dp[ j ] (dp[ i-1 ][ j ])和dp[ j-1 ] (dp[ i ][ j-1 ]);<br><strong>注意：计算每一行的第一个元素时候，last需要初始化为0。</strong></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(string text1, string text2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=text1.size(),m=text2.size();</span><br><span class="line">				<span class="keyword">int</span> dp[m+<span class="number">1</span>],last=<span class="number">0</span>,temp;</span><br><span class="line">				fill(dp,dp+m+<span class="number">1</span>,<span class="number">0</span>);<span class="comment">//fill(数组名，起始地【包括】，结束地【不包括】，填充值)</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i,last=<span class="number">0</span>)&#123;</span><br><span class="line">						<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;++j)&#123;</span><br><span class="line">            	    temp=dp[j];</span><br><span class="line">		   						<span class="keyword">if</span>(text1[i-<span class="number">1</span>]==text2[j-<span class="number">1</span>])	dp[j]=last+<span class="number">1</span>; </span><br><span class="line">		   						<span class="keyword">else</span>	 dp[j]=max(dp[j],dp[j-<span class="number">1</span>]);</span><br><span class="line">        	  			last=temp;</span><br><span class="line">						&#125;</span><br><span class="line">        &#125;</span><br><span class="line">	<span class="keyword">return</span> dp[m];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<ul>
+<li><strong>画一下流程图你就懂了</strong>，顺着 DP Table，按着上面的代码（一维数组）推一遍：</li>
+<li><ol>
+<li>先用 <strong>temp</strong> 保存当前节点，然后更新当前节点；</li>
+<li>其中更新的时候，有两种情况：<ol>
+<li>不相等：用 <strong>左边</strong> （体现在一维数组的前一个位置）和 <strong>上面</strong>（体现在一维数组的当前位置）进行比较，取更大的值来刷新当前节点（体现在一维数组当前的位置）</li>
+<li>相等：用 <strong>last + 1</strong> ，其中 <strong>last</strong> 表征左上角（是在每一轮结束之后，把之前保存的 <strong>旧的</strong> <strong>当前位置值</strong> 给保存下来；从二位数组角度看来，就是左上角：因为 temp 下一轮已经右移，但是 last 还在上一个位置；）</li>
 </ol>
 </li>
-<li><ul>
-<li><strong>死锁问题：</strong>：本身是线程不安全的；完全是用户的问题；</li>
-</ul>
-</li>
-<li><ul>
-<li><strong>哈希表最致命的缺陷：哈希碰撞——&gt;</strong>最差情况下，会变成单链表；链表性能退化</li>
-</ul>
-</li>
-<li><ul>
-<li>所以在java7时代的 <strong>Tomcat（2011）</strong> 中引起了问题——&gt;可以通过一组精心设计的 恶意请求，造成 <strong>DoS（Deny of serveice）</strong></li>
-</ul>
-</li>
-<li><pre><code>&quot;Aa&quot;,&quot;BB&quot;,&quot;C#&quot; 的哈希值是相同的！
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">7. ![image-20200622231322114](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183234.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 8. Java8的改进点 &amp;&amp; 新API</span><br><span class="line"></span><br><span class="line">1. 从 **数组 + 链表**——&gt;**数组 + 链表 &#x2F; 红黑树**</span><br><span class="line"></span><br><span class="line">2. 扩容时，插入顺序的改进：（原来是，从旧的头先取，然后按照“头插法”插入新的桶，导致顺序不稳定）</span><br><span class="line"></span><br><span class="line">3. 函数方法：（java 8 引入了 Lamda 表达式）</span><br><span class="line"></span><br><span class="line">   1. forEach</span><br><span class="line">   2. compute 系列</span><br><span class="line"></span><br><span class="line">4.  Map 的新 API</span><br><span class="line"></span><br><span class="line">   1. Merge</span><br><span class="line">   2. replace</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   # 9.补充</span><br><span class="line"></span><br><span class="line">   1. **抑或运算**：可以更简单地理解为 **不进位的 加法 ！**</span><br><span class="line">   2. 红黑树转换，并不是要把整张表都从链表改成红黑树，而是只要 超过 8 个元素的 那个桶，改一下形式，就行了：</span><br><span class="line">   3. ![image-20200623000116947](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183235.png)</span><br><span class="line">   4. 二叉平衡树，平均查找时间：O（$log N$）</span><br><span class="line">   5. 单纯的二叉树，有个极端情况：插入顺序是有序的，那么就会造成演化成 **单链表**</span><br><span class="line">   6. 而红黑树，经过一定的旋转，保证了查找的效率（具体再仔细看看书）</span><br><span class="line">   7. **新的 Java8 中的 resize（）函数**：改进成了 **扩容时** 能保持原来的顺序，但是仍然不能保证 **线程安全**，只能说是大搭建撒后了线程冲突的概率。</span><br><span class="line">   8. 所以未来可能不会再多线程情况下遇到问题，但是还是不能放心地在多线程环境下使用它！（**Linux中的任务调度 是多线程的，有用到 HashMap**）</span><br><span class="line">   9. **HashCode** ： 默认使用 **32位** 的 **Int** 的**HashCode**；</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   ***</span><br><span class="line"></span><br><span class="line">   # 10.面试题常见：</span><br><span class="line"></span><br><span class="line">   1. 为什么用 数组 +链表：经典的学院派操作</span><br><span class="line">   2. Hash 冲突你还知道哪些解决办法：可以在冲突的桶里面，再套一层 Hash 表；即，冲突的进行二次分流；（表中再有个表）</span><br><span class="line">   3. 用Lin课的Li身体代替数组结构可以吗？：不可以，数组的随机访问是 O（1）的，不受数组长度的影响，二链表的顺序访问速度是 O（n），不能起到随机访问的效果；</span><br><span class="line">   4. get（）的操作？：如果第一个元素就是要求的话，那么就直接返回它；不是的话，那么，先判断该桶是什么结构，如果是红黑树，那么就用树的查找方法 查找；否则若是链表结构，就采用链表的顺序访问形式访问</span><br><span class="line">   5. 为什么 String 、Integer 这样的 wrapper 类 适合作为键？：因为String是final，具有不变性，而且已经重写了 equals（）和hashcode（）方法了。不变性是必要的！因为 为了要计算 hashcode（），就要防止键改变，如果键再嵌入时和获取时返回不同的 hashcode 的话，就不能从 HashMap 中找到你想要的对象。</span><br><span class="line">   6. 如果HashMap的大小超过了负载因子（load factor）定义的容量怎么办？：扩容：resize（） &amp; rehash（）「注意，resize（）的效率非常低！！！」所以如果预先知道有一个很大的表要创建，那么可以预先再创建时，就指定一个较大的空间，相当于时 **空间换时间**；避免未来的频繁resize（）花费很多时间。</span><br><span class="line"></span><br><span class="line">   ## </span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 11.红黑树：自己补充</span><br><span class="line"></span><br><span class="line">![截屏2020-06-23上午12.50.42](&#x2F;Users&#x2F;huangshengjie&#x2F;Desktop&#x2F;截屏2020-06-23上午12.50.42.png)</span><br><span class="line"></span><br><span class="line">* [B站课程](https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1tE411f7tP?from&#x3D;search&amp;seid&#x3D;2421763921920035607)：</span><br><span class="line">* [一份链接文章](https:&#x2F;&#x2F;blog.csdn.net&#x2F;Mr_Helloworld_&#x2F;article&#x2F;details&#x2F;106694724)</span><br><span class="line">* ![image-20200624005349275](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183236.png)</span><br><span class="line">* ![image-20200624005402070](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183237.png)</span><br><span class="line">* ![image-20200624005251467](https:&#x2F;&#x2F;blog-1301959139.cos.ap-beijing.myqcloud.com&#x2F;picGo&#x2F;20200626183238.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line"># 12.正题：001:两数之和：Java版</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">import java.util.*;</span><br><span class="line"></span><br><span class="line">public class twoSum_001 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;暴力法</span><br><span class="line">    public int[] twoSum_force(int[] nums, int target)&#123;</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            for(int j&#x3D;i+1;j&lt; nums.length;j++)&#123;</span><br><span class="line">                if(nums[j] &#x3D;&#x3D; target - nums[i])&#123;</span><br><span class="line">                    return new int[] &#123;i, j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum soluition&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;两遍 Hash，一遍存，一遍查取；</span><br><span class="line">    public int[] twoSum_HashTwice(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt; nums.length;i++)&#123;</span><br><span class="line">            map.put(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i&#x3D;0; i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complement &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complement) &amp;&amp; map.get(complement) !&#x3D; i)&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complement)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">		&#x2F;&#x2F;一遍 Hash，先查，查不到就接着存；</span><br><span class="line">    public int[] twoSum_HashOnce(int[] nums, int target)&#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">        for(int i&#x3D;0;i&lt;nums.length;i++)&#123;</span><br><span class="line">            int complemenmt &#x3D; target - nums[i];</span><br><span class="line">            if(map.containsKey(complemenmt))&#123;</span><br><span class="line">                return new int[]&#123;i,map.get(complemenmt)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(&quot;No two sum solution.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-</code></pre></li>
+<li>更新完当前节点位置数据之后，用 <strong>last</strong> 把当前的节点 旧的信息保存下来，last = temp，从二位数组角度看，就像是左上角数据；</li>
+<li>然后循环1，2，3步骤</li>
 </ol>
+</li>
+<li>注意，每一行结束更新之后，要把 <strong>last</strong> 重新归零！相当于 左上角数据从零开始重新移动（默认第零行、第零列 全为零）</li>
+<li><img src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" alt="img"></li>
+</ul>
 ]]></content>
       <categories>
         <category>-[Java, 算法] -[LeetCode]</category>
       </categories>
       <tags>
-        <tag>LeetCode</tag>
+        <tag>-[LeetCode] -[动态规划]</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>139. 单词拆分</title>
+    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
+<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
+<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
+<li>或者</li>
+<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
+<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>-[LeetCode] -[动态规划]</tag>
       </tags>
   </entry>
   <entry>
@@ -1115,108 +1217,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>139. 单词拆分</title>
-    <url>/2020/06/26/139.%20%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-解题思路："><a href="#1-解题思路：" class="headerlink" title="1.解题思路："></a>1.解题思路：</h1><ul>
-<li>动态规划听上去非常高大上，但是其实都是源自于一个很自然的想法，就拿这道题来说，假如需要判断”onetwothreefour”这一个字符串能不能满足条件，我们很自然的想法就是：</li>
-<li>如果”onetwothree”这一段可以拆分，再加上four如果也可以，那不就行了；</li>
-<li>或者</li>
-<li>如果”onetwothre”这一段可以拆分，再加上efour如果也可以，那不就行了；</li>
-<li>这其实已经抓住了动态规划的最核心的东西了，换成式子来表达，就是</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothree"</span>这一段] &amp;&amp; 判断一下<span class="string">"four"</span></span><br><span class="line">dp[<span class="string">"onetwothreefour"</span>] = dp[<span class="string">"onetwothre"</span>这一段] &amp;&amp; 判断一下<span class="string">"efour"</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-代码："><a href="#2-代码：" class="headerlink" title="2.代码："></a>2.代码：</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 单词拆分<span class="title">_139</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Boolean&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//Java boolean数组默认值为False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//将List中单词放进 HashMap</span></span><br><span class="line">        <span class="keyword">for</span>(String word:wordDict)&#123;</span><br><span class="line">            map.put(word, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * public String substring(int beginIndex, int endIndex)</span></span><br><span class="line"><span class="comment">        * beginIndex -- 起始索引（包括）, 索引从 0 开始</span></span><br><span class="line"><span class="comment">        * endIndex -- 结束索引（不包括）</span></span><br><span class="line"><span class="comment">        * 索引：读取数组时的下标</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                dp[i] = dp[j] &amp;&amp; check(s.substring(j, i));</span><br><span class="line">                <span class="keyword">if</span>(dp[i]) <span class="keyword">break</span>;<span class="comment">//这句也很精髓</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.length()];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> map.getOrDefault(s, <span class="keyword">false</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-Refrence"><a href="#3-Refrence" class="headerlink" title="3.Refrence"></a>3.<a href="https://leetcode-cn.com/problems/word-break/solution/dan-ci-chai-fen-ju-jue-zhuang-xcong-jian-dan-de-xi/" target="_blank" rel="noopener">Refrence</a></h1>]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
-    <url>/2020/06/25/1143.%20%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-最长公共子序列："><a href="#1-最长公共子序列：" class="headerlink" title="1.最长公共子序列："></a>1.最长公共子序列：</h1><h2 id="最长公共子序列-LCS-Longest-Common-Subsequence"><a href="#最长公共子序列-LCS-Longest-Common-Subsequence" class="headerlink" title="最长公共子序列(LCS):Longest Common Subsequence"></a>最长公共子序列(LCS):<code>Longest Common Subsequence</code></h2><ul>
-<li><p>对于两个子序列 S1 和 S2，找出它们最长的公共子序列。</p>
-</li>
-<li><p>定义一个二维数组 dp 用来存储最长公共子序列的长度，其中 dp[i][j] 表示 S1 的前 i 个字符与 S2 的前 j 个字符最长公共子序列的长度。考虑 S1i 与 S2j 值是否相等，分为两种情况：</p>
-</li>
-</ul>
-<ol>
-<li>当 S1i==S2j 时，那么就能在 S1 的前 i-1 个字符与 S2 的前 j-1 个字符最长公共子序列的基础上再加上 S1i 这个值，最长公共子序列长度加 1，即 dp[i][j] = dp[i-1][j-1] + 1。</li>
-<li>当 S1i != S2j 时，此时最长公共子序列为 S1 的前 i-1 个字符和 S2 的前 j 个字符最长公共子序列，或者 S1 的前 i 个字符和 S2 的前 j-1 个字符最长公共子序列，取它们的最大者，即 dp[i][j] = max{ dp[i-1][j], dp[i][j-1] }。</li>
-<li>综上，最长公共子序列的状态转移方程为：</li>
-</ol>
-<p><img src="https://pic.leetcode-cn.com/d8555d9231c57efc399b47af4c358d43df0e45d71bc65a235479d9fb091d4af9-4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg" alt="4c4ff66ed0decdde711678563728e0cf_ecd89a22-c075-4716-8423-e0ba89230e9a.jpg"></p>
-<ul>
-<li>对于长度为 N 的序列 S1 和长度为 M 的序列 S2，dp[N][M] 就是序列 S1 和序列 S2 的最长公共子序列长度。</li>
-</ul>
-<p>作者：bryank-3<br>链接：<a href="https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/longest-common-subsequence/solution/jian-dan-yi-dong-zui-chang-gong-gong-zi-xu-lie-by-/</a><br>来源：力扣（LeetCode）<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<h1 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(String text1, String text2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = text1.length(), n2 = text2.length();</span><br><span class="line">    <span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[n1 + <span class="number">1</span>][n2 + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n1; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n2; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (text1.charAt(i - <span class="number">1</span>) == text2.charAt(j - <span class="number">1</span>)) &#123;</span><br><span class="line">              dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              dp[i][j] = Math.max(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n1][n2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="3-几种解法："><a href="#3-几种解法：" class="headerlink" title="3.几种解法："></a>3.几种解法：</h1><ol>
-<li><h2 id="暴力递归（不用DP-Table）"><a href="#暴力递归（不用DP-Table）" class="headerlink" title="暴力递归（不用DP Table）"></a>暴力递归（不用DP Table）</h2></li>
-</ol>
-<ul>
-<li>是 <strong>从后往前</strong> 比较计数的；</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dp</span><span class="params">(i, j)</span>:</span></span><br><span class="line">        <span class="comment"># 空串的 base case</span></span><br><span class="line">        <span class="keyword">if</span> i == <span class="number">-1</span> <span class="keyword">or</span> j == <span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> str1[i] == str2[j]:</span><br><span class="line">            <span class="comment"># 这边找到一个 lcs 的元素，继续往前找</span></span><br><span class="line">            <span class="keyword">return</span> dp(i - <span class="number">1</span>, j - <span class="number">1</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 谁能让 lcs 最长，就听谁的</span></span><br><span class="line">            <span class="keyword">return</span> max(dp(i<span class="number">-1</span>, j), dp(i, j<span class="number">-1</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># i 和 j 初始化为最后一个索引</span></span><br><span class="line">    <span class="keyword">return</span> dp(len(str1)<span class="number">-1</span>, len(str2)<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-法二，借用DP-Table来记录（也可用备忘录）"><a href="#2-法二，借用DP-Table来记录（也可用备忘录）" class="headerlink" title="2. 法二，借用DP Table来记录（也可用备忘录）"></a>2. 法二，借用DP Table来记录（也可用备忘录）</h2><ul>
-<li>双层遍历：</li>
-<li>判断：当前两个字符一样吗？<ul>
-<li>一样：左斜上角空格数字（dp[i-1][i-1]） 加1;</li>
-<li>不一样：比较 <strong>上</strong> &amp;&amp; <strong>下</strong> 的最大值，取大的那一个来填充当前dp[ i ][ j ]</li>
-<li></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(str1, str2)</span> -&gt; int:</span></span><br><span class="line">    m, n = len(str1), len(str2)</span><br><span class="line">    <span class="comment"># 构建 DP table 和 base case</span></span><br><span class="line">    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(m + <span class="number">1</span>)]</span><br><span class="line">    <span class="comment"># 进行状态转移</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, m + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> str1[i - <span class="number">1</span>] == str2[j - <span class="number">1</span>]:</span><br><span class="line">                <span class="comment"># 找到一个 lcs 中的字符</span></span><br><span class="line">                dp[i][j] = <span class="number">1</span> + dp[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][j] = max(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>])</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> dp[<span class="number">-1</span>][<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-优化：用动态数组（一维数组）来解决："><a href="#3-优化：用动态数组（一维数组）来解决：" class="headerlink" title="3. 优化：用动态数组（一维数组）来解决："></a>3. 优化：用动态数组（一维数组）来解决：</h2><ol>
-<li>在利用二维dp数组记录dp[ i ][ j ]时，需要用到dp[ i-1 ][ j-1 ] (左上方),dp[ i-1 ][ j ] (上边),dp[ i ][ j-1 ] (左边)。</li>
-<li>优化为滚动数组记录dp[ j ] (dp[ i ][ j ]) 时，dp[ j-1 ] ( i-1 ) 已被更新为dp[ j-1 ]（ i ），所以需定义变量last去记录未被更新前的dp[ j-1 ]（ i-1 ）;</li>
-<li>所以计算dp[j]的当前值时，会用到last（dp[ i-1 ][ j-1 ]）、dp[ j ] (dp[ i-1 ][ j ])和dp[ j-1 ] (dp[ i ][ j-1 ]);<br><strong>注意：计算每一行的第一个元素时候，last需要初始化为0。</strong></li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(string text1, string text2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=text1.size(),m=text2.size();</span><br><span class="line">				<span class="keyword">int</span> dp[m+<span class="number">1</span>],last=<span class="number">0</span>,temp;</span><br><span class="line">				fill(dp,dp+m+<span class="number">1</span>,<span class="number">0</span>);<span class="comment">//fill(数组名，起始地【包括】，结束地【不包括】，填充值)</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i,last=<span class="number">0</span>)&#123;</span><br><span class="line">						<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;++j)&#123;</span><br><span class="line">            	    temp=dp[j];</span><br><span class="line">		   						<span class="keyword">if</span>(text1[i-<span class="number">1</span>]==text2[j-<span class="number">1</span>])	dp[j]=last+<span class="number">1</span>; </span><br><span class="line">		   						<span class="keyword">else</span>	 dp[j]=max(dp[j],dp[j-<span class="number">1</span>]);</span><br><span class="line">        	  			last=temp;</span><br><span class="line">						&#125;</span><br><span class="line">        &#125;</span><br><span class="line">	<span class="keyword">return</span> dp[m];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<ul>
-<li><strong>画一下流程图你就懂了</strong>，顺着 DP Table，按着上面的代码（一维数组）推一遍：</li>
-<li><ol>
-<li>先用 <strong>temp</strong> 保存当前节点，然后更新当前节点；</li>
-<li>其中更新的时候，有两种情况：<ol>
-<li>不相等：用 <strong>左边</strong> （体现在一维数组的前一个位置）和 <strong>上面</strong>（体现在一维数组的当前位置）进行比较，取更大的值来刷新当前节点（体现在一维数组当前的位置）</li>
-<li>相等：用 <strong>last + 1</strong> ，其中 <strong>last</strong> 表征左上角（是在每一轮结束之后，把之前保存的 <strong>旧的</strong> <strong>当前位置值</strong> 给保存下来；从二位数组角度看来，就是左上角：因为 temp 下一轮已经右移，但是 last 还在上一个位置；）</li>
-</ol>
-</li>
-<li>更新完当前节点位置数据之后，用 <strong>last</strong> 把当前的节点 旧的信息保存下来，last = temp，从二位数组角度看，就像是左上角数据；</li>
-<li>然后循环1，2，3步骤</li>
-</ol>
-</li>
-<li>注意，每一行结束更新之后，要把 <strong>last</strong> 重新归零！相当于 左上角数据从零开始重新移动（默认第零行、第零列 全为零）</li>
-<li><img src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" alt="img"></li>
-</ul>
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>-[LeetCode] -[动态规划]</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>445.两数相加(顺) II &amp;&amp; 002(逆)</title>
     <url>/2020/06/23/445.%20%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II%20(%E9%A1%BA)%20&amp;&amp;%20001(%E9%80%86)/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-445题目"><a href="#1-445题目" class="headerlink" title="1.445题目"></a>1.<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/" target="_blank" rel="noopener">445题目</a></h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183507.png" alt="image-20200623182854483"></p>
@@ -1234,6 +1234,41 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <h1 id="5-比较-002-代码："><a href="#5-比较-002-代码：" class="headerlink" title="5.比较 002 代码："></a>5.比较 002 代码：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183508.png" alt="image-20200623182835143"></p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">twoSum_002</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这份写的更漂亮，更优美，学习一个！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode p = l1, q = l2, curr = dummyHead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="keyword">null</span> || q!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = (p != <span class="keyword">null</span>)? p.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> y = (q != <span class="keyword">null</span>)? q.val : <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            curr = curr.next;</span><br><span class="line">            <span class="keyword">if</span>(p != <span class="keyword">null</span>) p = p.next;</span><br><span class="line">            <span class="keyword">if</span>(q != <span class="keyword">null</span>) q = q.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这个我自己写的，改了好多地方才对，细节很多</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumber_HSJ</span><span class="params">(ListNode l1, ListNode l2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode curr = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>)&#123;<span class="comment">//细节，不是 l1.next !!!</span></span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            sum += carry;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>( l1 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l1.val;</span><br><span class="line">            <span class="keyword">if</span>( l2 != <span class="keyword">null</span>)</span><br><span class="line">                sum += l2.val;</span><br><span class="line"></span><br><span class="line">            ListNode node = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            node.val = sum % <span class="number">10</span>;</span><br><span class="line">            curr.next = node;</span><br><span class="line">            curr = node;</span><br><span class="line"><span class="comment">//            node.next = head;</span></span><br><span class="line"><span class="comment">//            head = node;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;<span class="comment">//细节！</span></span><br><span class="line">            curr.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>-[Java, 算法] -[LeetCode]</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>67. 二进制求和</title>
+    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
+<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
+<ul>
+<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
+<li>Java 的反转函数 reverse() 将字符串反转</li>
+<li>string.reverse（）；</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
+<li>位运算符：</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
+<li>^ : 按位抑或：不进位的加法：</li>
+</ul>
+<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
+<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
+<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
+</ul>
+<p>是个学习的机会；</p>
+<hr>
+<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 
 ]]></content>
       <categories>
@@ -1340,6 +1375,8 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
     <title>PGAN 训练笔记</title>
     <url>/2020/12/08/PGAN%20%E8%AE%AD%E7%BB%83%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>PGAN 训练笔记</p>
+<a id="more"></a>
+
 <hr>
 <p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201208221357.png" alt="image-20201208221355969"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;path&#x2F;to&#x2F;database  &#x3D;  &#x2F;big_data&#x2F;hsj&#x2F;ParallelWaveGAN&#x2F;egs&#x2F;aishell3&#x2F;wav</span><br></pre></td></tr></table></figure>
@@ -1416,63 +1453,12 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
   </entry>
   <entry>
-    <title>Pytorch —— tensor 乘法的笔记</title>
-    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
-<p>参考链接：</p>
-<ul>
-<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
-</li>
-<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
-</li>
-</ul>
-<hr>
-]]></content>
-  </entry>
-  <entry>
-    <title>67. 二进制求和</title>
-    <url>/2020/06/23/67.%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B1%82%E5%92%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="1-一些新的知识点："><a href="#1-一些新的知识点：" class="headerlink" title="1.一些新的知识点："></a>1.一些新的知识点：</h1><ul>
-<li>当对字符串进行修改的时候，需要使用 StringBuffer 和 StringBuilder 类。</li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183450.png" alt="image-20200623191413447"></p>
-<ul>
-<li>“charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。”</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183451.png" alt="image-20200623191946701"></li>
-<li>Java 的反转函数 reverse() 将字符串反转</li>
-<li>string.reverse（）；</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183452.png" alt="image-20200623192245991"></li>
-<li>位运算符：</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183453.png" alt="image-20200623193029996"></li>
-<li>^ : 按位抑或：不进位的加法：</li>
-</ul>
-<h1 id="2-想法"><a href="#2-想法" class="headerlink" title="2.想法"></a>2.想法</h1><ul>
-<li>突然看到string字符串求和，想起了以前的各种题目，但是很没有头绪；</li>
-<li>印象中，都是用最笨的 <strong>数组</strong> 的方式来进行，从没有尝试过用string来进行处理；</li>
-</ul>
-<p>是个学习的机会；</p>
-<hr>
-<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addBinary</span><span class="params">(String a, String b)</span> </span>&#123;</span><br><span class="line">        StringBuffer ans = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = Math.max(a.length(),b.length());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="comment">//string.charAt（）:寻找当前string在指定位置的 字符 char；</span></span><br><span class="line">            <span class="comment">// 细节： string.length() 需要用上括号！ 别忘记括号！</span></span><br><span class="line">            carry += i &lt; a.length()? (a.charAt(a.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line">            carry += i &lt; b.length()? (b.charAt(b.length() - <span class="number">1</span> - i) - <span class="string">'0'</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            ans.append((<span class="keyword">char</span>)(carry % <span class="number">2</span> + <span class="string">'0'</span>));</span><br><span class="line">            carry /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            ans.append(<span class="string">'1'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans.reverse();<span class="comment">// 这个方法实现的功能是，将 StringBuffer 字符串进行反转！！！</span></span><br><span class="line">        <span class="keyword">return</span> ans.toString();</span><br><span class="line">      <span class="comment">//因为是 StringBuffer 类型，而返回类型要求是 String，所以调用 toString（）方法；</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>-[Java, 算法] -[LeetCode]</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Shell_find命令备忘小结</title>
     <url>/2020/11/27/Shell_find%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id><a href="#" class="headerlink" title></a></h2><p><a href="https://www.cnblogs.com/huyuanblog/p/10136286.html" target="_blank" rel="noopener">参考文章</a></p>
 <h2 id="问题来源：Kaldi-librispeech-example：数据预处理脚本文件："><a href="#问题来源：Kaldi-librispeech-example：数据预处理脚本文件：" class="headerlink" title="问题来源：Kaldi librispeech example：数据预处理脚本文件："></a>问题来源：<strong>Kaldi</strong> librispeech example：数据预处理脚本文件：</h2><p><strong>path = kaldi/egs/librispeech/s5/local/da ta_prep.sh</strong></p>
+<a id="more"></a>
+
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 双重<span class="keyword">for</span>循环</span></span><br><span class="line"><span class="meta">#</span><span class="bash">第一层循环，按说话人</span></span><br><span class="line">for reader_dir in $(find -L $src -mindepth 1 -maxdepth 1 -type d | sort); do</span><br><span class="line">  reader=$(basename $reader_dir)</span><br><span class="line">  if ! [ $reader -eq $reader ]; then  # not integer.</span><br><span class="line">    echo "$0: unexpected subdirectory name $reader"</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">  </span><br><span class="line"><span class="meta">	#</span><span class="bash"> 从说话人信息文件中提取性别</span></span><br><span class="line">  reader_gender=$(egrep "^$reader[ ]+\|" $spk_file | awk -F'|' '&#123;gsub(/[ ]+/, ""); print tolower($2)&#125;')</span><br><span class="line">  if [ "$reader_gender" != 'm' ] &amp;&amp; [ "$reader_gender" != 'f' ]; then</span><br><span class="line">    echo "Unexpected gender: '$reader_gender'"</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">  </span><br><span class="line"><span class="meta">	#</span><span class="bash">第二重<span class="keyword">for</span>循环，按章节</span></span><br><span class="line">  for chapter_dir in $(find -L $reader_dir/ -mindepth 1 -maxdepth 1 -type d | sort); do</span><br><span class="line">    chapter=$(basename $chapter_dir)</span><br><span class="line">    if ! [ "$chapter" -eq "$chapter" ]; then</span><br><span class="line">      echo "$0: unexpected chapter-subdirectory name $chapter"</span><br><span class="line">      exit 1;</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    find -L $chapter_dir/ -iname "*.flac" | sort | xargs -I% basename % .flac | \</span><br><span class="line">      awk -v "dir=$chapter_dir" '&#123;printf "%s flac -c -d -s %s/%s.flac |\n", $0, dir, $0&#125;' &gt;&gt;$wav_scp|| exit 1</span><br><span class="line"></span><br><span class="line">    chapter_trans=$chapter_dir/$&#123;reader&#125;-$&#123;chapter&#125;.trans.txt</span><br><span class="line">    [ ! -f  $chapter_trans ] &amp;&amp; echo "$0: expected file $chapter_trans to exist" &amp;&amp; exit 1</span><br><span class="line">    cat $chapter_trans &gt;&gt;$trans</span><br><span class="line"></span><br><span class="line">    # NOTE: For now we are using per-chapter utt2spk. That is each chapter is considered</span><br><span class="line">    #       to be a different speaker. This is done for simplicity and because we want</span><br><span class="line">    #       e.g. the CMVN to be calculated per-chapter</span><br><span class="line">    awk -v "reader=$reader" -v "chapter=$chapter" '&#123;printf "%s %s-%s\n", $1, reader, chapter&#125;' \</span><br><span class="line">      &lt;$chapter_trans &gt;&gt;$utt2spk || exit 1</span><br><span class="line"></span><br><span class="line">    # reader -&gt; gender map (again using per-chapter granularity)</span><br><span class="line">    echo "$&#123;reader&#125;-$&#123;chapter&#125; $reader_gender" &gt;&gt;$spk2gender</span><br><span class="line">  done</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 
 
@@ -1563,6 +1549,24 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>-[Sox] -[kaldi]</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Pytorch —— tensor 乘法的笔记</title>
+    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
+<p>参考链接：</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
+</li>
+<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
+</li>
+</ul>
+<hr>
+<a id="more"></a>]]></content>
   </entry>
   <entry>
     <title>《Voice Conversion with transformer network-samsung》论文总结</title>
@@ -1749,50 +1753,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
-    <title>ppg-ac &amp; Deep-Voice操作手册</title>
-    <url>/2020/11/29/ppg-ac%20&amp;%20Deep-Voice%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
-
-<p>teacher_data/YKWK</p>
-<hr>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export PYTHONPATH&#x3D;&#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;src:$PYTHONPATH</span><br><span class="line"></span><br><span class="line">--teacher_utterance_path  : 输入的是待矫正的语音</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;1 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK&#x2F;0023.wav --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
-
-<p> <a href="../fsdownload/韩式0001.wav">韩式0001.wav</a> </p>
-<p> <a href="../fsdownload/美式0001.wav">美式0001.wav</a> </p>
-<p> <a href="../fsdownload/韩式转美式.wav">韩式转美式.wav</a> </p>
-<hr>
-<h1 id="Deep-Voice-Conversion训练手册"><a href="#Deep-Voice-Conversion训练手册" class="headerlink" title="Deep-Voice-Conversion训练手册"></a><a href="https://github.com/andabi/deep-voice-conversion/issues/115" target="_blank" rel="noopener">Deep-Voice-Conversion训练手册</a></h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train1.py timit -gpu 0</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train2.py timit -gpu 0</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<p><a href="https://github.com/andabi/deep-voice-conversion/issues/39#issuecomment-476074396" target="_blank" rel="noopener">链接1</a></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192750.png" alt="image-20201205192749348"></p>
-<p><a href="https://github.com/andabi/deep-voice-conversion/issues/93" target="_blank" rel="noopener">链接2</a></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192845.png" alt="image-20201205192844846"></p>
-<p><a href="https://github.com/andabi/deep-voice-conversion/issues/115" target="_blank" rel="noopener">链接3</a></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193002.png" alt="image-20201205193001370"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193103.png" alt="image-20201205193102248"></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 为了更通用，写了个代码来转换文件格式：</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
     <title>test</title>
     <url>/2020/06/07/test/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>ceshi</p>
@@ -1821,7 +1781,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-drtrIZmX" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-yVRyppYt" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -1875,94 +1835,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 ]]></content>
       <tags>
         <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结</title>
-    <url>/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
-<a id="more"></a>
-
-<ol>
-<li><h2 id="解决的问题："><a href="#解决的问题：" class="headerlink" title="解决的问题："></a>解决的问题：</h2><ol>
-<li>在原本的StarGan-VC中，实现了“<strong>未知speaker：source/target 都未知</strong>”的转换。称作“<strong>One-Shot</strong>”</li>
-<li>其他文章其实也有做过类似功能：基于“<strong>超大数据集的  VC 模型</strong>”做自适应adaption调整：比如之前谢磊团队那篇 <strong>对WaveNet的改进模型</strong>，在处理未知说话人时，采用的是 额外20到50条数据的进一步收敛；</li>
-</ol>
-</li>
-<li><h2 id="采用的主要方法："><a href="#采用的主要方法：" class="headerlink" title="采用的主要方法："></a>采用的主要方法：</h2><ol>
-<li>把说话人信息看作 embedding。</li>
-<li>但是不同于原本 StarGan-VC 代码实现中（非官方）用 One-Hot来做embedding。</li>
-<li>也不是用的后来咱们讨论中，改用 embedding_lookup（）的方式（虽然已经比One-Hot concate 方式要好很多了）</li>
-<li>而是采用2018年google的一篇文章，提取embedding的单独网络；（<strong>Global Style Token (GST)</strong>），用这个网络提取出来的embedding信息，可以表征说话人身份信息。</li>
-<li>具体细节接下来说：</li>
-</ol>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712162828.png" alt="image-20200712162827085"></p>
-</li>
-<li><h2 id="有价值的细节："><a href="#有价值的细节：" class="headerlink" title="有价值的细节："></a>有价值的细节：</h2><ol>
-<li>这个GST 训练时，先有一堆说话人，每个人有很多数据（1⃣️）；</li>
-<li>然后这个网络的功能就是：能把一个新来的 集合外数据（人/内容），扔进去，照样得到一个 speaker_embedding 信息；</li>
-<li>这个embedding信息怎么来的呢？原来是由模型（1⃣️）训练集中的说话人embedding 融合出来的；所以最终的效果上，会是：新说话人声音特征，由训练集说话人特征组合而成；</li>
-<li>这个GST当中， speaker ID 实现上，同样采用 one-hot 形式。</li>
-</ol>
-</li>
-</ol>
-<ol start="4">
-<li><h2 id="以上三点，其实都只是前人的工作，本文拿来创新性应用。"><a href="#以上三点，其实都只是前人的工作，本文拿来创新性应用。" class="headerlink" title="以上三点，其实都只是前人的工作，本文拿来创新性应用。"></a>以上三点，其实都只是前人的工作，本文拿来创新性应用。</h2><ol>
-<li>本文的细节创新：</li>
-</ol>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164238.png" alt="image-20200712164236074"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164302.png" alt="image-20200712164301003"></p>
-<ol>
-<li>原本的 StarGan-VC 中，在Generator部分 的BottelNect部分，采用正常的 【Conv，Norm，GLU】结构，其中的Conv采用 <strong>5 个channel</strong>；</li>
-<li>本文作者实验证明，这个 5 channel 太小了，影响了 reconstruction 音频质量；</li>
-<li>但是尝试放大这个channel数，会发现有“<strong>信息泄露：information leakage</strong>”，有点像信号处理中的“<strong>频率泄漏：frequency leak</strong>”（后者采用加窗的方式规避这个问题）；</li>
-<li>所谓的泄漏，就是出现了无关的信息：Generator 没能把source中的身份信息过滤干净，最后的声音四不像；（频率泄漏则是，在没加窗函数之前，做FFT会出现 本没有的 频率）<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165144.png" alt="image-20200712165142509"></li>
-<li>最后的效果上：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165232.png" alt="image-20200712165230066"></li>
-<li>作者说，用了这种方式（SoftMax 代替 conv-2d 做 BottleNeck），在转换结果上，<strong>共振峰频率</strong>（<strong>frequencies of formants</strong>）会低一点：显示在能量图上，就是高频部分（上面）颜色会浅一点。</li>
-<li><strong>🌟疑问点</strong>：这个 <strong>共振峰频率</strong> 低一点，<strong>能说明什么</strong>？？？？这样就能说明 说话内容信息泄漏会少一点吗？没搞懂；</li>
-</ol>
-</li>
-</ol>
-<h2 id="5-另一个操作改进点："><a href="#5-另一个操作改进点：" class="headerlink" title="5.  另一个操作改进点："></a>5.  另一个操作改进点：</h2><ol>
-<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712172438.png" alt="image-20200712172437528"></p>
-</li>
-<li><p>在Generator的修改上如图：</p>
-</li>
-<li><p>对比原型：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712171700.png" alt="image-20200712171657257"></p>
-</li>
-<li><p>小细节：</p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713175103.png" alt="image-20200713175101061"></p>
-<ul>
-<li><p>偶数：同时更新 D &amp;&amp; G</p>
-</li>
-<li><p>奇数：只更新 D</p>
-</li>
-<li><p>特征选用上：由实验经验，<strong>由36维 MFCC</strong> 改为用 <strong>96维 sp 谱包络（96-bin Mel spectral envelope）</strong></p>
-</li>
-<li><p>（这个和合成的应用上也有呼应， Mel 的训练合成，比MFCC reconstrruction 效果要好，更深原理 <strong>模糊</strong>）</p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="6-结果上："><a href="#6-结果上：" class="headerlink" title="6. 结果上："></a>6. 结果上：</h2><p>其实就是 VC 领域两个主观评价指标：Reconstruction 质量 和 Conversion 质量。</p>
-<ol>
-<li>这份Demo里，Reconstruction 的效果也不怎么好，在Conversion 转换效果上还凑合；这个和StarGan-VC 差不多；</li>
-<li>Reconstruction 上，target 已知或 “增量式训练”过，数据效果上，提升不少；Conversion 效果也大差不差；<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712181558.png" alt="image-20200712181557111"></li>
-</ol>
-<h2 id="7-VC改进思路小结："><a href="#7-VC改进思路小结：" class="headerlink" title="7. VC改进思路小结："></a>7. VC改进思路小结：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713132212.png" alt="image-20200713132210312"></p>
-<ul>
-<li>在想能否写<strong>WorkShop</strong>论文</li>
-<li>不知还有什么可改进的点，咱们可以接<strong>上WaveNet后端</strong>，类似谢磊上篇用的；</li>
-<li>然后<strong>重构损失</strong>上，模型结构学习一下网易这篇。</li>
-<li><strong>embedding</strong> 上，为的是实现 <strong>one-shot</strong>，再考虑是否有其他方法；</li>
-</ul>
-]]></content>
-      <categories>
-        <category>论文阅读笔记</category>
-      </categories>
-      <tags>
-        <tag>VC</tag>
-        <tag>论文阅读笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2139,6 +2011,94 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>《《ONE-SHOT VOICE CONVERSION USING STAR-GAN》》论文总结</title>
+    <url>/2020/07/14/%E3%80%8AONE-SHOT%20VOICE%20CONVERSION%20USING%20STAR-GAN%E3%80%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712160845.png" alt="image-20200712160843097"></p>
+<a id="more"></a>
+
+<ol>
+<li><h2 id="解决的问题："><a href="#解决的问题：" class="headerlink" title="解决的问题："></a>解决的问题：</h2><ol>
+<li>在原本的StarGan-VC中，实现了“<strong>未知speaker：source/target 都未知</strong>”的转换。称作“<strong>One-Shot</strong>”</li>
+<li>其他文章其实也有做过类似功能：基于“<strong>超大数据集的  VC 模型</strong>”做自适应adaption调整：比如之前谢磊团队那篇 <strong>对WaveNet的改进模型</strong>，在处理未知说话人时，采用的是 额外20到50条数据的进一步收敛；</li>
+</ol>
+</li>
+<li><h2 id="采用的主要方法："><a href="#采用的主要方法：" class="headerlink" title="采用的主要方法："></a>采用的主要方法：</h2><ol>
+<li>把说话人信息看作 embedding。</li>
+<li>但是不同于原本 StarGan-VC 代码实现中（非官方）用 One-Hot来做embedding。</li>
+<li>也不是用的后来咱们讨论中，改用 embedding_lookup（）的方式（虽然已经比One-Hot concate 方式要好很多了）</li>
+<li>而是采用2018年google的一篇文章，提取embedding的单独网络；（<strong>Global Style Token (GST)</strong>），用这个网络提取出来的embedding信息，可以表征说话人身份信息。</li>
+<li>具体细节接下来说：</li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712162828.png" alt="image-20200712162827085"></p>
+</li>
+<li><h2 id="有价值的细节："><a href="#有价值的细节：" class="headerlink" title="有价值的细节："></a>有价值的细节：</h2><ol>
+<li>这个GST 训练时，先有一堆说话人，每个人有很多数据（1⃣️）；</li>
+<li>然后这个网络的功能就是：能把一个新来的 集合外数据（人/内容），扔进去，照样得到一个 speaker_embedding 信息；</li>
+<li>这个embedding信息怎么来的呢？原来是由模型（1⃣️）训练集中的说话人embedding 融合出来的；所以最终的效果上，会是：新说话人声音特征，由训练集说话人特征组合而成；</li>
+<li>这个GST当中， speaker ID 实现上，同样采用 one-hot 形式。</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li><h2 id="以上三点，其实都只是前人的工作，本文拿来创新性应用。"><a href="#以上三点，其实都只是前人的工作，本文拿来创新性应用。" class="headerlink" title="以上三点，其实都只是前人的工作，本文拿来创新性应用。"></a>以上三点，其实都只是前人的工作，本文拿来创新性应用。</h2><ol>
+<li>本文的细节创新：</li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164238.png" alt="image-20200712164236074"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712164302.png" alt="image-20200712164301003"></p>
+<ol>
+<li>原本的 StarGan-VC 中，在Generator部分 的BottelNect部分，采用正常的 【Conv，Norm，GLU】结构，其中的Conv采用 <strong>5 个channel</strong>；</li>
+<li>本文作者实验证明，这个 5 channel 太小了，影响了 reconstruction 音频质量；</li>
+<li>但是尝试放大这个channel数，会发现有“<strong>信息泄露：information leakage</strong>”，有点像信号处理中的“<strong>频率泄漏：frequency leak</strong>”（后者采用加窗的方式规避这个问题）；</li>
+<li>所谓的泄漏，就是出现了无关的信息：Generator 没能把source中的身份信息过滤干净，最后的声音四不像；（频率泄漏则是，在没加窗函数之前，做FFT会出现 本没有的 频率）<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165144.png" alt="image-20200712165142509"></li>
+<li>最后的效果上：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712165232.png" alt="image-20200712165230066"></li>
+<li>作者说，用了这种方式（SoftMax 代替 conv-2d 做 BottleNeck），在转换结果上，<strong>共振峰频率</strong>（<strong>frequencies of formants</strong>）会低一点：显示在能量图上，就是高频部分（上面）颜色会浅一点。</li>
+<li><strong>🌟疑问点</strong>：这个 <strong>共振峰频率</strong> 低一点，<strong>能说明什么</strong>？？？？这样就能说明 说话内容信息泄漏会少一点吗？没搞懂；</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-另一个操作改进点："><a href="#5-另一个操作改进点：" class="headerlink" title="5.  另一个操作改进点："></a>5.  另一个操作改进点：</h2><ol>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712172438.png" alt="image-20200712172437528"></p>
+</li>
+<li><p>在Generator的修改上如图：</p>
+</li>
+<li><p>对比原型：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712171700.png" alt="image-20200712171657257"></p>
+</li>
+<li><p>小细节：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713175103.png" alt="image-20200713175101061"></p>
+<ul>
+<li><p>偶数：同时更新 D &amp;&amp; G</p>
+</li>
+<li><p>奇数：只更新 D</p>
+</li>
+<li><p>特征选用上：由实验经验，<strong>由36维 MFCC</strong> 改为用 <strong>96维 sp 谱包络（96-bin Mel spectral envelope）</strong></p>
+</li>
+<li><p>（这个和合成的应用上也有呼应， Mel 的训练合成，比MFCC reconstrruction 效果要好，更深原理 <strong>模糊</strong>）</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="6-结果上："><a href="#6-结果上：" class="headerlink" title="6. 结果上："></a>6. 结果上：</h2><p>其实就是 VC 领域两个主观评价指标：Reconstruction 质量 和 Conversion 质量。</p>
+<ol>
+<li>这份Demo里，Reconstruction 的效果也不怎么好，在Conversion 转换效果上还凑合；这个和StarGan-VC 差不多；</li>
+<li>Reconstruction 上，target 已知或 “增量式训练”过，数据效果上，提升不少；Conversion 效果也大差不差；<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200712181558.png" alt="image-20200712181557111"></li>
+</ol>
+<h2 id="7-VC改进思路小结："><a href="#7-VC改进思路小结：" class="headerlink" title="7. VC改进思路小结："></a>7. VC改进思路小结：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200713132212.png" alt="image-20200713132210312"></p>
+<ul>
+<li>在想能否写<strong>WorkShop</strong>论文</li>
+<li>不知还有什么可改进的点，咱们可以接<strong>上WaveNet后端</strong>，类似谢磊上篇用的；</li>
+<li>然后<strong>重构损失</strong>上，模型结构学习一下网易这篇。</li>
+<li><strong>embedding</strong> 上，为的是实现 <strong>one-shot</strong>，再考虑是否有其他方法；</li>
+</ul>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+      </categories>
+      <tags>
+        <tag>VC</tag>
+        <tag>论文阅读笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于 WORLD 中 code_spectral_envelope 和 MFCC 关系的理解</title>
     <url>/2020/07/23/%E5%85%B3%E4%BA%8E%20WORLD%20%E4%B8%AD%20code_spectral_envelope%20%E5%92%8C%20MFCC%20%E5%85%B3%E7%B3%BB%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ol>
@@ -2170,6 +2130,52 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       <tags>
         <tag>语音</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>ppg-ac &amp; Deep-Voice操作手册</title>
+    <url>/2020/11/29/ppg-ac%20&amp;%20Deep-Voice%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
+
+<p>teacher_data/YKWK</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export PYTHONPATH&#x3D;&#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;src:$PYTHONPATH</span><br><span class="line"></span><br><span class="line">--teacher_utterance_path  : 输入的是待矫正的语音</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;1 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK&#x2F;0023.wav --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
+
+<p> <a href="../fsdownload/韩式0001.wav">韩式0001.wav</a> </p>
+<p> <a href="../fsdownload/美式0001.wav">美式0001.wav</a> </p>
+<p> <a href="../fsdownload/韩式转美式.wav">韩式转美式.wav</a> </p>
+<hr>
+<h1 id="Deep-Voice-Conversion训练手册"><a href="#Deep-Voice-Conversion训练手册" class="headerlink" title="Deep-Voice-Conversion训练手册"></a><a href="https://github.com/andabi/deep-voice-conversion/issues/115" target="_blank" rel="noopener">Deep-Voice-Conversion训练手册</a></h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train1.py timit -gpu 0</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python train2.py timit -gpu 0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><a href="https://github.com/andabi/deep-voice-conversion/issues/39#issuecomment-476074396" target="_blank" rel="noopener">链接1</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192750.png" alt="image-20201205192749348"></p>
+<p><a href="https://github.com/andabi/deep-voice-conversion/issues/93" target="_blank" rel="noopener">链接2</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192845.png" alt="image-20201205192844846"></p>
+<p><a href="https://github.com/andabi/deep-voice-conversion/issues/115" target="_blank" rel="noopener">链接3</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193002.png" alt="image-20201205193001370"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193103.png" alt="image-20201205193102248"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 为了更通用，写了个代码来转换文件格式：</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+]]></content>
   </entry>
   <entry>
     <title>关于pyworld.load 读取音频和soundfile.read 差别</title>
@@ -2301,6 +2307,65 @@ tensorboard --logdir ./logs-tacotron
       </tags>
   </entry>
   <entry>
+    <title>散文诗</title>
+    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
+        <div id="aplayer-WkYaxxLR" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-WkYaxxLR"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "父亲写的散文诗",
+              author: "许飞",
+              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
+              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+
+
+<hr>
+<p>不知怎么的，每次听这首歌都会泪目</p>
+<a id="more"></a>
+
+<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
+<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
+<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
+<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
+<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
+<hr>
+<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
+<p>最年少时，希冀能改变一点点世界。</p>
+<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
+<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
+<hr>
+<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
+<p>没必要。</p>
+<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
+<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
+<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
+<p>晚安</p>
+<p>06/17/2020 凌晨</p>
+<p>@PT</p>
+<hr>
+]]></content>
+      <categories>
+        <category>作家计划</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python 切片的一些混淆点（备忘）</title>
     <url>/2020/07/16/%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="1-经常混淆的py切片细节"><a href="#1-经常混淆的py切片细节" class="headerlink" title="1.经常混淆的py切片细节"></a>1.经常混淆的py切片细节</h2><a id="more"></a>
@@ -2366,65 +2431,6 @@ print(e)  <span class="comment">#pyth</span>
       </categories>
       <tags>
         <tag>测试tags</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>散文诗</title>
-    <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-jRPyzjKA" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-jRPyzjKA"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "父亲写的散文诗",
-              author: "许飞",
-              url: "https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/%E5%8D%9A%E5%AE%A2/%E8%AE%B8%E9%A3%9E%20-%20%E7%88%B6%E4%BA%B2%E5%86%99%E7%9A%84%E6%95%A3%E6%96%87%E8%AF%97.flac",
-              pic: "http://qbjun0qc6.bkt.clouddn.com/Stay%20with%20me%E4%BA%94%E7%BA%BF%E8%B0%B1",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-
-
-<hr>
-<p>不知怎么的，每次听这首歌都会泪目</p>
-<a id="more"></a>
-
-<p>\当下的社会环境很浊。我没觉得很乱，就是纯粹的很浊。只不过因为我个人的眼界原因，我有点看不清了。</p>
-<p>28岁的ByteDance-郭宇，实现了财务自由，选择退休成为温泉旅行作家。</p>
-<p>第一时间看到这个信息，我和所有人一样，着实感到震撼，并为之颤抖。想想自己，27才能硕士毕业，估计还要为 进入大厂 / 找份舒适工作 而发愁，缺有个同龄人完成了你的所有梦想。</p>
-<p>和泽奇说的一样，当下要实现财务自由，只能想方设法拿到股权，通过分红的方式来获取财富。只单纯工作、打工的形式，是永远得不到想要的境界。</p>
-<p>而普通人，能获得股份期权的途径，可能就是读博，技术入股。</p>
-<hr>
-<p>其实很多时候，发现自己的想法也并没有比别人有很多高明之处，往往我能想到的，大家都会明白，或早或晚。</p>
-<p>最年少时，希冀能改变一点点世界。</p>
-<p>后来，本科时期，觉得自己太太太普通，想做个普通人，安安稳稳，上了研，开始有意识地探索“铁饭碗”。</p>
-<p>但是经过一段时间，尝试完全不投入学习，以自己能想象的最随意的方式生活，发觉有点讨厌。生活的细碎繁琐，还是会让我耳朵起茧子，心里起皱褶。尽管和同龄人相比，肯定是和父母相处的很融洽的了，但长时间相处，还是会发觉自己不逃习惯过度的关心。或者应该说，自己受宠若惊而有点烦，不喜欢被过度关怀，嘴上得花很多唾沫来拒绝别人的安排和说辞。</p>
-<hr>
-<p>类似这篇文章这样，比较随意地袒露自己心里想法的文字，我应该永远不会在所谓的“朋友圈”来表达，更不会通过公众号来写文章。</p>
-<p>没必要。</p>
-<p>所以我会觉得在自己的博客抒发情感会很舒适自然。</p>
-<p>相比之前，wordpress繁琐、丑陋的后台文章写作环境，我太喜欢本地md编写，然后保存即可轻松推流的方式。</p>
-<p>像之后尝试写写随笔杂文，以后有机会整理成册，发些书玩玩。</p>
-<p>晚安</p>
-<p>06/17/2020 凌晨</p>
-<p>@PT</p>
-<hr>
-]]></content>
-      <categories>
-        <category>作家计划</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>

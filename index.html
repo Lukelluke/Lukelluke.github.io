@@ -248,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-13 17:10:37" itemprop="dateModified" datetime="2020-12-13T17:10:37+08:00">2020-12-13</time>
+                <time title="修改时间：2021-10-19 18:14:56" itemprop="dateModified" datetime="2021-10-19T18:14:56+08:00">2021-10-19</time>
               </span>
 
           
@@ -296,7 +296,14 @@
 </li>
 </ul>
 <hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -346,7 +353,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-13 17:10:36" itemprop="dateModified" datetime="2020-12-13T17:10:36+08:00">2020-12-13</time>
+                <time title="修改时间：2021-10-19 18:15:33" itemprop="dateModified" datetime="2021-10-19T18:15:33+08:00">2021-10-19</time>
               </span>
 
           
@@ -382,80 +389,14 @@
 
       
           <p>PGAN 训练笔记</p>
-<hr>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201208221357.png" alt="image-20201208221355969"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;path&#x2F;to&#x2F;database  &#x3D;  &#x2F;big_data&#x2F;hsj&#x2F;ParallelWaveGAN&#x2F;egs&#x2F;aishell3&#x2F;wav</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<ul>
-<li>目前使用的是，所有 AiShell3数据集，但是用的是 single_speaker 的代码</li>
-<li>数据的处理用到了 sklearn.StandardScaler 的 「均值、方差」归一化，（对训练集），所以咱们StarGAN-vc2中也暂时不自己写 数据预处理的环节了，用他处理好的 .npy 来读取，然后再做 【截取固定帧数】的操作</li>
-</ul>
-<hr>
-<h2 id="StarGAN-VC2-一些参数："><a href="#StarGAN-VC2-一些参数：" class="headerlink" title="StarGAN-VC2 一些参数："></a>StarGAN-VC2 一些参数：</h2><ul>
-<li><strong>batch_size</strong>=8</li>
-<li><strong>learning_rate_G</strong> = 0.0002 ｜ <strong>learning_rate_D</strong> = 0.0001</li>
-<li>每条句子切成 ：<strong>128 帧</strong> </li>
-</ul>
-<ul>
-<li><strong>22050Hz</strong></li>
-<li><strong>34 维度 sp</strong></li>
-<li><strong>帧移</strong>： 5ms</li>
-<li></li>
-</ul>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209191607.png" alt="image-20201209191606378"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209191843.png" alt="image-20201209191842901"></p>
-<hr>
-<h2 id="VC-2-结构："><a href="#VC-2-结构：" class="headerlink" title="VC 2 结构："></a>VC 2 结构：</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209193704.png" alt="image-20201209193703036"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209193747.png" alt="image-20201209193746702"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209193731.png" alt="image-20201209193730230"></p>
-<hr>
-<h2 id="VC-1-结构"><a href="#VC-1-结构" class="headerlink" title="VC 1 结构"></a>VC 1 结构</h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209193905.png" alt="image-20201209193903655"></p>
-<hr>
-<h2 id="Torch官方算卷积的公式"><a href="#Torch官方算卷积的公式" class="headerlink" title="Torch官方算卷积的公式"></a>Torch官方算卷积的公式</h2><p><a href="https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html#torch.nn.Conv2d" target="_blank" rel="noopener">https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html#torch.nn.Conv2d</a></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209202938.png" alt="image-20201209202936687"></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201209202948.png" alt="image-20201209202947175"></p>
-<hr>
-<p><a href="https://blog.csdn.net/qiu931110/article/details/104292129![image-20201210134725352](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201210134726.png)" target="_blank" rel="noopener">https://blog.csdn.net/qiu931110/article/details/104292129![image-20201210134725352](https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201210134726.png)</a></p>
-<p><a href="https://www.jianshu.com/p/d8b77cc02410" target="_blank" rel="noopener">https://www.jianshu.com/p/d8b77cc02410</a></p>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201210134801.png" alt="image-20201210134800412"></p>
-<hr>
-<h2 id="Tensorflow-版本的-CIN"><a href="#Tensorflow-版本的-CIN" class="headerlink" title="Tensorflow 版本的 CIN"></a>Tensorflow 版本的 <a href="https://github.com/MingtaoGuo/Conditional-Instance-Norm-for-n-Style-Transfer/blob/master/ops.py#L5" target="_blank" rel="noopener">CIN</a></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201210152752.png" alt="image-20201210152751386"></p>
-<p>参考这两份：</p>
-<ul>
-<li><strong>Torch</strong>：<a href="https://github.com/ChinmayLad/neural-style-transfer/blob/dc44cd261fd9bdf684440ef104cec65fe5be15c5/normalization.py" target="_blank" rel="noopener">https://github.com/ChinmayLad/neural-style-transfer/blob/dc44cd261fd9bdf684440ef104cec65fe5be15c5/normalization.py</a></li>
-<li><strong>TensorFlow</strong>:<a href="https://github.com/MingtaoGuo/Conditional-Instance-Norm-for-n-Style-Transfer/blob/master/ops.py#L5" target="_blank" rel="noopener">https://github.com/MingtaoGuo/Conditional-Instance-Norm-for-n-Style-Transfer/blob/master/ops.py#L5</a></li>
-<li><a href="https://github.com/MingtaoGuo/Conditional-Instance-Norm-for-n-Style-Transfer/issues/1" target="_blank" rel="noopener">对应回答</a> issue</li>
-<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201210163236.png" alt="image-20201210163234409"></li>
-<li></li>
-</ul>
-<p>1211:</p>
-<h1 id="CIN-个人理解："><a href="#CIN-个人理解：" class="headerlink" title="CIN 个人理解："></a>CIN 个人理解：</h1><p><strong>输入：</strong>one-hot = 【1，0，0，0，】 ；特征 x =【8，512，32】=【batch， channel=每个单词用多少特征来表示俄mbedding， 句子长度=含有32个单词】</p>
-<p><strong>过程：</strong></p>
-<ol>
-<li>先是构造一张特征表，尺寸为【说话人数目 / 特征种类， 每个说话人 用多少维度的embedding 来表示 / 每个单词的特征通道数「一维角度来看」】 = 【4， 512】</li>
-<li>然后，用对应的一个说话人的 one-hot 来取这张表上的特征值 【1，num_styles=4】x【num_styles=4，num_in=特征数=512】</li>
-<li>在这个过程中，我们用Torch实现时，可以用 $nn.linear()$ 函数（看作全连接）来表示矩阵乘法：nn.linears（in_channel = 4, out_channel = 512）——<strong>nn.linear（）中的参数是可训练的！会加入到整张图的参数列表中去</strong></li>
-<li>然后把 one-hot 特征送进全连接网络，得到对应的一个特征【512维】，$\gamma$ 和 $\beta$ 都是这么处理的</li>
-<li>最后 ， 两个特征参数，和前面送进来的并经过 <strong>均值 &amp; 归一化 处理过的 x</strong> ，相互配合起来，得到当前层的 <strong>CIN</strong> 结果</li>
-</ol>
-<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201211171011.png" alt="image-20201211171010810"></p>
-<hr>
-<h2 id="关于PixelShuffle"><a href="#关于PixelShuffle" class="headerlink" title="关于PixelShuffle"></a>关于PixelShuffle</h2><ol>
-<li><a href="https://blog.csdn.net/g11d111/article/details/82855946" target="_blank" rel="noopener">https://blog.csdn.net/g11d111/article/details/82855946</a></li>
-<li><a href="https://blog.csdn.net/u014636245/article/details/98071626" target="_blank" rel="noopener">https://blog.csdn.net/u014636245/article/details/98071626</a></li>
-<li><a href="https://pytorch.org/docs/0.3.1/_modules/torch/nn/modules/pixelshuffle.html" target="_blank" rel="noopener">https://pytorch.org/docs/0.3.1/_modules/torch/nn/modules/pixelshuffle.html</a></li>
-</ol>
-<hr>
-<h2 id="关于-GSP：global-sum-pooling"><a href="#关于-GSP：global-sum-pooling" class="headerlink" title="关于 GSP：global sum pooling"></a>关于 GSP：global sum pooling</h2><hr>
-<h2 id="关于-inner-product-向量内积-https-zhuanlan-zhihu-com-p-212461087"><a href="#关于-inner-product-向量内积-https-zhuanlan-zhihu-com-p-212461087" class="headerlink" title="关于 inner product 向量内积 https://zhuanlan.zhihu.com/p/212461087"></a>关于 inner product 向量内积 <a href="https://zhuanlan.zhihu.com/p/212461087" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/212461087</a></h2><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201211013638.png" alt="image-20201211013636895"></p>
-<hr>
-<h1 id="整个模型-尺寸信息："><a href="#整个模型-尺寸信息：" class="headerlink" title="整个模型 尺寸信息："></a>整个模型 尺寸信息：</h1><ol>
-<li>原本 <strong>Generator</strong> 尺寸：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201211172645.png" alt="image-20201211172644404"></li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/08/PGAN%20%E8%AE%AD%E7%BB%83%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -587,7 +528,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-20 17:52:04" itemprop="dateModified" datetime="2020-12-20T17:52:04+08:00">2020-12-20</time>
+                <time title="修改时间：2021-10-19 18:14:46" itemprop="dateModified" datetime="2021-10-19T18:14:46+08:00">2021-10-19</time>
               </span>
 
           
@@ -622,7 +563,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
+          <a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
 
 
 
@@ -954,7 +897,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-29 10:07:48" itemprop="dateModified" datetime="2020-11-29T10:07:48+08:00">2020-11-29</time>
+                <time title="修改时间：2021-10-19 18:16:03" itemprop="dateModified" datetime="2021-10-19T18:16:03+08:00">2021-10-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1000,56 +943,14 @@
       
           <h2 id><a href="#" class="headerlink" title></a></h2><p><a href="https://www.cnblogs.com/huyuanblog/p/10136286.html" target="_blank" rel="noopener">参考文章</a></p>
 <h2 id="问题来源：Kaldi-librispeech-example：数据预处理脚本文件："><a href="#问题来源：Kaldi-librispeech-example：数据预处理脚本文件：" class="headerlink" title="问题来源：Kaldi librispeech example：数据预处理脚本文件："></a>问题来源：<strong>Kaldi</strong> librispeech example：数据预处理脚本文件：</h2><p><strong>path = kaldi/egs/librispeech/s5/local/da ta_prep.sh</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 双重<span class="keyword">for</span>循环</span></span><br><span class="line"><span class="meta">#</span><span class="bash">第一层循环，按说话人</span></span><br><span class="line">for reader_dir in $(find -L $src -mindepth 1 -maxdepth 1 -type d | sort); do</span><br><span class="line">  reader=$(basename $reader_dir)</span><br><span class="line">  if ! [ $reader -eq $reader ]; then  # not integer.</span><br><span class="line">    echo "$0: unexpected subdirectory name $reader"</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">  </span><br><span class="line"><span class="meta">	#</span><span class="bash"> 从说话人信息文件中提取性别</span></span><br><span class="line">  reader_gender=$(egrep "^$reader[ ]+\|" $spk_file | awk -F'|' '&#123;gsub(/[ ]+/, ""); print tolower($2)&#125;')</span><br><span class="line">  if [ "$reader_gender" != 'm' ] &amp;&amp; [ "$reader_gender" != 'f' ]; then</span><br><span class="line">    echo "Unexpected gender: '$reader_gender'"</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">  </span><br><span class="line"><span class="meta">	#</span><span class="bash">第二重<span class="keyword">for</span>循环，按章节</span></span><br><span class="line">  for chapter_dir in $(find -L $reader_dir/ -mindepth 1 -maxdepth 1 -type d | sort); do</span><br><span class="line">    chapter=$(basename $chapter_dir)</span><br><span class="line">    if ! [ "$chapter" -eq "$chapter" ]; then</span><br><span class="line">      echo "$0: unexpected chapter-subdirectory name $chapter"</span><br><span class="line">      exit 1;</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    find -L $chapter_dir/ -iname "*.flac" | sort | xargs -I% basename % .flac | \</span><br><span class="line">      awk -v "dir=$chapter_dir" '&#123;printf "%s flac -c -d -s %s/%s.flac |\n", $0, dir, $0&#125;' &gt;&gt;$wav_scp|| exit 1</span><br><span class="line"></span><br><span class="line">    chapter_trans=$chapter_dir/$&#123;reader&#125;-$&#123;chapter&#125;.trans.txt</span><br><span class="line">    [ ! -f  $chapter_trans ] &amp;&amp; echo "$0: expected file $chapter_trans to exist" &amp;&amp; exit 1</span><br><span class="line">    cat $chapter_trans &gt;&gt;$trans</span><br><span class="line"></span><br><span class="line">    # NOTE: For now we are using per-chapter utt2spk. That is each chapter is considered</span><br><span class="line">    #       to be a different speaker. This is done for simplicity and because we want</span><br><span class="line">    #       e.g. the CMVN to be calculated per-chapter</span><br><span class="line">    awk -v "reader=$reader" -v "chapter=$chapter" '&#123;printf "%s %s-%s\n", $1, reader, chapter&#125;' \</span><br><span class="line">      &lt;$chapter_trans &gt;&gt;$utt2spk || exit 1</span><br><span class="line"></span><br><span class="line">    # reader -&gt; gender map (again using per-chapter granularity)</span><br><span class="line">    echo "$&#123;reader&#125;-$&#123;chapter&#125; $reader_gender" &gt;&gt;$spk2gender</span><br><span class="line">  done</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="命令语句解析"><a href="#命令语句解析" class="headerlink" title="命令语句解析"></a>命令语句解析</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(find -L $src -mindepth 1 -maxdepth 1 -type d | sort)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"><span class="comment"># 使用格式</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">和符号链接相关的选项:</span></span><br><span class="line">   -P   不跟踪符号链接(默认行为)</span><br><span class="line">   -L   当 find 检查或打印有关文件的信息时, 所使用的信息应取自链接指向的文件的属性, 而不是链接本身</span><br><span class="line">   -H   和 -L 参数刚好相反, 当 find 检查或打印有关文件的信息时, 所使用的信息应取自符号链接的属性</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">EXPRESSIONS(表达式):</span></span><br><span class="line"> OPTIONS(选项):</span><br><span class="line">   -d、-depth       在查找文件时, 首先查找当前目录中的文件, 然后再在其子目录中查找</span><br><span class="line">   -maxdepth n       find 查找目录的最大深度</span><br><span class="line">   -mindepth n       find 从指定的目录的第几层深度开始查找</span><br><span class="line">   -mount         查找文件时不跨越文件系统的 mount 点</span><br><span class="line">   -follow         和 ``-``L 参数类似</span><br><span class="line">   -regextype       指定后面所使用的正则表达式语法, 默认为 emacs</span><br><span class="line">     posix-awk        类 awk 的正则表达式语法 </span><br><span class="line">     posix-basic       基本正则表达式</span><br><span class="line">     posix-egrep       不使用正则表达式</span><br><span class="line">     posix-extended     扩展正则表达式</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">-<span class="built_in">type</span></span></span><br><span class="line">       b   块设备</span><br><span class="line">       c   字符设备</span><br><span class="line">       d   目录</span><br><span class="line">       p   命名管道</span><br><span class="line">       f   文件</span><br><span class="line">       l   链接文件</span><br><span class="line">       s   socket 文件</span><br></pre></td></tr></table></figure>
-
-
-</blockquote>
-<hr>
-<p>🌟 想起顾芯怡教的一招</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls     - hdfs://haruna/home/byte_arnold_hl_speech_asr/user/huanglu.thu19/corpus/edu/chinglish_haitian_2kh_16k/wav_ark/k190/*.scp | wc -l</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">🌟 wc -l  <span class="comment"># 统计文件个数</span></span></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">🌟 ls -l *.wav | wc -l  <span class="comment"># 统计某个目录下 某种后缀的文件个数</span></span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">ls -l *.wav | grep <span class="string">"^-"</span> | wc -l</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-<blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">grep <span class="string">"^-"</span>  <span class="comment"># 过滤ls的输出信息，只保留一般文件，只保留目录是grep "^d"。</span></span></span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>🌟 在自己电脑下，还是得 <strong>cd 到指定路径下</strong>才行，字节的 HDFS 数据库是只能那么读取列表，所以才可以那么用</p>
-<hr>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> basename /tmp/<span class="built_in">test</span>/file.txt</span></span><br><span class="line">file.txt</span><br><span class="line"><span class="meta">$</span><span class="bash"> basename /tmp/<span class="built_in">test</span>/file.txt .txt</span></span><br><span class="line">file</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">basename [pathname] [suffix]</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">basename [string] [suffix]</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">suffix为后缀，如果suffix被指定了，basename会将pathname或string中的suffix去掉。</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">$ basename <span class="variable">$PWD</span>/1027.md </span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">1027.md</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">$ basename <span class="variable">$PWD</span>/1027.md .md</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">1027</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-<hr>
-<h3 id="🌟awk-命令：一种处理文本文件的语言"><a href="#🌟awk-命令：一种处理文本文件的语言" class="headerlink" title="🌟awk 命令：一种处理文本文件的语言"></a><strong>🌟awk</strong> 命令：一种处理文本文件的语言</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 从说话人信息文件中提取性别</span></span><br><span class="line">reader_gender=$(egrep "^$reader[ ]+\|" $spk_file | awk -F'|' '&#123;gsub(/[ ]+/, ""); print tolower($2)&#125;')</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/27/Shell_find%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%B0%8F%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
