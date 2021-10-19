@@ -1372,6 +1372,24 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
       </tags>
   </entry>
   <entry>
+    <title>Pytorch —— tensor 乘法的笔记</title>
+    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
+<p>参考链接：</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
+</li>
+<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
+</li>
+</ul>
+<hr>
+<a id="more"></a>]]></content>
+  </entry>
+  <entry>
     <title>PGAN 训练笔记</title>
     <url>/2020/12/08/PGAN%20%E8%AE%AD%E7%BB%83%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>PGAN 训练笔记</p>
@@ -1451,24 +1469,6 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <li>原本 <strong>Generator</strong> 尺寸：<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201211172645.png" alt="image-20201211172644404"></li>
 </ol>
 ]]></content>
-  </entry>
-  <entry>
-    <title>Pytorch —— tensor 乘法的笔记</title>
-    <url>/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
-<p>参考链接：</p>
-<ul>
-<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
-</li>
-<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
-</li>
-</ul>
-<hr>
-<a id="more"></a>]]></content>
   </entry>
   <entry>
     <title>Shell_find命令备忘小结</title>
@@ -1755,7 +1755,8 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
   <entry>
     <title>ppg-ac &amp; Deep-Voice操作手册</title>
     <url>/2020/11/29/ppg-ac%20&amp;%20Deep-Voice%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><a id="more"></a>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>.</p>
+<a id="more"></a>
 
 <!--more--><!--more-->
 
@@ -1831,7 +1832,7 @@ map.computeIfAbsent(<span class="string">"java"</span>, (key)-&gt;((String)key).
 <hr>
 <p>4.aplayer meeting，产生歌单，用网易云的连接id</p>
 
-    <div id="aplayer-FisPGzoL" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
+    <div id="aplayer-FxmdGKuY" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="523845661" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#FF4081"></div>
 
 
 
@@ -2314,12 +2315,12 @@ tensorboard --logdir ./logs-tacotron
     <title>散文诗</title>
     <url>/2020/06/16/%E6%95%A3%E6%96%87%E8%AF%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script>
-        <div id="aplayer-HrtoyMpd" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-DSegJgGq" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-HrtoyMpd"),
+            element: document.getElementById("aplayer-DSegJgGq"),
             narrow: false,
             autoplay: false,
             showlrc: false,
