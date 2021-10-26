@@ -28,20 +28,25 @@
 
 
 
-  <meta name="description" content="Pytorch —— tensor 乘法的笔记 参考链接：  一个关于pytorch的tensor点乘的小问题  torch.Tensor的4种乘法  Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）  🌟官方链接">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Pytorch —— tensor 乘法的笔记">
-<meta property="og:url" content="http://yoursite.com/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/index.html">
+  <meta name="description" content=".">
+<meta property="og:type" content="website">
+<meta property="og:title" content="黄圣杰">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/ppg-ac%20&%20Deep-Voice%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C.html">
 <meta property="og:site_name" content="黄圣杰">
-<meta property="og:description" content="Pytorch —— tensor 乘法的笔记 参考链接：  一个关于pytorch的tensor点乘的小问题  torch.Tensor的4种乘法  Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）  🌟官方链接">
+<meta property="og:description" content=".">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-11T08:25:48.204Z">
-<meta property="article:modified_time" content="2021-10-19T10:14:56.030Z">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192750.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192845.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193002.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193103.png">
+<meta property="article:published_time" content="2021-10-26T04:56:44.986Z">
+<meta property="article:modified_time" content="2021-10-19T10:20:27.294Z">
 <meta property="article:author" content="黄圣杰">
 <meta property="article:tag" content="keywords">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192750.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/ppg-ac%20&%20Deep-Voice%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C">
 
 
 <script id="page-configurations">
@@ -49,12 +54,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Pytorch —— tensor 乘法的笔记 | 黄圣杰</title>
+  <title> | 黄圣杰
+</title>
   
 
 
@@ -212,126 +218,89 @@
       <div class="main-inner">
         <div class="content-wrap">
           
+  
+  
 
-          <div class="content post posts-expand">
+          <div class="content page posts-expand">
             
 
     
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/11/Pytorch%20%E2%80%94%E2%80%94%20tensor%20%E4%B9%98%E6%B3%95%E7%9A%84%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
-      <meta itemprop="name" content="黄圣杰">
-      <meta itemprop="description" content="description">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="黄圣杰">
-    </span>
+    
+    
+    <div class="post-block" lang="zh-CN">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Pytorch —— tensor 乘法的笔记
-        </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+<h1 class="post-title" itemprop="name headline">
+</h1>
 
-              <time title="创建时间：2020-12-11 16:25:48" itemprop="dateCreated datePublished" datetime="2020-12-11T16:25:48+08:00">2020-12-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-19 18:14:56" itemprop="dateModified" datetime="2021-10-19T18:14:56+08:00">2021-10-19</time>
-              </span>
+<div class="post-meta">
+  
 
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>123</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
+</div>
 
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</header>
 
       
-        <h2 id="Pytorch-——-tensor-乘法的笔记"><a href="#Pytorch-——-tensor-乘法的笔记" class="headerlink" title="Pytorch —— tensor 乘法的笔记"></a>Pytorch —— tensor 乘法的笔记</h2><hr>
-<p>参考链接：</p>
-<ul>
-<li><p><a href="https://blog.csdn.net/zjhao666/article/details/97756377" target="_blank" rel="noopener">一个关于pytorch的tensor点乘的小问题</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/qq_36704378/article/details/108173371" target="_blank" rel="noopener">torch.Tensor的4种乘法</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/sinat_35907936/article/details/105329984" target="_blank" rel="noopener">Pytorch张量操作（包括torch.stack()理解、广播(broadcastable)的理解）</a></p>
-</li>
-<li><p>🌟<a href="https://pytorch.org/docs/stable/torch.html?highlight=mul#torch.mul" target="_blank" rel="noopener">官方链接</a></p>
-</li>
-</ul>
-<hr>
+      
+      
+      <div class="post-body">
+          <p>.</p>
 <a id="more"></a>
+
+<!--more--><!--more-->
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;0 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
+
+<p>teacher_data/YKWK</p>
+<!--more--><!--more--><!--more--><!--more-->
+
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PYTHONPATH&#x3D;&#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;src:$PYTHONPATH</span><br><span class="line"></span><br><span class="line">--teacher_utterance_path  : 输入的是待矫正的语音</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_VISIBLE_DEVICES&#x3D;1 python generate_synthesis.py --ppg2mel_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;tacotron_checkpoint_11000 --waveglow_model &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;interspeech19-stage&#x2F;ppg2speech-si-am-si-tacotron-bdl2ykwk-final&#x2F;waveglow_270000 --teacher_utterance_path &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;teacher_data&#x2F;YKWK&#x2F;0023.wav --output_dir &#x2F;ssd3&#x2F;other&#x2F;huangsj&#x2F;fac-via-ppg&#x2F;output</span><br></pre></td></tr></table></figure>
+
+<p> <a href="../fsdownload/韩式0001.wav">韩式0001.wav</a> </p>
+<p> <a href="../fsdownload/美式0001.wav">美式0001.wav</a> </p>
+<p> <a href="../fsdownload/韩式转美式.wav">韩式转美式.wav</a> </p>
+<hr>
+<h1 id="Deep-Voice-Conversion训练手册"><a href="#Deep-Voice-Conversion训练手册" class="headerlink" title="Deep-Voice-Conversion训练手册"></a><a href="https://github.com/andabi/deep-voice-conversion/issues/115" target="_blank" rel="noopener">Deep-Voice-Conversion训练手册</a></h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train1.py timit -gpu 0</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train2.py timit -gpu 0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><a href="https://github.com/andabi/deep-voice-conversion/issues/39#issuecomment-476074396" target="_blank" rel="noopener">链接1</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192750.png" alt="image-20201205192749348"></p>
+<p><a href="https://github.com/andabi/deep-voice-conversion/issues/93" target="_blank" rel="noopener">链接2</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205192845.png" alt="image-20201205192844846"></p>
+<p><a href="https://github.com/andabi/deep-voice-conversion/issues/115" target="_blank" rel="noopener">链接3</a></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193002.png" alt="image-20201205193001370"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201205193103.png" alt="image-20201205193102248"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为了更通用，写了个代码来转换文件格式：</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">BASE = <span class="string">"/Users/huangshengjie/Desktop/TEST/"</span>   <span class="comment"># 所有文件的根目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(BASE):</span><br><span class="line">    <span class="keyword">if</span> len(files) &gt; <span class="number">0</span>:  <span class="comment"># 如果此目录有文件</span></span><br><span class="line">        <span class="keyword">for</span> file <span class="keyword">in</span> files:   <span class="comment"># 遍历此目录下的每一个文件</span></span><br><span class="line">            <span class="keyword">if</span> file.find(<span class="string">".WAV"</span>) != <span class="number">-1</span>:   <span class="comment"># 如果文件名中包含c2字样</span></span><br><span class="line">                new_file = file.replace(<span class="string">".WAV"</span>, <span class="string">".wav"</span>)  <span class="comment"># 则将其改成c1</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    os.chdir(root)   <span class="comment"># 修改之前将当前工作目录切换到文件所在目录，否则os.rename会失败</span></span><br><span class="line">                    os.rename(file, new_file)  <span class="comment"># 调用操作系统的重命名功能</span></span><br><span class="line">                <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">print</span> (e)</span><br><span class="line">                    quit(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+      
+      
     </div>
+    
 
     
     
     
-
-      <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/12/08/PGAN%20%E8%AE%AD%E7%BB%83%E7%AC%94%E8%AE%B0/" rel="prev" title="PGAN 训练笔记">
-      <i class="fa fa-chevron-left"></i> PGAN 训练笔记
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
 
 
           </div>
@@ -385,7 +354,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pytorch-——-tensor-乘法的笔记"><span class="nav-number">1.</span> <span class="nav-text">Pytorch —— tensor 乘法的笔记</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Deep-Voice-Conversion训练手册"><span class="nav-number">1.</span> <span class="nav-text">Deep-Voice-Conversion训练手册</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -401,20 +370,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -444,7 +413,7 @@
           <h3 class="widget-title">Tag Cloud</h3>
           <div id="myCanvasContainer" class="widget tagcloud">
               <canvas width="250" height="250" id="resCanvas" style="width:100%">
-                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">-[LeetCode] -[动态规划]</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2%E7%B3%BB%E5%88%97-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">-[LeetCode] -[最长子串系列] -[滑动窗口]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell-Kaldi/" rel="tag">-[Shell] -[Kaldi]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sox-kaldi/" rel="tag">-[Sox] -[kaldi]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Torch/" rel="tag">-[Torch]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E7%BC%96%E7%A8%8B/" rel="tag">-[python] -[编程]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorboard%EF%BC%8CTensorflow/" rel="tag">Tensorboard，Tensorflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VC/" rel="tag">VC</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95tags/" rel="tag">测试tags</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BC%9A/" rel="tag">组会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="tag">论文阅读笔记</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3/" rel="tag">语音</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90/" rel="tag">语音合成</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a><span class="tag-list-count">1</span></li></ul>
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">-[LeetCode] -[动态规划]</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2%E7%B3%BB%E5%88%97-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">-[LeetCode] -[最长子串系列] -[滑动窗口]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E7%BC%96%E7%A8%8B/" rel="tag">-[python] -[编程]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorboard%EF%BC%8CTensorflow/" rel="tag">Tensorboard，Tensorflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VC/" rel="tag">VC</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95tags/" rel="tag">测试tags</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BC%9A/" rel="tag">组会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="tag">论文阅读笔记</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3/" rel="tag">语音</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90/" rel="tag">语音合成</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a><span class="tag-list-count">1</span></li></ul>
               </canvas>
           </div>
       </div>
@@ -486,12 +455,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">63k</span>
+    <span title="站点总字数">54k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">57 分钟</span>
+    <span title="站点阅读时长">49 分钟</span>
 </div>
 
 
