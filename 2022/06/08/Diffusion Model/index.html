@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+      
+  <!--pjax：防止跳转页面音乐暂停-->
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script> 
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-simple.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+  <meta name="description" content="Diffussion Model——扩散概率模型 ——适用于所有的生成类任务：TTS （☑️）、VC（❓） ——其实和VAE有点像：多层 VAE    最早见刊时间 1995-2004  论文：2015-ICML    &amp;&amp;    &#x3D;&#x3D;2020-NIPS&#x3D;&#x3D;  [1] Ho, Jonathan, Ajay Jain, and Pieter Abbeel. “Denoising di">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Diffusion Model">
+<meta property="og:url" content="http://yoursite.com/2022/06/08/Diffusion%20Model/index.html">
+<meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="Diffussion Model——扩散概率模型 ——适用于所有的生成类任务：TTS （☑️）、VC（❓） ——其实和VAE有点像：多层 VAE    最早见刊时间 1995-2004  论文：2015-ICML    &amp;&amp;    &#x3D;&#x3D;2020-NIPS&#x3D;&#x3D;  [1] Ho, Jonathan, Ajay Jain, and Pieter Abbeel. “Denoising di">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605112436.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605143554.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605144221.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151903.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151544.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151340.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151645.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605152702.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605152857.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605153221.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605154232.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605154836.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605180042.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220606000627.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605160908.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161022.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161617.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161825.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605164735.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605164854.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165014.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165127.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165947.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165908.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161903.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161940.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605162006.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605125755.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605132903.jpg">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605132940.jpg">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605134140.jpg">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605134753.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605135130.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma%5E2">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmathcal+N(x%7C0%252C1)%253D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7Dexp%5Cleft(+-%5Cfrac%7Bx%5E2%7D%7B2%7D+%5Cright)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmathcal+N(x%7C0%252C1)%253D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7Dexp%5Cleft(+-%5Cfrac%7Bx%5E2%7D%7B2%7D+%5Cright)">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605140547.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605140834.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605140921.png">
+<meta property="article:published_time" content="2022-06-08T14:11:10.167Z">
+<meta property="article:modified_time" content="2022-06-08T14:22:54.037Z">
+<meta property="article:author" content="黄圣杰">
+<meta property="article:tag" content="keywords">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605112436.png">
+
+<link rel="canonical" href="http://yoursite.com/2022/06/08/Diffusion%20Model/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Diffusion Model | 黄圣杰</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="黄圣杰" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">黄圣杰</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">bjfuhsj.top</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/CV" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about-cat">
+
+    <a href="/ZONE/" rel="section"><i class="fa fa-fw fa-user"></i>about-cat</a>
+
+  </li>
+        <li class="menu-item menu-item-vcc2020-challenge">
+
+    <a href="/stargan" rel="section"><i class="fa fa-fw fa-picture-o"></i>VCC2020-Challenge</a>
+
+  </li>
+        <li class="menu-item menu-item-热榜">
+
+    <a href="/%E7%83%AD%E6%A6%9C" rel="section"><i class="fa fa-fw fa-fighter-jet"></i>热榜</a>
+
+  </li>
+        <li class="menu-item menu-item-随机数游戏工具">
+
+    <a href="/rolling-number-master" rel="section"><i class="fa fa-fw fa-gamepad"></i>随机数游戏工具</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/06/08/Diffusion%20Model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+      <meta itemprop="name" content="黄圣杰">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黄圣杰">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Diffusion Model
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-08 22:11:10 / 修改时间：22:22:54" itemprop="dateCreated datePublished" datetime="2022-06-08T22:11:10+08:00">2022-06-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Diffussion Model——扩散概率模型</p>
+<p>——适用于所有的生成类任务：TTS （☑️）、VC（❓）</p>
+<p>——其实和VAE有点像：多层 VAE</p>
+<hr>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605112436.png" alt="image-20220605112436197"></p>
+<ul>
+<li><p>最早见刊时间 1995-2004</p>
+</li>
+<li><p>论文：2015-ICML    &amp;&amp;    ==2020-NIPS==</p>
+<ul>
+<li>[1] Ho, Jonathan, Ajay Jain, and Pieter Abbeel. “Denoising diffusion probabilistic models.” <em>Advances in Neural Information Processing Systems</em> 33 (<strong>2020</strong>): 6840-6851.</li>
+<li>[2] Sohl-Dickstein, Jascha, et al. “Deep unsupervised learning using nonequilibrium thermodynamics.” <em>International Conference on Machine Learning</em>. PMLR, <strong>2015.</strong></li>
+</ul>
+</li>
+<li><p><a href="https://github.com/hojonathanho/diffusion" target="_blank" rel="noopener">github代码</a></p>
+</li>
+<li><p><a href="https://www.bilibili.com/video/BV1b541197HX" target="_blank" rel="noopener">视频解读Bilibili</a></p>
+</li>
+</ul>
+<ul>
+<li><p>可参考解读阅读材料：</p>
+<ul>
+<li><a href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/" target="_blank" rel="noopener">What are Diffusion Models?</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/267696723" target="_blank" rel="noopener">基于扩散概率模型 (Diffusion Probabilistic Model ) 的音频生成模型</a></li>
+<li><a href="https://www.birentech.com/news/114.html" target="_blank" rel="noopener"><strong>深度生成网络新思路：扩散概率模型</strong></a></li>
+<li><a href="https://www.zhaoyabo.com/?p=7675" target="_blank" rel="noopener">概述|Diffusion Models扩散模型|学习笔记</a></li>
+<li><a href="http://nooverfit.com/wp/%E5%9C%A8%E5%99%AA%E5%A3%B0%E4%B8%AD%E7%94%9F%E9%95%BF%EF%BC%9A%E6%89%A9%E6%95%A3%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8Bdiffusion-models%EF%BC%8Cscore-based-models%EF%BC%8C%E5%9F%BA/" target="_blank" rel="noopener">在噪声中“生长”：扩散生成模型(Diffusion Models)，score-based models，基于评分的生成模型</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/500532271" target="_blank" rel="noopener">详解diffusion model-知乎</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/366004028" target="_blank" rel="noopener">另辟蹊径—Denoising Diffusion Probabilistic 一种从噪音中剥离出图像/音频的模型</a></li>
+</ul>
+</li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/448575579" target="_blank" rel="noopener">简述马尔可夫链【通俗易懂】</a></p>
+</li>
+</ul>
+<a id="more"></a>
+
+
+
+<hr>
+<ul>
+<li>前置的数学知识</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605143554.png" alt="image-20220605143554259"></p>
+<ul>
+<li>贝叶斯公式</li>
+<li>VAE：KL散度</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605144221.png" alt="image-20220605144221925">)<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151903.png" alt="image-20220605151903434"></p>
+<ul>
+<li>训练：x-&gt;z</li>
+<li>推理：z-&gt;x</li>
+<li>【联合概率分布】</li>
+<li>训练目标：最大化“对数似然” log p(x)</li>
+<li>分子分母同时乘上一个“后验分布” q</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151544.png" alt="image-20220605151544252"></li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151340.png" alt="image-20220605151340796">)<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605151645.png" alt="image-20220605151645670"></p>
+<ul>
+<li><p>基于的是 Markvo 假设</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605152702.png" alt="image-20220605152702039"></p>
+</li>
+<li></li>
+</ul>
+<p>❤️思考：Diffusion &amp; Multi-VAE 的区别？</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605152857.png" alt="image-20220605152857214"></p>
+<ul>
+<li><ol>
+<li>X0-&gt;Xt 扩散过程：熵增</li>
+<li>Xt-&gt;X0 逆扩散：去噪，还原</li>
+<li>：对应的“条件概率分布”</li>
+<li></li>
+</ol>
+</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605153221.png" alt="image-20220605153221865"></p>
+<ul>
+<li>==正向过程不含参数，所有 均值、方差 都是确定的==，是一个 markvo链的关系。类比lr，固定不变</li>
+<li>正向加噪的过程，是一个条件概率分布，而且是一个 高斯正太分布，均值为： “$<br>\sqrt{1-\beta_{t}} \mathbf{x}<em>{t-1}<br>$”，方差为 ：“$\beta</em>{t}$”</li>
+<li>各向独立：“各向同性”</li>
+</ul>
+<p>🌟怎么算 X 呢？：</p>
+<ul>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605154232.png" alt="image-20220605154232033"></p>
+</li>
+<li><p>然后可以套 Markvo 迭代，不断得到 Xt+1 … 更多采样值</p>
+</li>
+</ul>
+<ul>
+<li>问题： <ul>
+<li>T 理论是 ∞ 无穷大，怎么设置？</li>
+<li>参数化分布的 “$\beta_{t}$” （方差）应该怎么设置？</li>
+</ul>
+</li>
+<li>$<br>\left{\beta_{t} \in(0,1)\right}_{t=1}^{t}<br>$</li>
+<li>随着时间推移，$\beta_{t}$ 越来越大</li>
+</ul>
+<p>关于 T：参数重整化 算出来</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605154836.png" alt="image-20220605154836448"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605180042.png" alt="image-20220605180041989"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220606000627.png" alt="image-20220606000627561"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605160908.png" alt="image-20220605160908387"></p>
+<p>所以：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161022.png" alt="image-20220605161022505"></p>
+<ul>
+<li><p>所以，时间取决于：最后的 均值、方差，接近于 “==各向同性==”的正态分布了：即==（0，1）==时，那么就可以说明 Xt “正向扩散过程”已经完全ok了，可以开始“逆扩散过程”了。</p>
+</li>
+<li><p>这其中，均值方差 alpha、beta （参数化正态分布时设置的）都是我们自己设定的，是个固定值，所以完全可控</p>
+</li>
+<li><p>总之：==正向扩散，想要得到“标准正态分布”==</p>
+</li>
+<li><p>一般原则：分布接近噪声时，beta 可以变大，刚开始时，beta 不要太大</p>
+</li>
+</ul>
+<p>🌟逆扩散过程</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161617.png" alt="image-20220605161617915">)<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161825.png" alt="image-20220605161824972"></p>
+<ul>
+<li>逆扩散，仍然是一个 Markvo chain 过程</li>
+<li>需要构建一个“==参数分布==”：不然直接从 Xt 到 X0 链式求取非常麻烦，所以需要构建一个网络</li>
+<li>也是假设为一个 “高斯分布”</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605164735.png" alt="image-20220605164735409"></li>
+<li>把问题转化为 （Xt，t）两个变量的关系网络，均值方差都是和（Xt，t）这两个相关</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605164854.png" alt="image-20220605164854035"></li>
+</ul>
+<ul>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165014.png" alt="image-20220605165014152">：</li>
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165127.png" alt="image-20220605165127198"></li>
+</ul>
+<p>🌟说说怎么算：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165947.png" alt="image-20220605165947867"></p>
+<p>==》基于贝叶斯公式：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605165908.png" alt="image-20220605165908200"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161903.png" alt="image-20220605161903503"></p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605161940.png" alt="image-20220605161940198">)<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605162006.png" alt="image-20220605162006080"></p>
+<hr>
+<ul>
+<li>图 1. 不同类型的生成模型概述。</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605125755.png" alt="image-20220605125755791"></p>
+<ol>
+<li><h6 id="发展历史"><a href="#发展历史" class="headerlink" title="发展历史"></a>发展历史</h6><ul>
+<li><em>扩散概率模型</em>( <a href="https://arxiv.org/abs/1503.03585" target="_blank" rel="noopener">Sohl-Dickstein et al., 2015</a> )</li>
+<li><em>噪声条件评分网络</em>( <strong>NCSN</strong> ; <a href="https://arxiv.org/abs/1907.05600" target="_blank" rel="noopener">Yang &amp; Ermon, 2019</a> )</li>
+<li><em>去噪扩散概率</em>模型 (<strong>DDPM</strong>; <a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">Ho et al. 2020</a>).</li>
+</ul>
+</li>
+</ol>
+<ol start="2">
+<li><h6 id="快速总结"><a href="#快速总结" class="headerlink" title="快速总结"></a>快速总结</h6><ul>
+<li><strong>优点</strong>：易处理性和灵活性是生成建模中两个相互冲突的目标。易于处理的模型可以进行分析评估并廉价地拟合数据（例如通过高斯或拉普拉斯），但它们不能轻易地描述丰富数据集中的结构。灵活的模型可以拟合数据中的任意结构，但从这些模型中评估、训练或采样通常很昂贵。<strong>扩散模型在分析上易于处理和灵活</strong></li>
+<li><strong>缺点</strong>：扩散模型依赖于<strong>长马尔可夫扩散步骤链</strong>来生成样本，因此在<strong>时间和计算方面可能非常昂贵</strong>。已经提出了新的方法来使该过程更快，但<strong>采样仍然比 GAN 慢</strong>。</li>
+</ul>
+</li>
+</ol>
+<ol start="3">
+<li><p>谈谈马尔科夫：</p>
+<ul>
+<li>下一状态的概率分布只能由当前状态决定，在时间序列中它前面的事件均与之无关。这种特定类型的“<strong>无记忆性</strong> ”称作马尔可夫性质。</li>
+<li><strong>转移概率矩阵</strong>：</li>
+</ul>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605132903.jpg" alt="img"></p>
+<p>上图中有 A 和 B 两个状态，A 到 A 的概率是 0.3，A 到 B 的概率是 0.7；B 到 B 的概率是 0.1，B 到 A 的概率是 0.9。</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605132940.jpg" alt="img"></p>
+</li>
+</ol>
+<ul>
+<li><h6 id="状态转移矩阵-的稳定性"><a href="#状态转移矩阵-的稳定性" class="headerlink" title="==状态转移矩阵==的稳定性"></a>==<strong>状态转移矩阵</strong>==的稳定性</h6><p>状态转移矩阵有一个非常重要的特性，经过一定有限次数序列的转换，最终一定可以得到一个<strong>稳定的概率分布</strong> ，且与初始状态概率分布无关。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 状态转移矩阵</span></span><br><span class="line">matrix = np.matrix([[<span class="number">0.9</span>, <span class="number">0.075</span>, <span class="number">0.025</span>],</span><br><span class="line">                    [<span class="number">0.15</span>, <span class="number">0.8</span>, <span class="number">0.05</span>],</span><br><span class="line">                    [<span class="number">0.25</span>, <span class="number">0.25</span>, <span class="number">0.5</span>]], dtype=float)</span><br><span class="line">vector1 = np.matrix([[<span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.3</span>]], dtype=float)</span><br><span class="line"><span class="comment">## 牛 熊 横盘</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    vector1 = vector1 * matrix</span><br><span class="line">    print(<span class="string">'Courrent round: &#123;&#125;'</span>.format(i+<span class="number">1</span>))</span><br><span class="line">    print(vector1)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Current round: 1</span><br><span class="line">[[ 0.405   0.4175  0.1775]]</span><br><span class="line">Current round: 2</span><br><span class="line">[[ 0.4715   0.40875  0.11975]]</span><br><span class="line">Current round: 3</span><br><span class="line">[[ 0.5156  0.3923  0.0921]]</span><br><span class="line">Current round: 4</span><br><span class="line">[[ 0.54591   0.375535  0.078555]]</span><br><span class="line">。。。。。。</span><br><span class="line">Current round: 58</span><br><span class="line">[[ 0.62499999  0.31250001  0.0625    ]]</span><br><span class="line">Current round: 59</span><br><span class="line">[[ 0.62499999  0.3125      0.0625    ]]</span><br><span class="line">Current round: 60</span><br><span class="line">[[ 0.625   0.3125  0.0625]]</span><br><span class="line">。。。。。。</span><br><span class="line">Current round: 99</span><br><span class="line">[[ 0.625   0.3125  0.0625]]</span><br><span class="line">Current round: 100</span><br><span class="line">[[ 0.625   0.3125  0.0625]]</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>n-gram 语音识别</li>
+</ul>
+<p>语言模型：N-Gram 是一种简单有效的语言模型，基于独立输入假设：<strong>第 n 个词的出现只与前面 N-1 个词相关，而与其它任何词都不相关</strong> 。整句出现的概率就是各个词出现概率的乘积。这些概率可以通过直接从语料中统计 N 个词同时出现的次数得到。</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605134140.jpg" alt="img"></p>
+<p>声学模型：利用 HMM 建模（隐马尔可夫模型），HMM 是指这一马尔可夫模型的内部状态外界不可见，外界只能看到各个时刻的输出值。对语音识别系统，输出值通常就是从各个帧计算而得的声学特征。</p>
+<hr>
+<p>Diffusion </p>
+<ul>
+<li>前向扩散（逐渐加噪声）</li>
+<li>后向扩散（学会从带噪声数据中恢复内容信息）</li>
+</ul>
+<ol>
+<li>高斯噪声：符合正态分布的噪声<ul>
+<li>起伏噪声、宇宙噪声、热噪声和散粒噪声等等</li>
+<li>N（μ，σ^2）</li>
+<li>高斯分布函数<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605134753.png" alt="image-20220605134753320" style="zoom:50%;"></li>
+</ul>
+</li>
+</ol>
+<ol start="2">
+<li><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605135130.png" alt="image-20220605135130047"></li>
+</ol>
+<ol start="3">
+<li><p>高斯分布</p>
+<p>高斯分布可以写成以下形式：</p>
+<pre><code>![[公式]](https://www.zhihu.com/equation?tex=%5Cmathcal+N%28x%7C%5Cmu%2C%5Csigma%5E2%29%3D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7Dexp%5Cleft%28+-%5Cfrac%7B%28x-%5Cmu%29%5E2%7D%7B2%5Csigma%5E2%7D+%5Cright%29)</code></pre><p><img src="https://www.zhihu.com/equation?tex=%5Cmu" alt="[公式]"> 是均只期望， <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]"> 是方差，以上形式是基于只有一个变化维度的连续随机变量，因此以上又称为<strong>一元高斯分布</strong>。</p>
+</li>
+</ol>
+<p>   当 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal+N%28x%7C0%2C1%29%3D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7Dexp%5Cleft%28+-%5Cfrac%7Bx%5E2%7D%7B2%7D+%5Cright%29" alt="[公式]">时，称为<strong>标准高斯分布</strong>（标准正态分布）：</p>
+<p>   <img src="https://www.zhihu.com/equation?tex=%5Cmathcal+N%28x%7C0%2C1%29%3D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7Dexp%5Cleft%28+-%5Cfrac%7Bx%5E2%7D%7B2%7D+%5Cright%29" alt="[公式]"></p>
+<ol start="4">
+<li><p>当我们要对概率密度函数求值时，我们需要对σ平方并且取倒数。当我们需要经常对不同参数下的概率密度函数求值时，一种更高效的==<strong>参数化分布</strong>==的方式是==使用参数β∈(0,∞)==，来控制分布的精度(precision)(或方差的倒数)：</p>
+<p>​                                                  $$\frac{1}{\sigma}=\sqrt{\beta} $$    </p>
+</li>
+</ol>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605140547.png" alt="img"></p>
+<p>​        正态分布可以推广到Rn空间，这种情况下被称为多维正态分布(multivariate     normal distribution)。它的参数是一个正定对称矩阵∑：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605140834.png" alt="img"></p>
+<p>参数μ仍然表示分布的均值，只不过现在是向量值。参数∑给出了分布的 ==<strong>协方差矩阵</strong>== 。和单变量的情况类似，当我们希望对很多不同参数下的概率密度函数多次求值时，协方差矩阵并不是一个很高效的参数化分布的方式，因为对概率密度函数求值时需要对∑求逆。我们可以使用一个<strong>精度矩阵</strong>(precision matrix)β进行替代：</p>
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20220605140921.png" alt="img"></p>
+<p>我们常常把协方差矩阵固定成一个对角阵。一个更简单的版本是==各向同性(isotropic)高斯分布==，它的协方差矩阵是一个标量乘以单位阵。</p>
+<ol start="5">
+<li></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/08/1108%E7%BB%84%E4%BC%9A%EF%BC%9A/" rel="prev" title="《AiShell3》">
+      <i class="fa fa-chevron-left"></i> 《AiShell3》
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+    
+    
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=444267925&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#发展历史"><span class="nav-number">1.</span> <span class="nav-text">发展历史</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#快速总结"><span class="nav-number">2.</span> <span class="nav-text">快速总结</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#状态转移矩阵-的稳定性"><span class="nav-number">3.</span> <span class="nav-text">&#x3D;&#x3D;状态转移矩阵&#x3D;&#x3D;的稳定性</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="黄圣杰"
+      src="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+  <p class="site-author-name" itemprop="name">黄圣杰</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Lukelluke" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Lukelluke" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:huangshengjie@bjfu.edu.cn" title="E-Mail → mailto:huangshengjie@bjfu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+
+          
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width:100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">-[LeetCode] -[动态规划]</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2%E7%B3%BB%E5%88%97-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">-[LeetCode] -[最长子串系列] -[滑动窗口]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E7%BC%96%E7%A8%8B/" rel="tag">-[python] -[编程]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorboard%EF%BC%8CTensorflow/" rel="tag">Tensorboard，Tensorflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VC/" rel="tag">VC</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95tags/" rel="tag">测试tags</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BC%9A/" rel="tag">组会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="tag">论文阅读笔记</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3/" rel="tag">语音</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90/" rel="tag">语音合成</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a><span class="tag-list-count">1</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+    
+    
+
+    <aside class="sidebar">
+
+
+
+
+    </div>
+
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备20024435号 </a>
+  
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄圣杰</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">58k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">53 分钟</span>
+</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  All is well.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("06/09/2020 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+
+        
+
+
+        document.getElementById("timeDate").innerHTML = "🌟本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'hsjptyz21',
+      projectId: 'AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
