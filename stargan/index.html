@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<!-- saved from url=(0080)http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VCC2020比赛</title>
+    <link href="./StarGAN-VC2_files/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+    main {
+    padding-bottom: 50px;
+    }
+    header a:link {
+    color: #EEEEEE;    
+    }
+    header a:hover {
+    color: #EEEEEE;
+    }
+    header a:visited {
+    color: #EEEEEE;
+    }
+    header a:active {
+    color: #EEEEEE;
+    }
+    footer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #333333;
+    color: #BBBBBB;
+    }
+    table {
+    width: 100%;
+    table-layout: fixed;
+    }
+    th {
+    text-align: center;
+    vertical-align: middle;
+    }
+    td {
+    text-align: center;
+    vertical-align: middle;
+    }
+    th#strong{
+    color: #FF33CC;
+    }
+    #pinkstrong{
+    color: #FF33CC;
+    }
+    audio {
+    width: 100%;
+    }
+    .jumbotroncolor {
+    background-color: #333333;
+    color: #EEEEEE;
+    }
+    .thumbnailsize {
+    width: 200px;
+    }
+    .thumbnailshadow {
+    filter: drop-shadow(5px 5px 5px #aaa);
+    }
+    @media screen and (max-width:767px) {
+    h1 { font-size:20pt;}
+    }
+    @media screen and (min-width:768px){
+    h1 { font-size:30pt;}
+    }
+  </style></head>
+
+  
+
+  <body>
+
+    <header class="header" id="top">
+      <div class="jumbotron jumbotroncolor text-center">
+	<div class="container">
+	  <h1>VCC2020 Challenge:</h1>
+	  <h2>Improved Methods for StarGAN-Based Voice Conversion</h2>
+	  <p class="lead">
+<!--	    <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/index.html">Takuhiro Kaneko</a>&nbsp;&nbsp;&nbsp;-->
+<!--	    <a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/index-e.html">Hirokazu Kameoka</a>&nbsp;&nbsp;&nbsp;-->
+<!--	    <a href="http://www.kecl.ntt.co.jp/people/tanaka.ko/index.html">Kou Tanaka</a>&nbsp;&nbsp;&nbsp;-->
+		  <strong><a href="http://www.bjfuhsj.top">Shengjie Huang (黄圣杰)</a><br></strong>
+		  Institute of Artificial Intelligence, School of Information Science and Technology, Beijing Forestry University
+	  </p>
+	  <p class="lead">
+		  <strong>TEAM NAME : URSpeaking</strong><br>
+<!--	    <a href="https://arxiv.org/abs/1907.12279">arXiv:1907.12279</a>, May 2020-->
+	    <a>arXiv:To be published</a>, Oct 2020
+	  </p>
+	</div>
+      </div>
+    </header>
+
+    <main>            
+      <div class="container">
+<!--	<div class="row" id="paper">-->
+<!--	  <div class="col-md-12">-->
+<!--&lt;!&ndash;	    <h2>Paper</h2>&ndash;&gt;-->
+<!--	    <div class="row align-items-center">-->
+<!--	      <div class="thumbnailsize" align="center">-->
+<!--&lt;!&ndash;		<a href="https://arxiv.org/pdf/1907.12279.pdf"><img class="thumbnailshadow" src="./StarGAN-VC2_files/paper_thumbnail.png" width="150"></a>&ndash;&gt;-->
+<!--	      </div>-->
+<!--	      <div class="col-md-9">-->
+<!--		<p>-->
+<!--		  Takuhiro Kaneko, Hirokazu Kameoka, Kou Tanaka, and Nobukatsu Hojo<br>-->
+<!--		  <strong>StarGAN-VC2: Rethinking Conditional Methods for StarGAN-Based Voice Conversion</strong><br>-->
+<!--		  <em>Interspeech 2019</em><br>-->
+<!--		  [<a href="https://arxiv.org/abs/1907.12279">Paper</a>]-->
+<!--		  [<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/resources/Kaneko_StarGAN-VC2_Interspeech_2019_poster.pdf">Poster</a>]-->
+<!--		  [<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/resources/StarGAN-VC2.txt">BibTeX</a>]-->
+<!--		</p>-->
+<!--		<p>-->
+<!--		  <strong>NOTE:</strong>-->
+<!--		  <em>-->
+<!--		    We have previously proposed <a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">StarGAN-VC</a> (ver1), <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc/index.html">CycleGAN-VC</a>, and <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc2/index.html">CycleGAN-VC2</a>.-->
+<!--		    They are highly related to this work.-->
+<!--		    Check them from the corresponding links!-->
+<!--		  </em>-->
+<!--		</p>-->
+<!--	      </div>-->
+<!--	    </div>-->
+<!--	  </div>-->
+<!--	</div>-->
+
+<!--	<hr>-->
+
+	<div class="row" id="introduction">
+	  <div class="col-md-12">
+	    <h2>URSpeakingGAN-VC</h2>
+	    <p>
+	      To advance the research on <strong>multi-domain non-parallel VC</strong>,
+			we rethink conditional methods in
+			<a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">StarGAN-VC</a>
+<!--			<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#1">[1]</a>-->
+			and propose an improved variant called <strong id="pinkstrong">URSpeakingGAN-VC</strong>.
+			Particularly, we rethink conditional methods in two aspects: training objectives and network architectures.
+			For the former, we propose a <strong>source-and-target conditional adversarial loss</strong>
+			that allows all source domain data to be convertible to the target domain data. For the latter,
+			we introduce a <strong> modulation-based conditional method</strong> that can transform the modulation of the acoustic feature in a domain-specific manner.
+	    </p>
+
+	    <figure class="figure">				
+		<center>
+		  <a name="fig1"><img src="./StarGAN-VC2_files/Generator-jpg.jpg" class="figure-img" width="100%" alt="network"></a>
+		</center>
+	      </figure>
+	  </div>
+	</div>
+
+	<hr>
+	
+	<div class="row" id="results">
+	  <div class="col-md-12">
+	    <h2>Converted speech samples</h2>	    
+	    <h5>Task and dataset</h5>
+		  <ul>
+			  <li><b>1st task: voice conversion within the same language</b>
+				  <ul>
+					  <li>In training, a sentence set uttered by the source speaker is different from that uttered by the target speaker, but they are still the same language.  Moreover, only a small number of sentences are shared between these two sentence sets.
+					  <li>In conversion, the source speaker's voice is converted as if it is uttered by the target speaker while keeping linguistic contents unchanged.
+					  <li>We will provide voices of 4 source and 4 target speakers (consisting of both female and male speakers) from fixed corpora as training data.  Each speaker utters a sentence set consisting of 70 sentences in <u><b>English</b></u>.  Only 20 sentences are parallel and the other 50 sentences are nonparallel between the source and target speakers.
+					  <li>Using these data sets, voice conversion systems for all speaker-pair combinations (16 speaker-pairs in total) will be developed by each participant.
+				  </ul>
+			  <li><b>2nd task: cross-lingual voice conversion</b>
+				  <ul>
+					  <li>In training, a sentence set uttered by the source speaker is totally different from that uttered by the target speaker as a language of the source speaker is different from that of the target speaker.
+					  <li>In conversion, the source speaker's voice in the source language is converted as if it is uttered by the target speaker while keeping linguistic contents unchanged.
+					  <li>We will also provide voices of other 6 target speakers (consisting of both female and male speakers) from fixed corpora as training data.  The source speakers are the same as in the 1st task.  Each target speaker utters another sentence set consisting of around 70 sentences in a different language; 2 target speakers utter in <u><b>Finnish</b></u>, 2 target speakers utter in <u><b>German</b></u>, and 2 target speakers utter in <u><b>Mandarin</b></u>.
+					  <li> Using these nonparallel data sets, voice conversion systems for all speaker-pair combinations (24 speaker-pairs in total) will be developed by each participant.
+				  </ul>
+		  </ul>
+
+
+	    <ul>
+	      <li>We evaluated our method on the <strong>non-parallel multi-speaker VC</strong> task.</li>
+			<li>To evaluete our system with <strong>StarGAN-VC</strong> We used <a href="https://datashare.is.ed.ac.uk/handle/10283/3061">the Voice Conversion Challenge 2018 (VCC 2018) dataset</a>.
+<!--			  <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#3">[2]</a> -->
+				<br>In which we selected a subset of speakers as covering all inter- and intra-gender conversions: VCC2SF1, VCC2SF2, VCC2SM1, and VCC2SM2.</li>
+	      <ul>
+			  <li>Each speaker has 81 sentences (<strong>about 5 minutes</strong>) for training. This is <strong>relatively little</strong> for VC.</li>
+		  </ul>
+	      <li>Our goal is to learn <strong>4 x 3 = 12</strong> different source-and-target mappings <strong>only using a single model</strong>.</li>
+	      <li>Note that we did <strong>not use any extra data, module, or time alignment procedures</strong> for training.</li>
+	    </ul>
+
+	    <h5>Results</h5>
+	    We summarize the results in three ways:
+	    <ul>
+			<li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp1">1. 关于VCC2020比赛-<strong>同语种</strong>的部分结果展示</a></li>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp2">2. 关于VCC2020比赛-<strong>跨语种</strong>的部分结果展示</a></li>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#exp3">3. 和 StarGAN-VC 做基于VCC2018-Data 的性能比较(To Do)</a></li>
+	    </ul>
+
+	    <p>
+	      <strong>NOTE:</strong> Recommended browsers are Apple Safari, Google Chrome, or Mozilla Firefox.
+	    </p>
+	    
+	    <hr>
+
+	    <h4><a name="exp1">1. Comparison between the same language: English</h4>
+	    <h5>Notation</h5>
+	    <ul>
+	      <li><strong>Source</strong> is the <em>source</em> speech samples.</li>
+	      <li><strong>Target</strong> is the <em>target</em> speech samples. They are non-parallel with source speech. Note that we did <strong>not use these data during training</strong>.</li>
+	      <li><strong id="pinkstrong">URSpeakingGAN-VC</strong>  is the <em>converted</em> speech samples, in which our proposed method <strong>URSpeakingGAN-VC</strong> was used to convert <strong>MCEPs.</strong></li>
+<!--	      <li><strong id="pinkstrong">StarGAN-VC2</strong> is the <em>converted</em> speech samples, in which the proposed <strong id="pinkstrong">StarGAN-VC2</strong> was used to convert <strong>MCEPs.</strong></li>-->
+<!--	      <li><strong id="pinkstrong">StarGAN-VC2++</strong> is the <em>converted</em> speech samples, in which the proposed <strong id="pinkstrong">StarGAN-VC2</strong> was used to convert <strong>all acoustic features</strong> (namely, MCEPs, band APs, continuous log F<sub>0</sub>, and voice/unvoice indicator).</li>-->
+	    </ul>
+	    
+	    <p class="lead">Female (VCC2020-SEF1) → Female (VCC2020-TEF1)</p>
+	    <div>
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th></th>
+		    <th>Source</th>
+		    <th>Target</th>
+			  <th id="strong">URSpeakingGAN-VC<br><small>(Proposed)</small></th>
+
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Sample 1</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEF1-source1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEF1-target1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEF1_SEF1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+
+		  </tr>
+<!--			以上：第一块第一行-->
+
+
+		  <tr>
+		    <th scope="row">Sample 2</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEF1-source2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEF1-target2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEF1_SEF1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--第一块，第二行-->
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 3</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEF1-source3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEF1-target3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEF1_SEF1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--第一块，第三行；-->
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+
+	    <p class="lead">Female (VCC2020-SEF1) → Male (VCC2020-TEM1)</p>
+	    <div>
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th></th>
+		    <th>Source</th>
+		    <th>Target</th>
+		    <th id="strong">URSpeakingGAN-VC<br><small>(Proposed)</small></th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Sample 1</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEF1-source1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEM1-target1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEM1_SEF1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+
+		    </td>
+<!--第二块，第一行；-->
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 2</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEF1-source2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEM1-target2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEM1_SEF1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--第二块，第二行-->
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 3</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEF1-source3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEM1-target3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEM1_SEF1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--第二块，第三行-->
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+
+	    <p class="lead">Male (VCC2020-SEM1) → Male (VCC2020-TEM1)</p>
+	    <div>
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th></th>
+		    <th>Source</th>
+		    <th>Target</th>
+		    <th id="strong">URSpeakingGAN-VC<br><small>(Proposed)</small></th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Sample 1</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEM1-source1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEM1-target1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEM1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--		   第三块，第一行；-->
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 2</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEM1-source2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEM1-target2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEM1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--		    第三块，第二行-->
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 3</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEM1-source3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEM1-target3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEM1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--		    第三块，第三行-->
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+
+	    <p class="lead">Male (VCC2020-SEM1) → Female (VCC2020-TEF1)</p>
+	    <div>
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th></th>
+		    <th>Source</th>
+		    <th>Target</th>
+		    <th id="strong">URSpeakingGAN-VC<br><small>(Proposed)</small></th>
+
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Sample 1</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEM1-source1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEF1-target1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEF1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--		    第四块，第一行-->
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 2</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEM1-source2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEF1-target2.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEF1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--第四块，第二行；-->
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 3</th>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-SEM1-source3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/1-TEF1-target3.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="audios/URSpeaking:TEF1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+<!--		    第四块，第三行-->
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+
+	    <hr>
+
+	    <h4><a name="exp2">2</a>. Comparison between cross languages: English && ( Finnish - German - Mandarin )</h4>
+	    <p class="lead">Male (VCC2020-SEM1) → Female (Finnish-TFF1), Female (German-TGF1), or Female (Mandarin-TMF1)</p>
+	    <div>
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th>Real speech</th>
+		    <th>VCC2020-SEM1</th>
+		    <th>Finnish-TFF1</th>
+		    <th>German-TGF1</th>
+		    <th>Mandarin-TMF1</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Reference</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/1-SEM1-source1.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/2-F10001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/2-G10001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/2-M10001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+		</tbody>
+	      </table>
+
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th>Converted speech</th>
+		    <th>VCC2020-SEM1<br><small>(Source)</small></th>
+		    <th>Finnish-TFF1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>German-TGF1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>Mandarin-TMF1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Sample 1</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFF1-converted/URSpeaking%3ATFF1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGF1/URSpeaking%3ATGF1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMF1-SEM1/URSpeaking%3ATMF1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 2</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFF1-converted/URSpeaking%3ATFF1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGF1/URSpeaking%3ATGF1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMF1-SEM1/URSpeaking%3ATMF1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 3</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFF1-converted/URSpeaking%3ATFF1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGF1/URSpeaking%3ATGF1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMF1-SEM1/URSpeaking%3ATMF1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>
+
+	    <p class="lead">Male (VCC2020-SEM1) → Male (Finnish-TFM1), Male (German-TGM1), or Male (Mandarin-TMM1)</p>
+	    <div>
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th>Real speech</th>
+		    <th>VCC2020-SEM1</th>
+		    <th>Finnish-TFM1</th>
+		    <th>German-TGM1</th>
+		    <th>Mandarin-TMM1</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Reference</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TFM1/F10001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TGM1/G10001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/TMM1/M10001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+		</tbody>
+	      </table>
+
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th>Converted speech</th>
+		    <th>VCC2020-SEM1<br><small>(Source)</small></th>
+		    <th>Finnish-TFM1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>VGerman-TGM1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		    <th>Mandarin-TMM1<br><small><strong id="pinkstrong">(Converted)</strong></small></th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <th scope="row">Sample 1</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFM1/URSpeaking%3ATFM1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGM1/URSpeaking%3ATGM1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TMM1/URSpeaking%3ATMM1_SEM1_E30001.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 2</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFM1/URSpeaking%3ATFM1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGM1/URSpeaking%3ATGM1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TMM1/URSpeaking%3ATMM1_SEM1_E30002.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+
+		  <tr>
+		    <th scope="row">Sample 3</th>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1/100003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TFM1/URSpeaking%3ATFM1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TGM1/URSpeaking%3ATGM1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		    <td>
+		      <audio controls="">
+			<source src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/2020/VCC2020-demo%E7%BD%91%E9%A1%B5%E9%9F%B3%E9%A2%91/%E4%BB%BB%E5%8A%A1%E4%BA%8C%EF%BC%9A%E8%B7%A8%E8%AF%AD%E7%A7%8D%E8%BD%AC%E6%8D%A2/SEM1-TMM1/URSpeaking%3ATMM1_SEM1_E30003.wav" type="audio/wav">
+			Your browser does not support the audio element.
+		      </audio>
+		    </td>
+		  </tr>
+		</tbody>
+	      </table>
+	    </div>	    	  
+
+	    <h4><a name="exp3">3</a>. Voice comparing between stargan-vc in VCC2018 data.（To Do）</h4>
+<!--	    <p>-->
+<!--	      We morph voices between two speakers using StarGAN-VC2.<br>-->
+<!--	      <strong>Our high-quality multi-domain VC framework makes it possible to conduct natural voice morphing</strong>.-->
+<!--	    </p>-->
+
+	    <div>
+	      <table class="table">
+<!--		<thead>-->
+<!--		  <tr>-->
+<!--		    <th></th>-->
+<!--		    <th>Source</th>-->
+<!--		    <th>Mixture rate<br>3:1</th>-->
+<!--		    <th>Mixture rate<br>1:1</th>-->
+<!--		    <th>Mixture rate<br>1:3</th>-->
+<!--		    <th>Target</th>-->
+<!--		  </tr>-->
+<!--		</thead>-->
+		<tbody>
+<!--		  <tr>-->
+<!--		    <th scope="row">VCC2SF1<br>→VCC2SF2</th>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		  </tr>-->
+
+<!--		  <tr>-->
+<!--		    <th scope="row">VCC2SF1<br>→VCC2SM1</th>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM1_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		  </tr>-->
+
+<!--		  <tr>-->
+<!--		    <th scope="row">VCC2SF1<br>→VCC2SM2</th>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SF1_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_25_VCC2SF1_75_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_50_VCC2SF1_50_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_75_VCC2SF1_25_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		    <td>-->
+<!--		      <audio controls="">-->
+<!--			<source src="audios/VCC2SM2_VCC2SF1_STARGANVC2_30012.wav" type="audio/wav">-->
+<!--			Your browser does not support the audio element.-->
+<!--		      </audio>-->
+<!--		    </td>-->
+<!--		  </tr>-->
+
+		</tbody>
+	      </table>
+	    </div>
+	    
+	  </div>
+	</div>
+
+	<hr>
+	
+	<div class="row" id="related">
+	  <div class="col-md-12">
+	    <h2>Collection of converted speech samples</h2>
+	    <p>
+	      Refer to the following websites for comparison.      
+	    </p>
+
+	    <p class="lead">Parallel VC</p>
+	    <ul>
+	      <li><a href="https://github.com/k2kobayashi/sprocket">VCC 2018 Baseline</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#3">[3]</a></li>
+	    </ul>
+	    <p class="lead">Non-parallel VC</p>
+	    <ul>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc/index.html">CycleGAN-VC</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#4">[4]</a></li>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc2/index.html">CycleGAN-VC2</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#5">[5]</a></li>
+	    </ul>
+	    <p class="lead">Non-parallel multi-domain VC</p>
+	    <ul>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">StarGAN-VC</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#1">[1]</a></li>
+	      <li><a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/acvae-vc/">ACVAE-VC</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#6">[6]</a></li>
+	      <li><a href="https://jeremycchsu.github.io/vc-vawgan/">VAW-GAN-VC</a> <a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/stargan-vc2/index.html#7">[7]</a></li>
+	    </ul>
+	  </div>
+	</div>
+
+	<hr>
+
+	<div class="row" id="references">
+	  <div class="col-md-12">
+	    <h2>References</h2>
+	    <div>
+	      <p>
+		<a name="1" class="text-primary">[1]</a>
+		H. Kameoka, T. Kaneko, K. Tanaka, and N. Hojo.
+		<strong>StarGAN-VC: Non-parallel Many-to-Many Voice Conversion with Star Generative Adversarial Networks</strong>.
+		<em>arXiv:1806.02169</em>, June 2018 (<em>SLT</em>, 2018).
+		[<a href="https://arxiv.org/abs/1806.02169">Paper</a>]
+		[<a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/stargan-vc/">Project</a>]
+	      </p>
+	      <p>
+		<a name="2" class="text-primary">[2]</a>
+		J. Lorenzo-Trueba, J. Yamagishi, T. Toda, D. Saito, F. Villavicencio, T. Kinnunen, and Z. Ling.
+		<strong>The Voice Conversion Challenge 2018: Promoting Development of Parallel and Nonparallel Methods</strong>.
+		<em>Speaker Odyssey</em>, 2018.
+		[<a href="https://arxiv.org/abs/1804.04262">Paper</a>]
+		[<a href="https://datashare.is.ed.ac.uk/handle/10283/3061">Dataset</a>]
+	      </p>
+	      <p>
+		<a name="3" class="text-primary">[3]</a>
+		K. Kobayashi and T. Toda.
+		<strong>sprocket: Open-Source Voice Conversion Software</strong>.
+		<em>Speaker Odyssey</em>, 2018.
+		[<a href="https://nuss.nagoya-u.ac.jp/s/h8YKnq6qxjjxtU3#pdfviewer">Paper</a>]
+		[<a href="https://github.com/k2kobayashi/sprocket">Project</a>]
+		[<a href="https://nuss.nagoya-u.ac.jp/index.php/s/Cs0YbTCw85p3QDK">Samples (zip)</a>]
+	      </p>
+	      <p>
+		<a name="4" class="text-primary">[4]</a>
+		T. Kaneko and H. Kameoka.
+		<strong>Parallel-Data-Free Voice Conversion Using Cycle-Consistent Adversarial Networks</strong>.     
+		<em>arXiv:1711.11293</em>, Nov. 2017 (<em>EUSIPCO</em>, 2018).
+		[<a href="https://arxiv.org/abs/1711.11293">Paper</a>]
+		[<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc/index.html">Project</a>]
+	      </p>
+	      <p>
+		<a name="5" class="text-primary">[5]</a>
+		T. Kaneko, H. Kameoka, K. Tanaka, and N. Hojo.
+		<strong>CycleGAN-VC2: Improved CycleGAN-based Non-parallel Voice Conversion</strong>.     
+		<em>ICASSP</em>, 2019.
+		[<a href="https://arxiv.org/abs/1904.04631">Paper</a>]
+		[<a href="http://www.kecl.ntt.co.jp/people/kaneko.takuhiro/projects/cyclegan-vc2/index.html">Project</a>]
+	      </p>
+	      <p>
+		<a name="6" class="text-primary">[6]</a>
+		H. Kameoka, T. Kaneko, K. Tanaka, and N. Hojo.
+		<strong>ACVAE-VC: Non-parallel Many-to-Many Voice Conversion with Auxiliary Classifier Variational Autoencoder</strong>.
+		<em>arXiv:1808.05092</em>, Aug. 2018.
+		(<em>IEEE/ACM Transactions on Audio, Speech, and Language Processing</em>, May 2019).
+		[<a href="https://arxiv.org/abs/1808.05092">Paper</a>]
+		[<a href="http://www.kecl.ntt.co.jp/people/kameoka.hirokazu/Demos/acvae-vc/">Project</a>]
+	      </p>
+	      <p>
+		<a name="7" class="text-primary">[7]</a>
+		C.-C. Hsu, H.-T. Hwang, Y.-C. Wu, Y. Tsao, and H.-M. Wang.
+		<strong>Voice Conversion from Unaligned Corpora using Variational Autoencoding Wasserstein Generative Adversarial Networks</strong>.
+		<em>Interspeech</em>, 2017.
+		[<a href="https://arxiv.org/abs/1704.00849">Paper</a>]
+		[<a href="https://jeremycchsu.github.io/vc-vawgan/">Project</a>]
+	      </p>
+	    </div>
+	  </div>
+	</div>
+	
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+	<p class="text-center"><small>
+	    <strong>URSpeakingGAN-VC:</strong><br>
+	    <strong>Rethinking Conditional Methods for StarGAN-Based Voice Conversion</strong><br>
+	    <a href="http://www.bjfuhsj.top">Shengjie Huang</a> at IAI.SIST.BJFU</small></p>
+      </div>
+    </footer>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script></body></html>

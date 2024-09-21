@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+      
+  <!--pjax：防止跳转页面音乐暂停-->
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script> 
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-simple.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+  <meta name="description" content="1206工作进度： 很多论文 ——看了 很多代码 ——看了、改了、写了 很多想法 ——可行与否缺乏交流 🌟没有机器 ——用单位机器被 Kill 被批评    初步想法——在stargan-vc2基础上改进，侧重点还是 少数据量 &amp;&amp; 快速  用 PGAN + Mel 处理，Embedding 部分调用 AiShell （还是得咱们自己重训，特征处理方式和PGAN不一样）（Mel">
+<meta property="og:type" content="website">
+<meta property="og:title" content="黄圣杰">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1203%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5%E8%BF%9B%E5%BA%A6.html">
+<meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="1206工作进度： 很多论文 ——看了 很多代码 ——看了、改了、写了 很多想法 ——可行与否缺乏交流 🌟没有机器 ——用单位机器被 Kill 被批评    初步想法——在stargan-vc2基础上改进，侧重点还是 少数据量 &amp;&amp; 快速  用 PGAN + Mel 处理，Embedding 部分调用 AiShell （还是得咱们自己重训，特征处理方式和PGAN不一样）（Mel">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002225.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002343.png">
+<meta property="og:image" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1203%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5%E8%BF%9B%E5%BA%A6.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201204002439910.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002637.png">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002900.png">
+<meta property="article:published_time" content="2023-07-08T08:27:40.358Z">
+<meta property="article:modified_time" content="2020-12-06T13:32:23.000Z">
+<meta property="article:author" content="黄圣杰">
+<meta property="article:tag" content="keywords">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002225.png">
+
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1203%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5%E8%BF%9B%E5%BA%A6">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 黄圣杰
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="黄圣杰" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">黄圣杰</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">bjfuhsj.top</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/CV" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about-cat">
+
+    <a href="/ZONE/" rel="section"><i class="fa fa-fw fa-user"></i>about-cat</a>
+
+  </li>
+        <li class="menu-item menu-item-vcc2020-challenge">
+
+    <a href="/stargan" rel="section"><i class="fa fa-fw fa-picture-o"></i>VCC2020-Challenge</a>
+
+  </li>
+        <li class="menu-item menu-item-热榜">
+
+    <a href="/%E7%83%AD%E6%A6%9C" rel="section"><i class="fa fa-fw fa-fighter-jet"></i>热榜</a>
+
+  </li>
+        <li class="menu-item menu-item-随机数游戏工具">
+
+    <a href="/rolling-number-master" rel="section"><i class="fa fa-fw fa-gamepad"></i>随机数游戏工具</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <h2 id="1206工作进度："><a href="#1206工作进度：" class="headerlink" title="1206工作进度："></a>1206工作进度：</h2><ol>
+<li>很多论文 ——看了</li>
+<li>很多代码 ——看了、改了、写了</li>
+<li>很多想法 ——可行与否缺乏交流</li>
+<li>🌟没有机器 ——用单位机器被 <strong>Kill</strong> 被<strong>批评</strong></li>
+</ol>
+<hr>
+<ol>
+<li>初步想法——在<strong>stargan-vc2</strong>基础上改进，侧重点还是 <strong>少数据量</strong> &amp;&amp; <strong>快速</strong> </li>
+<li>用 <strong>PGAN</strong> + Mel 处理，Embedding 部分调用 AiShell （<strong>还是得咱们自己重训</strong>，特征处理方式和PGAN不一样）（<strong>Mel 归一化方式不同</strong>）</li>
+<li>另外引入 “ <strong>Speaker Embedding</strong>”<strong>循环损失</strong>，提升说话人<strong>相似度</strong></li>
+<li>最后再引入 洪丰 的“相对损失”来替代<strong>MSE</strong>，看效果提升度</li>
+<li><ul>
+<li>Speaker Embedding 尺寸 <strong>256</strong></li>
+<li>PGAN 尺寸 <strong>80 mel</strong></li>
+<li>StarGAN 网络结构也得跟着改动了，为了迎合 两者输入特征尺寸</li>
+</ul>
+</li>
+</ol>
+<ol start="6">
+<li><p>PPG 路线：没有机器训，就在 Deep_voice_conversion 基础上改</p>
+<ul>
+<li></li>
+<li><p>但是不知是论文读的少还是什么原因：</p>
+</li>
+<li><p>所有 PPG –&gt; Mel 环节，都是用的自身转自身（<strong>就是只能单一目标人转换</strong>）</p>
+</li>
+<li><p>🌟如果加 speaker embedding 的思路来做<strong>多目标人</strong>，那是不是就只能用 <strong>GAN</strong> 来做？</p>
+</li>
+<li></li>
+<li></li>
+<li><p>（这条路线真的好复杂，想训 Kaldi-librispeech 来学做 ppg 提取，完全训不起来，cpu占用太高了）</p>
+</li>
+<li><p>（有 fac-via-ppg 项目，做的口音转换，用的pykaldi，但是没法引入 VC）</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<ol>
+<li><h4 id="guanlongzhao-fac-via-ppg"><a href="#guanlongzhao-fac-via-ppg" class="headerlink" title="guanlongzhao/fac-via-ppg"></a><a href="https://github.com/guanlongzhao" target="_blank" rel="noopener">guanlongzhao</a>/<strong><a href="https://github.com/guanlongzhao/fac-via-ppg" target="_blank" rel="noopener">fac-via-ppg</a></strong></h4><ol>
+<li>这个任务，实现了用PyKaldi提取PPGs信息（可套来用）、PPGs 转 Mel（咱们做的是<strong>口音转换，看怎么通过改 Loss 成语音转换</strong>）、WavaGlow后端（有预训练的模型，256维度？）</li>
+<li>这个的训练需要自己手动整理 file list，等我整理一下，自己训一下看成不成功，应该问题好解决</li>
+<li>准备用aishell3 数据集试试中文提取ppg效果</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li><h3 id="sos1sos2Sixteen-aishell-3-baseline-fc"><a href="#sos1sos2Sixteen-aishell-3-baseline-fc" class="headerlink" title="sos1sos2Sixteen/aishell-3-baseline-fc"></a><a href="https://github.com/sos1sos2Sixteen" target="_blank" rel="noopener">sos1sos2Sixteen</a>/<strong><a href="https://github.com/sos1sos2Sixteen/aishell-3-baseline-fc" target="_blank" rel="noopener">aishell-3-baseline-fc</a></strong></h3><ol>
+<li><p>从❤️ <a href="https://github.com/caizexin/tf_multispeakerTTS_fc" target="_blank" rel="noopener">这里</a> 抄的，原本是做的英文，改成中文</p>
+</li>
+<li><p>这个AiShell3 的多说话人合成任务，实质是 Fork 自另一份<a href="https://github.com/caizexin" target="_blank" rel="noopener">caizexin</a>/<strong><a href="https://github.com/caizexin/tf_multispeakerTTS_fc" target="_blank" rel="noopener">tf_multispeakerTTS_fc</a></strong></p>
+</li>
+<li><p>不得不说，文档真的很差，看不清，折腾好几天起不来</p>
+</li>
+<li><p>🌟问题：</p>
+<ol>
+<li>数据的放置位置，处理顺序全都没讲</li>
+<li>给的<strong>预训练模型</strong>都是另一份<strong>英文</strong>的，并没有任何体现<strong>中文aishell3</strong>的存在感的地方</li>
+<li>尝试直接跑 预训练模型，起不来，代码有问题！真的是代码有问题，传参时缺参数，一时半会不知怎么加上去，改了N多代码还是不行</li>
+<li>不得不说，<strong>Tensorflow 问题真的比Torch多多了</strong>！</li>
+</ol>
+</li>
+<li><p>🌟最新进展：demo .ipynb 跑通了！：</p>
+<ol>
+<li><p>将 wavernn 代码 vocoder/models/fatchord_version.py 中所有 .cuda() 注释掉</p>
+</li>
+<li><p>将三个 ckpt 文件放入对应文件夹：</p>
+<ol>
+<li>pertained/tacotron_ckpt  </li>
+<li>tf_multispeaker/vocoder/saved_models/<strong>aishell/aishell_ssb.pt</strong></li>
+<li>❤️这里的<strong>aishell/aishell_ssb.pt</strong>手动改名就行</li>
+</ol>
+</li>
+<li><h6 id="注释掉【51】："><a href="#注释掉【51】：" class="headerlink" title="注释掉【51】："></a>注释掉【51】：</h6></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># def mel2audio(mel) : </span><br><span class="line">#     return np.random.randn(14000)[None]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002225.png" alt="image-20201204002224675"></p>
+</li>
+<li><p><strong>display 函数</strong>是<strong>jupter notebook</strong>环境下的一个函数接口：</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002343.png" alt="image-20201204002342062"></p>
+</li>
+<li><p><img src="/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/1203%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5%E8%BF%9B%E5%BA%A6.htm/huangshengjie/Documents/2020/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99hexo%E6%B5%8B%E8%AF%95/Typora%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6%E5%A4%B9/image-20201204002439910.png" alt="image-20201204002439910"></p>
+<ol start="8">
+<li><p>文本送进去的是音素，所以生成语音需要的是音素信息，这个转换不用管，【可以用声韵母训练，用pypinyin做标注，或者找对应的音素字典就好】<img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002637.png" alt="image-20201204002635896"></p>
+</li>
+<li><p>说话人 embedding 这里aishell3 采用的是 ，先用预训练的 speaker encoder 提前提取所有语音embeddinmg，然后碎每个人的embedding做一个均值处理；而且这里demo提供的 embedding提取，是已经准备好的；</p>
+</li>
+<li><p>在原版的代码中，这里是需要手工提取的，这个回头是我钻研的重点，看怎么准备数据和文本，然后训起来再说；</p>
+</li>
+<li><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20201204002900.png" alt="image-20201204002857320"></p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><h3 id="fatchord-WaveRNN"><a href="#fatchord-WaveRNN" class="headerlink" title="fatchord/WaveRNN"></a><a href="https://github.com/fatchord" target="_blank" rel="noopener">fatchord</a>/<strong><a href="https://github.com/fatchord/WaveRNN" target="_blank" rel="noopener">WaveRNN</a></strong></h3><ol>
+<li>这个非常清楚，代码写的很工整</li>
+<li>主要特色就是他的 WaveRNN声码器 + tacotron 前端（更改了 attention 部分机制）</li>
+<li>目前在训练 taco前段部分，用的是 LjSpeech </li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li><h5 id="CorentinJ-Real-Time-Voice-Cloning"><a href="#CorentinJ-Real-Time-Voice-Cloning" class="headerlink" title="CorentinJ/Real-Time-Voice-Cloning"></a><a href="https://github.com/CorentinJ" target="_blank" rel="noopener">CorentinJ</a>/<strong><a href="https://github.com/CorentinJ/Real-Time-Voice-Cloning" target="_blank" rel="noopener">Real-Time-Voice-Cloning</a></strong></h5><ol>
+<li>这份是比较经典的多说话人合成任务，里面有 Speaker Encoder，还没跑，有参考价值</li>
+</ol>
+</li>
+</ol>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+    
+    
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=444267925&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1206工作进度："><span class="nav-number">1.</span> <span class="nav-text">1206工作进度：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#guanlongzhao-fac-via-ppg"><span class="nav-number">1.0.1.</span> <span class="nav-text">guanlongzhao&#x2F;fac-via-ppg</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sos1sos2Sixteen-aishell-3-baseline-fc"><span class="nav-number">1.1.</span> <span class="nav-text">sos1sos2Sixteen&#x2F;aishell-3-baseline-fc</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#注释掉【51】："><span class="nav-number">1.1.0.0.1.</span> <span class="nav-text">注释掉【51】：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fatchord-WaveRNN"><span class="nav-number">1.2.</span> <span class="nav-text">fatchord&#x2F;WaveRNN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CorentinJ-Real-Time-Voice-Cloning"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">CorentinJ&#x2F;Real-Time-Voice-Cloning</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="黄圣杰"
+      src="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+  <p class="site-author-name" itemprop="name">黄圣杰</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Lukelluke" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Lukelluke" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:huangshengjie@bjfu.edu.cn" title="E-Mail → mailto:huangshengjie@bjfu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+
+          
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width:100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">-[LeetCode] -[动态规划]</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode-%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2%E7%B3%BB%E5%88%97-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">-[LeetCode] -[最长子串系列] -[滑动窗口]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E7%BC%96%E7%A8%8B/" rel="tag">-[python] -[编程]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorboard%EF%BC%8CTensorflow/" rel="tag">Tensorboard，Tensorflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VC/" rel="tag">VC</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95tags/" rel="tag">测试tags</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BC%9A/" rel="tag">组会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="tag">论文阅读笔记</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3/" rel="tag">语音</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90/" rel="tag">语音合成</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a><span class="tag-list-count">2</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+    
+    
+
+    <aside class="sidebar">
+
+
+
+
+    </div>
+
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备20024435号 </a>
+  
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄圣杰</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">58k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">53 分钟</span>
+</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  All is well.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("06/09/2020 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+
+        
+
+
+        document.getElementById("timeDate").innerHTML = "🌟本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'hsjptyz21',
+      projectId: 'AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
