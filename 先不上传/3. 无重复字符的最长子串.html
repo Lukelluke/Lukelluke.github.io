@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+      
+  <!--pjax：防止跳转页面音乐暂停-->
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script> 
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-simple.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+  <meta name="description" content="1.题目： 2.思路： 见过了那么多 子串 系列的题目，这次一起做个总结吧；  最长子序列&amp;最长子串的题型汇总  史上最全最丰富的“最长公共子序列”、“最长公共子串”问题的解法与思路    3.滑动窗口的概念： 利用 双指针 来实现；即左指针 表示窗口左边界，右指针 表示窗口右边界； 然后滑动，即意味着 有序地，左右指针移动  4.判断重复字符： 除了之前学到的 HashMap，还有一个">
+<meta property="og:type" content="website">
+<meta property="og:title" content="3. 无重复字符的 最长子串">
+<meta property="og:url" content="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/3.%20%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2.html">
+<meta property="og:site_name" content="黄圣杰">
+<meta property="og:description" content="1.题目： 2.思路： 见过了那么多 子串 系列的题目，这次一起做个总结吧；  最长子序列&amp;最长子串的题型汇总  史上最全最丰富的“最长公共子序列”、“最长公共子串”问题的解法与思路    3.滑动窗口的概念： 利用 双指针 来实现；即左指针 表示窗口左边界，右指针 表示窗口右边界； 然后滑动，即意味着 有序地，左右指针移动  4.判断重复字符： 除了之前学到的 HashMap，还有一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183412.png">
+<meta property="article:published_time" content="2024-09-22T00:13:47.646Z">
+<meta property="article:modified_time" content="2020-06-26T10:34:27.000Z">
+<meta property="article:author" content="黄圣杰">
+<meta property="article:tag" content="-[LeetCode] -[最长子串系列] -[滑动窗口]">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183412.png">
+
+<link rel="canonical" href="http://yoursite.com/%E5%85%88%E4%B8%8D%E4%B8%8A%E4%BC%A0/3.%20%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>3. 无重复字符的 最长子串 | 黄圣杰
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="黄圣杰" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">黄圣杰</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">bjfuhsj.top</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-关于">
+
+    <a href="/CV" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about-cat">
+
+    <a href="/ZONE/" rel="section"><i class="fa fa-fw fa-user"></i>about-cat</a>
+
+  </li>
+        <li class="menu-item menu-item-vcc2020-challenge">
+
+    <a href="/stargan" rel="section"><i class="fa fa-fw fa-picture-o"></i>VCC2020-Challenge</a>
+
+  </li>
+        <li class="menu-item menu-item-热榜">
+
+    <a href="/%E7%83%AD%E6%A6%9C" rel="section"><i class="fa fa-fw fa-fighter-jet"></i>热榜</a>
+
+  </li>
+        <li class="menu-item menu-item-随机数游戏工具">
+
+    <a href="/rolling-number-master" rel="section"><i class="fa fa-fw fa-gamepad"></i>随机数游戏工具</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">3. 无重复字符的 最长子串
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <h1 id="1-题目："><a href="#1-题目：" class="headerlink" title="1.题目："></a>1.题目：</h1><p><img src="https://blog-1301959139.cos.ap-beijing.myqcloud.com/picGo/20200626183412.png" alt="image-20200624145409923"></p>
+<h1 id="2-思路："><a href="#2-思路：" class="headerlink" title="2.思路："></a>2.思路：</h1><ul>
+<li><p>见过了那么多 <strong>子串</strong> 系列的题目，这次一起做个总结吧；</p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_19446965/article/details/81668047" target="_blank" rel="noopener">最长子序列&amp;最长子串的题型汇总</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/wangdd_199326/article/details/76464333" target="_blank" rel="noopener">史上最全最丰富的“最长公共子序列”、“最长公共子串”问题的解法与思路</a></p>
+</li>
+<li></li>
+</ul>
+<h1 id="3-滑动窗口的概念："><a href="#3-滑动窗口的概念：" class="headerlink" title="3.滑动窗口的概念："></a>3.滑动窗口的概念：</h1><ul>
+<li>利用 <strong>双指针</strong> 来实现；即左指针 表示窗口左边界，右指针 表示窗口右边界；</li>
+<li>然后滑动，即意味着 <strong>有序地，左右指针移动</strong></li>
+</ul>
+<h1 id="4-判断重复字符："><a href="#4-判断重复字符：" class="headerlink" title="4.判断重复字符："></a>4.判断重复字符：</h1><ul>
+<li>除了之前学到的 HashMap，还有一个 HashSet（集合）</li>
+<li><a href="https://blog.csdn.net/chen213wb/article/details/84647179" target="_blank" rel="noopener">HashMap 和 Hash Set 的差别</a></li>
+</ul>
+<h1 id="5-代码："><a href="#5-代码：" class="headerlink" title="5.代码："></a>5.代码：</h1><h2 id="法一：用HashSet直接查（里面只存一个值对象）"><a href="#法一：用HashSet直接查（里面只存一个值对象）" class="headerlink" title="法一：用HashSet直接查（里面只存一个值对象）"></a>法一：用HashSet直接查（里面只存一个值对象）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> 无重复字符的最长子串<span class="title">_3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="comment">//HashSet:记录每个字符是否出现过</span></span><br><span class="line">        Set&lt;Character&gt; occ = <span class="keyword">new</span> HashSet&lt;Character&gt;();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        · set.remove()</span></span><br><span class="line"><span class="comment">        · set.add()</span></span><br><span class="line"><span class="comment">        · srt.contains()</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        <span class="comment">//对比：</span></span><br><span class="line"><span class="comment">//        Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</span></span><br><span class="line">        <span class="keyword">int</span> rk = -<span class="number">1</span>,ans = <span class="number">0</span>;<span class="comment">//rk:右指针；</span></span><br><span class="line">        <span class="keyword">int</span> n = s.length();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n ; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i != <span class="number">0</span>)&#123;<span class="comment">//左指针右移</span></span><br><span class="line">                occ.remove(s.charAt(i-<span class="number">1</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(rk + <span class="number">1</span> &lt; n &amp;&amp; !occ.contains(s.charAt(rk+<span class="number">1</span>)))&#123;</span><br><span class="line">                occ.add(s.charAt(rk+<span class="number">1</span>));</span><br><span class="line">                ++rk;</span><br><span class="line">            &#125;</span><br><span class="line">            ans = Math.max(ans, rk - i + <span class="number">1</span>);<span class="comment">//返回最长的长度值；</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="法二：，更简洁的滑动"><a href="#法二：，更简洁的滑动" class="headerlink" title="法二：，更简洁的滑动"></a>法二：，<a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/hua-jie-suan-fa-3-wu-zhong-fu-zi-fu-de-zui-chang-z/" target="_blank" rel="noopener">更简洁的滑动</a></h2><h2 id="HashMap（Key，-Value）"><a href="#HashMap（Key，-Value）" class="headerlink" title="HashMap（Key， Value）"></a>HashMap（Key， Value）</h2><ul>
+<li><p>标签：滑动窗口</p>
+</li>
+<li><p>暴力解法时间复杂度较高，会达到 O($N^2$)</p>
+</li>
+<li><p>故而采取滑动窗口的方法降低时间复杂度</p>
+</li>
+<li><p>定义一个 map 数据结构存储 (k, v)，其中 key 值为字符，value 值为字符位置 +1，加 1 表示从字符位置后一个才开始不重复</p>
+</li>
+<li><p>我们定义不重复子串的开始位置为 start，结束位置为 end</p>
+</li>
+<li><p>随着 end 不断遍历向后，会遇到与 [start, end] 区间内字符相同的情况，此时将字符作为 key 值，获取其 value 值，并更新 start，此时 [start, end] 区间内不存在重复字符</p>
+</li>
+<li><p>无论是否更新 start，都会更新其 map 数据结构和结果 ans。</p>
+</li>
+<li><p>时间复杂度：O(n)</p>
+</li>
+<li><pre><code class="java"><span class="keyword">public</span> <span class="keyword">int</span> lengthOfLongestSubstring_滑动窗口(String s){
+  <span class="keyword">int</span> n = s.length(), ans = <span class="number">0</span>;
+  Map&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();
+  <span class="keyword">for</span>(<span class="keyword">int</span> end=<span class="number">0</span>,start=<span class="number">0</span>; end&lt;n; end++){
+    <span class="keyword">char</span> alpha = s.charAt(end);
+    <span class="keyword">if</span>(map.containsKey(alpha)){
+      start = Math.max(map.get(alpha), start);<span class="comment">//这个很重要</span>
+    }
+    <span class="comment">/*</span>
+<span class="comment">    * if(map.containsKey(s.charAt(i)))</span>
+<span class="comment">    * j = Math.max(map.get(s.charAt(i)),j);</span>
+<span class="comment">    * 为什么有这个判断，是因为在滑动过程中会出现当前loop出现的重复元素之间的区间，</span>
+<span class="comment">    * 可能还有其他元素也是重复的。</span>
+<span class="comment">    * 如果仅仅 j =map.get(s.charAt(i)) </span>
+<span class="comment">    * 则你会忽略两个重复元素之间还有的其他元素也是重复的，</span>
+<span class="comment">    * 例如 a bba ，如果没有max，则答案会是3，因为最后一个a和前一个a的间距是3，</span>
+<span class="comment">    * 不加max就考虑不到中间两个b也是重复的。）</span>
+<span class="comment">    * */</span>
+    ans = Math.max(ans, end - start + <span class="number">1</span>);
+    map.put(s.charAt(end), end+<span class="number">1</span>);
+  }
+  <span class="keyword">return</span> ans;
+}
+&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
+</li>
+<li><p>返回从 fromIndex 位置开始查找指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回 -1。</p>
+</li>
+<li><pre><code class="java"><span class="function"><span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(String str)</span></span>;
+&lt;!--￼<span class="number">2</span>--&gt;
+</code></pre>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (i &lt; s.length()) &#123;</span><br><span class="line">			<span class="keyword">int</span> pos = s.indexOf(s.charAt(i),flag);</span><br><span class="line">			<span class="keyword">if</span> (pos &lt; i) &#123;</span><br><span class="line">				<span class="keyword">if</span> (length &gt; result) &#123;</span><br><span class="line">					result = length;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (result &gt;= s.length() - pos - <span class="number">1</span>) &#123;</span><br><span class="line">					<span class="keyword">return</span> result;</span><br><span class="line">				&#125;</span><br><span class="line">				length = i - pos - <span class="number">1</span>;</span><br><span class="line">				flag = pos + <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			length++;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> length;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">作者：VioletKiss</span><br><span class="line">链接：https:<span class="comment">//leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/javati-jie-3wu-zhong-fu-zi-fu-de-zui-chang-zi-chua/</span></span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+
+
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+    
+    
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=444267925&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-题目："><span class="nav-number">1.</span> <span class="nav-text">1.题目：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-思路："><span class="nav-number">2.</span> <span class="nav-text">2.思路：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-滑动窗口的概念："><span class="nav-number">3.</span> <span class="nav-text">3.滑动窗口的概念：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-判断重复字符："><span class="nav-number">4.</span> <span class="nav-text">4.判断重复字符：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-代码："><span class="nav-number">5.</span> <span class="nav-text">5.代码：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#法一：用HashSet直接查（里面只存一个值对象）"><span class="nav-number">5.1.</span> <span class="nav-text">法一：用HashSet直接查（里面只存一个值对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法二：，更简洁的滑动"><span class="nav-number">5.2.</span> <span class="nav-text">法二：，更简洁的滑动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap（Key，-Value）"><span class="nav-number">5.3.</span> <span class="nav-text">HashMap（Key， Value）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="黄圣杰"
+      src="/images/%E4%B8%BB%E9%A1%B5%E5%A4%B4%E5%83%8F.jpeg">
+  <p class="site-author-name" itemprop="name">黄圣杰</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Lukelluke" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Lukelluke" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:huangshengjie@bjfu.edu.cn" title="E-Mail → mailto:huangshengjie@bjfu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+
+          
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width:100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell-Kaldi/" rel="tag">-[Shell] -[Kaldi]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sox-kaldi/" rel="tag">-[Sox] -[kaldi]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E7%BC%96%E7%A8%8B/" rel="tag">-[python] -[编程]</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorboard%EF%BC%8CTensorflow/" rel="tag">Tensorboard，Tensorflow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VC/" rel="tag">VC</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BC%9A/" rel="tag">组会</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="tag">论文阅读笔记</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3/" rel="tag">语音</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90/" rel="tag">语音合成</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a><span class="tag-list-count">2</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+    
+    
+
+    <aside class="sidebar">
+
+
+
+
+    </div>
+
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">京ICP备20024435号 </a>
+  
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄圣杰</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">47k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">42 分钟</span>
+</div>
+
+
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  All is well.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("06/09/2020 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+
+        
+
+
+        document.getElementById("timeDate").innerHTML = "🌟本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'hsjptyz21',
+      projectId: 'AIzaSyCS5W5yhjaTy9c08FjsfVA7SrgrV204l6g'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
